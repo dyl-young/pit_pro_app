@@ -16,10 +16,10 @@ class JobAdapter extends TypeAdapter<Job> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Job(
-      fields[0] as String,
-      fields[1] as String,
-    )..trialPitList = (fields[2] as List).cast<TrialPit>();
+    return Job()
+      ..jobNumber = fields[0] as String
+      ..jobTitle = fields[1] as String
+      ..trialPitList = (fields[2] as List).cast<TrialPit>();
   }
 
   @override

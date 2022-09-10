@@ -16,14 +16,14 @@ class TrialPitAdapter extends TypeAdapter<TrialPit> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return TrialPit(
-      fields[0] as String,
-      fields[1] as DateTime,
-      fields[3] as double,
-      fields[4] as double,
-      fields[5] as double,
-      fields[6] as double,
-    )..layersList = (fields[7] as List).cast<Layer>();
+    return TrialPit()
+      ..pitNumber = fields[0] as String
+      ..createdDate = fields[1] as DateTime
+      ..elevation = fields[3] as double
+      ..wtDepth = fields[4] as double
+      ..pwtDepth = fields[5] as double
+      ..pmDepth = fields[6] as double
+      ..layersList = (fields[7] as List).cast<Layer>();
   }
 
   @override

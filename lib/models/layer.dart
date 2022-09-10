@@ -4,7 +4,7 @@ import 'package:hive/hive.dart';
 part 'layer.g.dart';
 
 @HiveType(typeId: 3)
-class Layer {
+class Layer extends HiveObject{
   @HiveField(0)
   final double depth;
   @HiveField(1)

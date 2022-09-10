@@ -5,13 +5,13 @@ part 'job.g.dart';
 
 //flutter packages pub run build_runner build
 @HiveType(typeId: 0)
-class Job {
+class Job extends HiveObject{
   @HiveField(0)
-  final String jobNumber;
+  late final String jobNumber;
   @HiveField(1)
-  final String jobTitle;
+  late final String jobTitle;
   @HiveField(2)
   late List<TrialPit> trialPitList;
 
-  Job(this.jobNumber, this.jobTitle);
+  // Job(this.jobNumber, this.jobTitle);
 }
