@@ -4,7 +4,9 @@ import 'package:hive_flutter/adapters.dart';
 import '../boxes.dart';
 import '../models/job.dart';
 import '../models/trial_pit.dart';
+import '../models/user.dart';
 import 'components/job_content_builder.dart';
+import 'components/user_drawer_builder.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -23,6 +25,7 @@ class _HomePageState extends State<HomePage> {
   late List<Job> foundList;
   static bool searching = false;
   final _searchController = TextEditingController();
+  final User user = User('D Young', 'Stellenbsoch University', 'assests/su_logo.png');
 
   //initialise states
   @override
@@ -51,21 +54,8 @@ class _HomePageState extends State<HomePage> {
 
       //!User Drawer
       drawer: Drawer(
-        child: ListView(
-          children: const [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(10),
-                      bottomRight: Radius.circular(10))),
-              child: CircleAvatar(
-                backgroundImage: AssetImage('assets/su_logo.png'),
-                backgroundColor: Colors.white,
-              ),
-            ),
-          ],
-        ),
+        backgroundColor: Colors.green,
+        child: buildUserDrawer(context, user),
       ),
 
       //!Job card view
