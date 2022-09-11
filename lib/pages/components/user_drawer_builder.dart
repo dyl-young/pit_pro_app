@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 
 import '../../models/user.dart';
+import 'infoTextBoxWidget.dart';
 
 Widget buildUserDrawer(BuildContext context, User user) {
-
   return ListView(
     children: [
       Padding(
-        padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+        //*Logo Card
+        //!cant acess logo from user class?
+        //!cant save user seleccted logo to assets
+        padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
+        //white background card
         child: Material(
           borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(15),
               bottomRight: Radius.circular(15)),
+          //add image
           child: Ink.image(
             width: 100,
             height: 150,
@@ -20,6 +25,7 @@ Widget buildUserDrawer(BuildContext context, User user) {
             child: Stack(
               clipBehavior: Clip.none,
               children: [
+                //make image tappable
                 InkWell(
                   onTap: () {
                     showModalBottomSheet(
@@ -28,73 +34,42 @@ Widget buildUserDrawer(BuildContext context, User user) {
                     );
                   },
                 ),
+                //stack edit icon on image
                 const Positioned(
                   bottom: 4,
                   right: 4,
-                  child: CircleAvatar( backgroundColor: Colors.green, maxRadius: 15, child: Icon(Icons.edit, color: Colors.white, size: 15,)),
+                  child: CircleAvatar(
+                      backgroundColor: Colors.green,
+                      maxRadius: 15,
+                      child: Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                        size: 15,
+                      )),
                 ),
               ],
             ),
           ),
         ),
       ),
-      // child: Image.asset(
-      //   "assets/su_logo.png",
-      //   fit: BoxFit.contain,
-      // ),
-      const SizedBox(
-        height: 10,
-      ),
 
+      //*user name box
       Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Container(
-          height: 40,
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(
-              Radius.circular(15),
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              const Text('User: '),
-              Text(
-                user.userName,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          height: 40,
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(
-              Radius.circular(15),
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              const Text('Company: '),
-              Text(
-                user.institutionName,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-        ),
+        child: makeInfoTextBox('User:         ', user.userName),
       ),
 
+      //*user company box
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: makeInfoTextBox('Company:', user.institutionName),
+      ),
+
+      //*User info edit button
       Padding(
         padding: const EdgeInsets.only(left: 110, right: 110),
         child: ElevatedButton(
-          //TODO:Implement Alert dialog box to change user info 
+          //TODO:Implement Alert dialog box to change user info
           onPressed: () {},
           child: const Icon(Icons.edit, color: Colors.white),
           // color: Colors.red,
@@ -104,6 +79,7 @@ Widget buildUserDrawer(BuildContext context, User user) {
   );
 }
 
+//pick image bottom sheet with gallery button
 Widget bottomSheet() {
   return Container(
     height: 70,
@@ -119,7 +95,7 @@ Widget bottomSheet() {
         Center(
           child: TextButton(
             onPressed: () {
-              pcikImage();
+              pickImage();
             },
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -131,6 +107,6 @@ Widget bottomSheet() {
   );
 }
 
-Future pcikImage() async {
+//TODO: Implement pick image function
+Future pickImage() async {}
 
-}
