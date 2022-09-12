@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 
-import '../../boxes.dart';
-import '../../models/job.dart';
-import '../home_page.dart';
+import '../../../boxes.dart';
+import '../../../models/job.dart';
+import '../confirm_delete_alert.dart';
+import '../add_edit_delete_functions.dart';
 
 Widget buildJobContent(List<Job> jobs) {
   final Box box1 = Boxes.getJobs();
@@ -62,7 +63,7 @@ Widget buildJobContent(List<Job> jobs) {
   }
 }
 
-//Test pit detail card
+//!Test pit detail card
 Widget buildJobCard(BuildContext context, Job job) {
   //details
   final date = DateFormat.yMMMd().format(DateTime.now());
@@ -133,13 +134,14 @@ Widget buildJobCard(BuildContext context, Job job) {
   );
 }
 
-//buildButtonn widget
+//!buildButtonn widget
 Widget buildButtons(BuildContext context, Job job) {
   const color = Color.fromARGB(255, 9, 138, 13);
 
   return Row(
     children: [
-      //edit button
+
+      //*edit button
       Expanded(
         child: TextButton.icon(
           label: const Text('Edit', style: TextStyle(color: color)),
@@ -160,14 +162,14 @@ Widget buildButtons(BuildContext context, Job job) {
         ),
       ),
 
-      //delete button
+      //*delete button
       Expanded(
         child: TextButton.icon(
           label: const Text('Delete', style: TextStyle(color: color)),
           icon: const Icon(Icons.delete, color: color),
           onPressed: () => showDialog(
             context: context,
-            builder: (context) => confirmDelete(context, job),
+            builder: (context) => confirmDelete(context,[], job ,deleteJob),
           ),
         ),
       )
@@ -175,30 +177,3 @@ Widget buildButtons(BuildContext context, Job job) {
   );
 }
 
-//Alert pop up box to cnfirm deletion
-Widget confirmDelete(BuildContext context, Job job) {
-  return AlertDialog(
-    
-    title: const Text("Are you sure", style: TextStyle(fontSize: 16)),
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(20)),
-    ),
-    content: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      
-      children: [
-        TextButton(
-          onPressed: Navigator.of(context).pop,
-          child: const Text('no', style: TextStyle(fontSize: 20)),
-        ),
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-            deleteJob(job);
-          },
-          child: const Text('yes', style: TextStyle(fontSize: 20)),
-        ),
-      ],
-    ),
-  );
-}

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../models/user.dart';
-import 'infoTextBoxWidget.dart';
+import 'info_textbox_widget.dart';
 
 Widget buildUserDrawer(BuildContext context, User user) {
   return ListView(
@@ -56,13 +56,13 @@ Widget buildUserDrawer(BuildContext context, User user) {
       //*user name box
       Padding(
         padding: const EdgeInsets.all(8.0),
-        child: makeInfoTextBox('User:         ', user.userName),
+        child: infoTextBox('User:         ', user.userName),
       ),
 
       //*user company box
       Padding(
         padding: const EdgeInsets.all(8.0),
-        child: makeInfoTextBox('Company:', user.institutionName),
+        child: infoTextBox('Company:', user.institutionName),
       ),
 
       //*User info edit button

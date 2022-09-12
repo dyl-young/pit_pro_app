@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 
 //Build info text boxes
-Widget makeInfoTextBox(String title, String info) {
+Widget infoTextBox(String title, String info) {
   return Container(
     height: 40,
     decoration: const BoxDecoration(
