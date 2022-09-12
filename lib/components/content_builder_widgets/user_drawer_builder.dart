@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../models/user.dart';
-import 'info_textbox_widget.dart';
+import '../../../models/user.dart';
+import '../info_textbox_widget.dart';
 
 Widget buildUserDrawer(BuildContext context, User user) {
   return ListView(
@@ -14,8 +14,8 @@ Widget buildUserDrawer(BuildContext context, User user) {
         //white background card
         child: Material(
           borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(15),
-              bottomRight: Radius.circular(15)),
+              bottomLeft: Radius.circular(25),
+              bottomRight: Radius.circular(25)),
           //add image
           child: Ink.image(
             width: 100,
@@ -36,11 +36,11 @@ Widget buildUserDrawer(BuildContext context, User user) {
                 ),
                 //stack edit icon on image
                 const Positioned(
-                  bottom: 4,
-                  right: 4,
+                  bottom: 8,
+                  right: 8,
                   child: CircleAvatar(
                       backgroundColor: Colors.green,
-                      maxRadius: 15,
+                      maxRadius: 12,
                       child: Icon(
                         Icons.edit,
                         color: Colors.white,

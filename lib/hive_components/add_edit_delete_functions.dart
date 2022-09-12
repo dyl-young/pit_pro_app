@@ -1,4 +1,4 @@
-import '../../boxes.dart';
+import 'boxes.dart';
 import '../../models/job.dart';
 import '../../models/trial_pit.dart';
 
@@ -33,7 +33,13 @@ void deleteJob(Job job) {
 }
 
 //! Trial Pit functions
-//TODO: implement Trial pit add/edit/delete
+//TODO: implement Trial pit edit/delete
+void deleteTrialPit(TrialPit trialPit) {
+  for (var e in trialPit.layersList) {
+    e.delete();
+  }
+  trialPit.delete();
+}
 
 //! Layer functions
 //TODO: implement Trial pit add/edit/delete

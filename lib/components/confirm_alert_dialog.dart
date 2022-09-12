@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:pit_pro_app/models/trial_pit.dart';
-import 'package:pit_pro_app/pages/components/add_edit_delete_functions.dart';
 
-import '../../models/job.dart';
-
-//!Alert pop up box to confirm Job deletion
+//!Alert pop up box to confirm Job deletion or page exit
 Widget confirmDelete(BuildContext context, List<HiveObject>? objList, HiveObject object, Function deletObject) {
   return AlertDialog(
     title: const Text("Are you sure?", style: TextStyle(fontSize: 16)),

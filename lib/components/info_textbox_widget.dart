@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import'package:flutter/material.dart';
 
 
 //Build info text boxes
@@ -8,7 +8,7 @@ Widget infoTextBox(String title, String info) {
     decoration: const BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.all(
-        Radius.circular(15),
+        Radius.circular(25),
       ),
     ),
     child: Row(

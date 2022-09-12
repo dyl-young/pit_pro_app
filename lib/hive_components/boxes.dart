@@ -2,8 +2,8 @@ import 'package:hive/hive.dart';
 import 'package:pit_pro_app/models/layer.dart';
 import 'package:pit_pro_app/models/trial_pit.dart';
 
-import 'models/job.dart';
-import 'models/user.dart';
+import '../models/job.dart';
+import '../models/user.dart';
 
 class Boxes {
   static Box<User> getUsers() => Hive.box<User>('users');

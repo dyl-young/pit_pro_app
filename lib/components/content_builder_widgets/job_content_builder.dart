@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 
-import '../../../boxes.dart';
+import '../../hive_components/boxes.dart';
 import '../../../models/job.dart';
-import '../confirm_delete_alert.dart';
-import '../add_edit_delete_functions.dart';
+import '../confirm_alert_dialog.dart';
+import '../../hive_components/add_edit_delete_functions.dart';
 
-Widget buildJobContent(List<Job> jobs) {
+Widget buildJobContent(BuildContext context, List<Job> jobs) {
   final Box box1 = Boxes.getJobs();
   final Box box2 = Boxes.geTrialPits();
   final Box box3 = Boxes.getLayers();
+  final currentWidth = MediaQuery.of(context).size.width;
 
   if (jobs.isEmpty) {
     return const Center(
@@ -24,6 +25,12 @@ Widget buildJobContent(List<Job> jobs) {
 
         //Temp widgets for dev purposes
         //-------------------------------------------------------------
+        SizedBox(
+            height: 40,
+            child: Text(
+              'Screen width: $currentWidth',
+              style: const TextStyle(color: Colors.red),
+            )),
         Text("Number of TestPits in box: ${box1.length}",
             style: const TextStyle(color: Colors.red)),
         Text("Number of layers in box: ${box2.length}",
@@ -45,8 +52,8 @@ Widget buildJobContent(List<Job> jobs) {
         //returns detail cards built with buildJobCard widget
         Expanded(
           child: GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: currentWidth < 500 ? 2 : 3,
               crossAxisSpacing: 4,
               mainAxisSpacing: 4,
               childAspectRatio: 1 / 1.3,
@@ -63,10 +70,10 @@ Widget buildJobContent(List<Job> jobs) {
   }
 }
 
-//!Test pit detail card
+//!Job detail card
 Widget buildJobCard(BuildContext context, Job job) {
   //details
-  final date = DateFormat.yMMMd().format(DateTime.now());
+  final date = DateFormat.yMd().format(DateTime.now());
   final title = job.jobTitle;
 
   return Card(
@@ -85,19 +92,36 @@ Widget buildJobCard(BuildContext context, Job job) {
 
             //name
             title: Text(
-              job.jobNumber,
-              maxLines: 2,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 15,
-              ),
+              date,
+              style: const TextStyle(color: Colors.grey, fontSize: 13),
             ),
 
             //Height
-            subtitle: Text(title),
-            
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                  child: Text(
+                    job.jobNumber,
+                    maxLines: 1,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                Text(
+                  'Title: $title',
+                  maxLines: 2,
+                  style: const TextStyle(fontSize: 13),
+                ),
+              ],
+            ),
+
             //date
-            trailing: Text(date),
+            //default trailing is a down arrow
+            // trailing: Text(date),
 
             //build edit and delete buttons
             children: [
@@ -140,7 +164,6 @@ Widget buildButtons(BuildContext context, Job job) {
 
   return Row(
     children: [
-
       //*edit button
       Expanded(
         child: TextButton.icon(
@@ -148,17 +171,7 @@ Widget buildButtons(BuildContext context, Job job) {
           icon: const Icon(Icons.edit, color: color),
 
           //TODO: Implement job build page
-          onPressed: () {}
-          // => Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => TestPitCreator(
-          //       testPit: testPit,
-          //       onClickedDone: ((name, layers, notes) =>
-          //           editTestPit(testPit, name, layers, notes)),
-          //     ),
-          //   ),
-          // ),
+          onPressed: () {},
         ),
       ),
 
@@ -169,11 +182,10 @@ Widget buildButtons(BuildContext context, Job job) {
           icon: const Icon(Icons.delete, color: color),
           onPressed: () => showDialog(
             context: context,
-            builder: (context) => confirmDelete(context,[], job ,deleteJob),
+            builder: (context) => confirmDelete(context, [], job, deleteJob),
           ),
         ),
       )
     ],
   );
 }
-
