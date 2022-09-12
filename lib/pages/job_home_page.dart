@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:pit_pro_app/pages/trial_pit_page.dart';
 
-import '../boxes.dart';
+import '../components/content_builder_widgets/user_drawer_builder.dart';
+import '../hive_components/add_edit_delete_functions.dart';
+import '../hive_components/boxes.dart';
+import '../components/content_builder_widgets/job_content_builder.dart';
 import '../models/job.dart';
 import '../models/user.dart';
-import 'components/content_builder_widgets/job_content_builder.dart';
-import 'components/user_drawer_builder.dart';
 
 class JobHomePage extends StatefulWidget {
   const JobHomePage({Key? key}) : super(key: key);
@@ -26,7 +28,8 @@ class _JobHomePageState extends State<JobHomePage> {
   final _searchController = TextEditingController();
 
   //Initialise App User
-  final User user = User('D Young', 'Stellenbsoch University', 'assests/su_logo.png');
+  final User user =
+      User('D Young', 'Stellenbsoch University', 'assests/su_logo.png');
 
   //initialise states
   @override
@@ -59,7 +62,6 @@ class _JobHomePageState extends State<JobHomePage> {
         child: buildUserDrawer(context, user),
       ),
 
-      //!Job card view
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -72,7 +74,7 @@ class _JobHomePageState extends State<JobHomePage> {
                   labelText: 'Search ',
                   suffixIcon: const Icon(Icons.search),
                   border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15)),
+                      borderRadius: BorderRadius.circular(25)),
                 ),
                 onEditingComplete: () {
                   FocusScope.of(context).unfocus();
@@ -85,7 +87,8 @@ class _JobHomePageState extends State<JobHomePage> {
               ),
             ),
 
-            //*build listenable Box List :
+            //!Job card view
+            //*listenable Box List :
             //returns a list of detail cards built in test_pit_content builder
             SizedBox(
               height: 669.5,
@@ -105,7 +108,8 @@ class _JobHomePageState extends State<JobHomePage> {
                     // searching = false;
                     foundList = reversedJobs;
                   }
-                  return buildJobContent(answerList);
+                  //*builder
+                  return buildJobContent(context, answerList);
                 },
               ),
             ),
@@ -113,19 +117,19 @@ class _JobHomePageState extends State<JobHomePage> {
         ),
       ),
 
-      //!floating action button: navigates to Job Form page
+      //!floating action button: navigates to Trial Pit page
       floatingActionButton: FloatingActionButton(
-          tooltip: 'Add New Test Pit',
-          child: const Icon(Icons.add, size: 30),
-          onPressed: () {} // => Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => const BuildJobContent(
-          //       onClickedDone: addJob(),
-          //     ),
-          //   ),
-          // ),
+        tooltip: 'Add New Test Pit',
+        child: const Icon(Icons.add, size: 30),
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const TrialPitPage(
+              onClickedDone: addJob,
+            ),
           ),
+        ),
+      ),
 
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
 
@@ -145,23 +149,29 @@ class _JobHomePageState extends State<JobHomePage> {
   }
 
   //Searches through list of objects and adds an matches to Found List
+  //! filter Job cards according to title or job number
   void _runFilter(String enteredKeyword, List<Job> jobs) {
     List<Job> results = [];
     if (enteredKeyword.isEmpty || enteredKeyword == '') {
       results = jobs;
     } else {
-      results = jobs
-          .where(
-            (element) => element.jobNumber
-                .toLowerCase()
-                .contains(enteredKeyword.toLowerCase()),
-          )
-          .toList();
+      results = jobs.where(
+        (element) {
+          if (element.jobNumber
+                  .toLowerCase()
+                  .contains(enteredKeyword.toLowerCase()) ||
+              element.jobTitle
+                  .toLowerCase()
+                  .contains(enteredKeyword.toLowerCase())) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+      ).toList();
     }
     setState(() {
       foundList = results;
     });
   }
 }
-
-
