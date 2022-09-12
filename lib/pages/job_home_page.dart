@@ -49,100 +49,110 @@ class _JobHomePageState extends State<JobHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      //!appbar
-      appBar: AppBar(
-        title: const Text('Test Pit Log'),
-        centerTitle: true,
-      ),
-
-      //!User Drawer
-      drawer: Drawer(
-        backgroundColor: Colors.green,
-        child: buildUserDrawer(context, user),
-      ),
-
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            //*Search bar
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  labelText: 'Search ',
-                  suffixIcon: const Icon(Icons.search),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(25)),
-                ),
-                onEditingComplete: () {
-                  FocusScope.of(context).unfocus();
-                  _searchController.clear();
-                },
-                onChanged: (value) {
-                  searching = true;
-                  _runFilter(value, reversedJobs);
-                },
-              ),
-            ),
-
-            //!Job card view
-            //*listenable Box List :
-            //returns a list of detail cards built in test_pit_content builder
-            SizedBox(
-              height: 669.5,
-              child: ValueListenableBuilder<Box<Job>>(
-                valueListenable: Boxes.getJobs().listenable(),
-                builder: (context, box, _) {
-                  final jobs = box.values.toList().cast<Job>();
-                  reversedJobs = jobs.reversed.toList();
-                  List<Job> answerList;
-
-                  if (!searching) {
-                    //not searching -> display full list
-                    answerList = reversedJobs;
-                  } else {
-                    //searching -> display list of found matches, end
-                    answerList = foundList;
-                    // searching = false;
-                    foundList = reversedJobs;
-                  }
-                  //*builder
-                  return buildJobContent(context, answerList);
-                },
-              ),
-            ),
-          ],
+    return GestureDetector(
+      //onTap: block below stopped the keybaord from popping up
+      //when the custon drawer is opended 
+      onTap: () {
+        final FocusScopeNode currentScope = FocusScope.of(context);
+        if (!currentScope.hasPrimaryFocus && currentScope.hasFocus) {
+          FocusManager.instance.primaryFocus?.unfocus();
+        }
+      },
+      child: Scaffold(
+        //!appbar
+        appBar: AppBar(
+          title: const Text('Test Pit Log'),
+          centerTitle: true,
         ),
-      ),
-
-      //!floating action button: navigates to Trial Pit page
-      floatingActionButton: FloatingActionButton(
-        tooltip: 'Add New Test Pit',
-        child: const Icon(Icons.add, size: 30),
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const TrialPitPage(
-              onClickedDone: addJob,
+    
+        //!User Drawer
+        drawer: Drawer(
+          backgroundColor: Colors.green,
+          child: buildUserDrawer(context, user),
+        ),
+    
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              //*Search bar
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: TextField(
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    labelText: 'Search ',
+                    suffixIcon: const Icon(Icons.search),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25)),
+                  ),
+                  onEditingComplete: () {
+                    FocusScope.of(context).unfocus();
+                    _searchController.clear();
+                  },
+                  onChanged: (value) {
+                    searching = true;
+                    _runFilter(value, reversedJobs);
+                  },
+                ),
+              ),
+    
+              //!Job card view
+              //*listenable Box List :
+              //returns a list of detail cards built in test_pit_content builder
+              SizedBox(
+                height: 669.5,
+                child: ValueListenableBuilder<Box<Job>>(
+                  valueListenable: Boxes.getJobs().listenable(),
+                  builder: (context, box, _) {
+                    final jobs = box.values.toList().cast<Job>();
+                    reversedJobs = jobs.reversed.toList();
+                    List<Job> answerList;
+    
+                    if (!searching) {
+                      //not searching -> display full list
+                      answerList = reversedJobs;
+                    } else {
+                      //searching -> display list of found matches, end
+                      answerList = foundList;
+                      // searching = false;
+                      foundList = reversedJobs;
+                    }
+                    //*builder
+                    return buildJobContent(context, answerList);
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+    
+        //!floating action button: navigates to Trial Pit page
+        floatingActionButton: FloatingActionButton(
+          tooltip: 'Add New Test Pit',
+          child: const Icon(Icons.add, size: 30),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const TrialPitPage(
+                onClickedDone: addJob,
+              ),
             ),
           ),
         ),
-      ),
-
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-
-      //*bottom bar: no function
-      bottomNavigationBar: BottomAppBar(
-        //bottom navigation bar on scaffold
-        color: Colors.green,
-        shape: const CircularNotchedRectangle(), //shape of notch
-        notchMargin: 5,
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [SizedBox(height: 34)],
+    
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+    
+        //*bottom bar: no function
+        bottomNavigationBar: BottomAppBar(
+          //bottom navigation bar on scaffold
+          color: Colors.green,
+          shape: const CircularNotchedRectangle(), //shape of notch
+          notchMargin: 5,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const [SizedBox(height: 34)],
+          ),
         ),
       ),
     );

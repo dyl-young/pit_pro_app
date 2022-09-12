@@ -9,8 +9,8 @@ Widget cancelButton(
         style: ElevatedButton.styleFrom(),
         child: Row(
           children: const [
-            Text('Cancel ', style: TextStyle(fontSize: 12)),
-            Icon(Icons.cancel_outlined, size: 17),
+            Text('Cancel '),
+            Icon(Icons.cancel_outlined, size: 20),
           ],
         ), //const ,
         onPressed: () {

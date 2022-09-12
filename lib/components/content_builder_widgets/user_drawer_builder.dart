@@ -91,7 +91,7 @@ Widget bottomSheet() {
     ),
     child: Column(
       children: [
-        const Text('Choose Institution Image'),
+        const Text('Choose Company Image'),
         Center(
           child: TextButton(
             onPressed: () {

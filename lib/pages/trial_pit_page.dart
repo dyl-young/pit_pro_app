@@ -23,13 +23,13 @@ class TrialPitPage extends StatefulWidget {
 }
 
 class _TrialPitPageState extends State<TrialPitPage> {
-  //attributes
+  //*attributes
   final formKey = GlobalKey<FormState>();
   final _jobNumController = TextEditingController();
   final _jobTitleController = TextEditingController();
   late List<TrialPit> madeTrialPits = [];
 
-  //initialise state
+  //*initialise state
   @override
   void initState() {
     super.initState();
@@ -43,7 +43,7 @@ class _TrialPitPageState extends State<TrialPitPage> {
     }
   }
 
-  //Dispose Controllers
+  //*dispose Controllers
   @override
   void dispose() {
     _jobNumController.dispose();
@@ -85,7 +85,7 @@ class _TrialPitPageState extends State<TrialPitPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 20),
+                const SizedBox(height: 8),
 
                 //Job Details:
                 //*Heading
@@ -97,42 +97,85 @@ class _TrialPitPageState extends State<TrialPitPage> {
                 //*job title
                 customTextField('Job Title', _jobTitleController),
 
-                //*Add Trial Pit button
-                Center(
-                  child: SizedBox(
-                    width: 150,
-                    child: ElevatedButton(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Text('Add Trial Pit '),
-                          Icon(Icons.calendar_view_day)
-                        ],
-                      ),
-                      //TODO: implement adding trial pit
-                      onPressed: () {},
-                      // onPressed: () => Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) =>
-                      //         const LayerDialogForm(onClickedDone: addLayer),
-                      //   ),
-                      // ),
+                const SizedBox(height: 8),
 
-                      // onPressed: () => showDialog(
-                      //   context: context,
-                      //   builder: (context) => LayerDialogForm(
-                      //     onClickedDone: (type, height) =>
-                      //         addLayer(madelayers, type, height),
-                      //   ),
-                      // ),
+                //*Add Trial Pit button
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SizedBox(
+                      width: 117,
+                      height: 40,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(primary: Colors.grey),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.add),
+                            Text('Borehole'),
+                          ],
+                        ),
+                        //TODO: implement adding trial pit
+                        onPressed: () {},
+                      ),
                     ),
-                  ),
+                    SizedBox(
+                      width: 117,
+                      height: 40,
+                      child: ElevatedButton(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.add),
+                            Text('Trial Pit'),
+                          ],
+                        ),
+                        //TODO: implement adding trial pit
+                        onPressed: () {},
+                      ),
+                    ),
+                    SizedBox(
+                      width: 117,
+                      height: 40,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(primary: Colors.grey),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.add),
+                            Text('Auger'),
+                          ],
+                        ),
+                        //TODO: implement adding trial pit
+                        onPressed: () {},
+                      ),
+                    ),
+                    // onPressed: () => Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) =>
+                    //         const LayerDialogForm(onClickedDone: addLayer),
+                    //   ),
+                    // ),
+
+                    // onPressed: () => showDialog(
+                    //   context: context,
+                    //   builder: (context) => LayerDialogForm(
+                    //     onClickedDone: (type, height) =>
+                    //         addLayer(madelayers, type, height),
+                    //   ),
+                    // ),
+                    // ),
+                  ],
                 ),
 
+                const SizedBox(height: 8),
+
                 //*Trial Pits Heading
-                sectionHeading('Trial Pits'),
+                sectionHeading('Job Activities'),
 
                 //*Trial Pit info tile
                 SizedBox(
@@ -155,7 +198,7 @@ class _TrialPitPageState extends State<TrialPitPage> {
         floatingActionButton: FloatingActionButton(
           tooltip: 'Generate PDF',
           onPressed: () {
-              //TODO: implement pdf view page
+            //TODO: implement pdf view page
             // Navigator.push(context,
             //     MaterialPageRoute(builder: (context){} => const PdfViewPage()));
           },
