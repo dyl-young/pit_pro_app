@@ -24,14 +24,17 @@ class LayerAdapter extends TypeAdapter<Layer> {
       fields[4] as String,
       (fields[5] as List).cast<String>(),
       fields[6] as String,
-      fields[7] as String?,
-    );
+      fields[10] as String?,
+    )
+      ..wtDepth = fields[7] as double
+      ..pwtDepth = fields[8] as double
+      ..pmDepth = fields[9] as double;
   }
 
   @override
   void write(BinaryWriter writer, Layer obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.depth)
       ..writeByte(1)
@@ -47,6 +50,12 @@ class LayerAdapter extends TypeAdapter<Layer> {
       ..writeByte(6)
       ..write(obj.origin)
       ..writeByte(7)
+      ..write(obj.wtDepth)
+      ..writeByte(8)
+      ..write(obj.pwtDepth)
+      ..writeByte(9)
+      ..write(obj.pmDepth)
+      ..writeByte(10)
       ..write(obj.note);
   }
 

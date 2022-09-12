@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
+import 'package:pit_pro_app/pages/trial_pit_page.dart';
 
 import '../../hive_components/boxes.dart';
 import '../../../models/job.dart';
@@ -31,9 +32,11 @@ Widget buildJobContent(BuildContext context, List<Job> jobs) {
               'Screen width: $currentWidth',
               style: const TextStyle(color: Colors.red),
             )),
-        Text("Number of TestPits in box: ${box1.length}",
+        Text("Number of Jobs in box: ${box1.length}",
             style: const TextStyle(color: Colors.red)),
-        Text("Number of layers in box: ${box2.length}",
+        Text("Number of Trial Pits in box: ${box2.length}",
+            style: const TextStyle(color: Colors.red)),
+        Text("Number of Layers in box: ${box3.length}",
             style: const TextStyle(color: Colors.red)),
         TextButton(
           style: ElevatedButton.styleFrom(
@@ -129,7 +132,6 @@ Widget buildJobCard(BuildContext context, Job job) {
             ],
           ),
         ),
-
         Expanded(
           child: IconButton(
             constraints: const BoxConstraints(
@@ -143,16 +145,6 @@ Widget buildJobCard(BuildContext context, Job job) {
             color: Colors.deepOrange,
           ),
         ),
-
-        // Expanded(
-        //   child: Container(
-        //     decoration: const BoxDecoration(
-        //       borderRadius: BorderRadius.all(Radius.circular(20)),
-        //       color: Colors.red,
-        //       ),
-        //       child: const Icon(Icons.picture_as_pdf, size: 100, ),
-        //   ),
-        // ),
       ],
     ),
   );
@@ -169,9 +161,16 @@ Widget buildButtons(BuildContext context, Job job) {
         child: TextButton.icon(
           label: const Text('Edit', style: TextStyle(color: color)),
           icon: const Icon(Icons.edit, color: color),
-
-          //TODO: Implement job build page
-          onPressed: () {},
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: ((context) => TrialPitPage(
+                    job: job,
+                    onClickedDone: ((jobNum, jobTitle, trialPits) =>
+                        editJob(job, jobNum, jobTitle, trialPits)),
+                  )),
+            ),
+          ),
         ),
       ),
 

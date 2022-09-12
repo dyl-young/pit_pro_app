@@ -6,24 +6,30 @@ part 'layer.g.dart';
 @HiveType(typeId: 3)
 class Layer extends HiveObject{
   @HiveField(0)
-  final double depth;
+  late double depth;
   @HiveField(1)
-  final String moisture;
+  late String moisture;
   @HiveField(2)
-  final String colour;
+  late String colour;
   @HiveField(3)
-  final String consistency;
+  late String consistency;
   @HiveField(4)
-  final String structure;
+  late String structure;
   @HiveField(5)
-  final List<String> soilTypes;
+  late List<String> soilTypes;
   @HiveField(6)
-  final String origin;
-  @HiveField(7)
-  final String? note;
+  late String origin;
+   @HiveField(7)
+  late double wtDepth;
+  @HiveField(8)
+  late double pwtDepth;
+  @HiveField(9)
+  late double pmDepth;
+  @HiveField(10)
+  late String? note;
 
-  Layer(this.depth, this.moisture, this.colour, this.consistency,
-      this.structure, this.soilTypes, this.origin, this.note);
+  // Layer(this.depth, this.moisture, this.colour, this.consistency,
+  //     this.structure, this.soilTypes, this.origin, this.note);
 
   String soilToString() {
     String result = soilTypes.first;
