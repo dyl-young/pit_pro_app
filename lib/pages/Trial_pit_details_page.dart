@@ -1,6 +1,6 @@
+
 import 'package:flutter/material.dart';
 import 'package:pit_pro_app/components/custom_text_field.dart';
-import 'package:pit_pro_app/components/info_textbox_widget.dart';
 import '../components/buttons.dart';
 import '../models/layer.dart';
 import '../models/trial_pit.dart';
