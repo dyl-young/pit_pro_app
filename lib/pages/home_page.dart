@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:pit_pro_app/pages/trial_pit_page.dart';
+import 'package:pit_pro_app/pages/job_details_page.dart';
 
 import '../components/content_builder_widgets/user_drawer_builder.dart';
 import '../hive_components/add_edit_delete_functions.dart';
@@ -9,14 +9,14 @@ import '../components/content_builder_widgets/job_content_builder.dart';
 import '../models/job.dart';
 import '../models/user.dart';
 
-class JobHomePage extends StatefulWidget {
-  const JobHomePage({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<JobHomePage> createState() => _JobHomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _JobHomePageState extends State<JobHomePage> {
+class _HomePageState extends State<HomePage> {
   //list of all objects in reverse order so latest appears at the top
   //list populated with any matching searches from the filter funtion or if no searches, populated with all objects
   //bool indicator showing if searches are being made
@@ -133,7 +133,7 @@ class _JobHomePageState extends State<JobHomePage> {
           onPressed: () => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const TrialPitPage(
+              builder: (context) => const JobDeatilsPage(
                 onClickedDone: addJob,
               ),
             ),

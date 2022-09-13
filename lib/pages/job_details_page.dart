@@ -2,38 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:pit_pro_app/components/custom_text_field.dart';
 import 'package:pit_pro_app/hive_components/add_edit_delete_functions.dart';
+import 'package:pit_pro_app/pages/Trial_pit_details_page.dart';
 
-import '../components/cancelButton.dart';
+import '../components/buttons.dart';
 import '../components/confirm_alert_dialog.dart';
 import '../hive_components/boxes.dart';
 import '../models/job.dart';
 import '../models/trial_pit.dart';
 
-class TrialPitPage extends StatefulWidget {
-  const TrialPitPage({Key? key, this.job, required this.onClickedDone})
+class JobDeatilsPage extends StatefulWidget {
+  const JobDeatilsPage({Key? key, this.job, required this.onClickedDone})
       : super(key: key);
 
-  //class arguments
+  //*class arguments
   final Job? job;
   final Function(String number, String title, List<TrialPit> trialpits)
       onClickedDone;
 
   @override
-  State<TrialPitPage> createState() => _TrialPitPageState();
+  State<JobDeatilsPage> createState() => _JobDeatilsPageState();
 }
 
-class _TrialPitPageState extends State<TrialPitPage> {
+class _JobDeatilsPageState extends State<JobDeatilsPage> {
   //*attributes
   final formKey = GlobalKey<FormState>();
   final _jobNumController = TextEditingController();
   final _jobTitleController = TextEditingController();
   late List<TrialPit> madeTrialPits = [];
 
-  //*initialise state
+  //*initialise method
   @override
   void initState() {
-    super.initState();
-
     if (widget.job != null) {
       final job = widget.job!;
       madeTrialPits = job.trialPitList;
@@ -41,6 +40,7 @@ class _TrialPitPageState extends State<TrialPitPage> {
       _jobNumController.text = job.jobNumber;
       _jobTitleController.text = job.jobTitle;
     }
+    super.initState();
   }
 
   //*dispose Controllers
@@ -78,14 +78,14 @@ class _TrialPitPageState extends State<TrialPitPage> {
           ],
         ),
 
-        //!Job Widgets:
+        //! Job widgets:
         body: Form(
           key: formKey,
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 8),
+                const SizedBox(height: 8), //?difference
 
                 //Job Details:
                 //*Heading
@@ -99,118 +99,63 @@ class _TrialPitPageState extends State<TrialPitPage> {
 
                 const SizedBox(height: 8),
 
+                //*Trial Pits Heading
+                sectionHeading('Job Activities'),
+
+                const SizedBox(height: 8),
+
                 //*Add Trial Pit button
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    SizedBox(
-                      width: 117,
-                      height: 40,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(primary: Colors.grey),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(Icons.add),
-                            Text('Borehole'),
-                          ],
-                        ),
-                        //TODO: implement adding trial pit
-                        onPressed: () {},
-                      ),
-                    ),
-                    SizedBox(
-                      width: 117,
-                      height: 40,
-                      child: ElevatedButton(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(Icons.add),
-                            Text('Trial Pit'),
-                          ],
-                        ),
-                        //TODO: implement adding trial pit
-                        onPressed: () {},
-                      ),
-                    ),
-                    SizedBox(
-                      width: 117,
-                      height: 40,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(primary: Colors.grey),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(Icons.add),
-                            Text('Auger'),
-                          ],
-                        ),
-                        //TODO: implement adding trial pit
-                        onPressed: () {},
-                      ),
-                    ),
-                    // onPressed: () => Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) =>
-                    //         const LayerDialogForm(onClickedDone: addLayer),
-                    //   ),
-                    // ),
+                    //*Borehole button
+                    addOtherButtons('Borehole'),
 
-                    // onPressed: () => showDialog(
-                    //   context: context,
-                    //   builder: (context) => LayerDialogForm(
-                    //     onClickedDone: (type, height) =>
-                    //         addLayer(madelayers, type, height),
-                    //   ),
-                    // ),
-                    // ),
+                    //*Trial Pit button
+                    addTrialPittButton(context, madeTrialPits, 'Trial Pit'),
+
+                    //*Auger button
+                    addOtherButtons('Auger'),
                   ],
                 ),
 
                 const SizedBox(height: 8),
 
-                //*Trial Pits Heading
-                sectionHeading('Job Activities'),
-
-                //*Trial Pit info tile
+                //*Trial Pit info tiles ListView
                 SizedBox(
-                    height: 400,
-                    child: ValueListenableBuilder<Box<TrialPit>>(
-                      valueListenable: Boxes.geTrialPits().listenable(),
-                      builder: (context, box, _) {
-                        // final layers = box.values.toList().cast<Layer>();
-                        return trialPitListViewBuilder(context, madeTrialPits);
-                      },
-                    )
-                    //layersListViewBuilder(context, madelayers)
-                    ),
+                  height: 400,
+                  child: ValueListenableBuilder<Box<TrialPit>>(
+                    valueListenable: Boxes.geTrialPits().listenable(),
+                    builder: (context, box, _) {
+                      return trialPitListViewBuilder(context, madeTrialPits);
+                    },
+                  ),
+                ),
+                // buildTrialPitContent(madeTrialPits),
               ],
             ),
           ),
         ),
 
         //!PDF generate Floating action button
-        floatingActionButton: FloatingActionButton(
-          tooltip: 'Generate PDF',
-          onPressed: () {
-            //TODO: implement pdf view page
-            // Navigator.push(context,
-            //     MaterialPageRoute(builder: (context){} => const PdfViewPage()));
-          },
-          child: const Icon(Icons.picture_as_pdf_rounded),
-        ),
+        floatingActionButton: isEditing
+            ? FloatingActionButton(
+                tooltip: 'Generate PDF',
+                //TODO: implement pdf view page
+                onPressed: () {
+                  // Navigator.push(context,
+                  //     MaterialPageRoute(builder: (context){} => const PdfViewPage()));
+                },
+                child: const Icon(Icons.picture_as_pdf_rounded),
+              )
+            : const SizedBox.shrink(),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
 
         //!bottom nav bar
         bottomNavigationBar: BottomAppBar(
           color: Colors.green,
           shape: const CircularNotchedRectangle(), //shape of notch
-          notchMargin: 5,
+          notchMargin: isEditing ? 5 : 0,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -223,8 +168,7 @@ class _TrialPitPageState extends State<TrialPitPage> {
     );
   }
 
-  //TODO: extract widget
-  //!add/save button
+  //!create/save button
   Widget buildSaveButton(BuildContext context, {required bool isEditing}) {
     final text = isEditing ? 'Save ' : 'Create Job ';
 
@@ -256,7 +200,55 @@ class _TrialPitPageState extends State<TrialPitPage> {
   }
 }
 
-//!list view builder
+
+//! Borehole andg aguer buttons(if implemented, split up buttons)
+Widget addOtherButtons(String title) {
+  return SizedBox(
+    width: 117,
+    height: 40,
+    child: ElevatedButton(
+      style: ElevatedButton.styleFrom(primary: Colors.grey),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.add),
+          Text(title),
+        ],
+      ),
+      onPressed: () {},
+    ),
+  );
+}
+
+//! Trial Pit Button
+Widget addTrialPittButton(
+    BuildContext context, List<TrialPit> trialPits, String title) {
+  return SizedBox(
+    width: 117,
+    height: 40,
+    child: ElevatedButton(
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.add),
+          Text(title),
+        ],
+      ),
+      onPressed: () => showDialog(
+        context: context,
+        builder: (context) => TrialPitDetailsPage(
+          onClickedDone: (pitNumber, coords, elevation, layersList) =>
+              addTrialPit(trialPits, pitNumber, coords, elevation, layersList),
+        ),
+      ),
+    ),
+  );
+}
+
+//TODOD: URGENT extract following wdiegts
+//! list builder
 Widget trialPitListViewBuilder(BuildContext context, List<TrialPit> trialPits) {
   return ListView(
     children: [
@@ -271,7 +263,7 @@ Widget trialPitListViewBuilder(BuildContext context, List<TrialPit> trialPits) {
             child: ExpansionTile(
               leading: const Icon(Icons.calendar_view_day),
               tilePadding: const EdgeInsets.all(5),
-              title: Text('Layer: ${trialPits.lastIndexOf(e) + 1}'),
+              title: Text('Trial Pit: ${trialPits.lastIndexOf(e) + 1}'),
               // subtitle: Text(e.),
               // subtitle: Text(
               //     '  type: ${e.type} \n  height: ${e.height.toString()} m'),
@@ -285,7 +277,6 @@ Widget trialPitListViewBuilder(BuildContext context, List<TrialPit> trialPits) {
     ],
   );
 }
-
 //! Expansion tile buttons
 Widget buildTrialPitButtons(
     BuildContext context, List<TrialPit> trialPits, TrialPit trialPit) {

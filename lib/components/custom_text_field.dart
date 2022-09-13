@@ -1,19 +1,38 @@
-
 import 'package:flutter/material.dart';
 
-Widget customTextField(String text, TextEditingController controller) => Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: TextFormField(
-          maxLines: 1,
-          controller: controller,
-          decoration: InputDecoration(
-            labelText: '*$text',
-            border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(25))),
-          ),
-          validator: (title) =>
-              title != null && title.isEmpty ? 'Enter a $text' : null,
-        ),
-      );
+//*rounded Textfield
+Widget customTextField(String text, TextEditingController controller) {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: TextFormField(
+      maxLines: 1,
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: '*$text',
+        border: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(25))),
+      ),
+      validator: (title) =>
+          title != null && title.isEmpty ? 'Enter a $text' : null,
+    ),
+  );
+}
+Widget customTextField2(String text, TextEditingController controller) {
+  return Padding(
+    padding: const EdgeInsets.only(left: 2, right: 2),
+    child: TextFormField(
+      maxLines: 1,
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: '*$text',
+        border: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(25))),
+      ),
+      validator: (title) =>
+          title != null && title.isEmpty ? 'Enter a $text' : null,
+    ),
+  );
+}
 
 //*Headings
 Widget sectionHeading(String heading) {
@@ -26,6 +45,18 @@ Widget sectionHeading(String heading) {
         fontSize: 16,
         color: Colors.green,
       ),
+    ),
+  );
+}
+
+//*smaller Headings
+Widget subSectionHeading(String heading) {
+  return Text(
+    heading,
+    style: const TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 14,
+      color: Colors.green,
     ),
   );
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
-import 'package:pit_pro_app/pages/trial_pit_page.dart';
+import 'package:pit_pro_app/pages/job_details_page.dart';
 
 import '../../hive_components/boxes.dart';
 import '../../../models/job.dart';
@@ -16,7 +16,7 @@ Widget buildJobContent(BuildContext context, List<Job> jobs) {
 
   if (jobs.isEmpty) {
     return const Center(
-      child: Text('No Items Found', style: TextStyle(fontSize: 20)),
+      child: Text('No Jobs Found', style: TextStyle(fontSize: 20, color: Colors.grey)),
     );
   } else {
     return Column(
@@ -24,7 +24,7 @@ Widget buildJobContent(BuildContext context, List<Job> jobs) {
       children: [
         const SizedBox(height: 5),
 
-        //Temp widgets for dev purposes
+        //!Temp widgets for dev purposes
         //-------------------------------------------------------------
         SizedBox(
             height: 40,
@@ -51,7 +51,7 @@ Widget buildJobContent(BuildContext context, List<Job> jobs) {
         ),
         //-------------------------------------------------------------
 
-        //Grid view display of all Job detail cards
+        //!Grid view display of all Job detail cards
         //returns detail cards built with buildJobCard widget
         Expanded(
           child: GridView.builder(
@@ -164,7 +164,7 @@ Widget buildButtons(BuildContext context, Job job) {
           onPressed: () => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: ((context) => TrialPitPage(
+              builder: ((context) => JobDeatilsPage(
                     job: job,
                     onClickedDone: ((jobNum, jobTitle, trialPits) =>
                         editJob(job, jobNum, jobTitle, trialPits)),

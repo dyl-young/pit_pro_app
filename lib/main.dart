@@ -5,7 +5,7 @@ import 'package:pit_pro_app/models/layer.dart';
 import 'package:pit_pro_app/models/trial_pit.dart';
 import 'package:pit_pro_app/models/user.dart';
 
-import 'pages/job_home_page.dart';
+import 'pages/home_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: const JobHomePage(),
+      home: const HomePage(),
     );
   }
 }

@@ -16,7 +16,8 @@ Future addJob(String jobNum, String jobTitle, List<TrialPit> trialPits) async {
 }
 
 //*edit existing Job
-void editJob(Job job, String jobNum, String jobTitle, List<TrialPit> trialPits) {
+void editJob(
+    Job job, String jobNum, String jobTitle, List<TrialPit> trialPits) {
   job.jobNumber = jobNum;
   job.jobTitle = jobTitle;
   job.trialPitList = trialPits;
@@ -34,10 +35,11 @@ void deleteJob(Job job) {
   job.delete();
 }
 
-
 //! Trial Pit functions
 //*add Trial Pit
-Future addTrialPit(String number, List<double> coords, double elevation, List<Layer> layers) async {
+Future addTrialPit(List<TrialPit> trialPits, String number, List<double> coords,
+    double elevation, List<Layer> layers) async {
+  final box = Boxes.geTrialPits();
   final TrialPit trialPit = TrialPit()
     ..pitNumber = number
     ..createdDate = DateTime.now()
@@ -45,12 +47,13 @@ Future addTrialPit(String number, List<double> coords, double elevation, List<La
     ..elevation = elevation
     ..layersList = layers;
 
-  final box = Boxes.geTrialPits();
+  trialPits.add(trialPit);
   box.add(trialPit);
 }
 
 //*edit Trial Pit
-void editTrialPit(TrialPit trialPit, String number, List<double> coords, double elevation, List<Layer> layers) {
+void editTrialPit(TrialPit trialPit, String number, List<double> coords,
+    double elevation, List<Layer> layers) {
   trialPit.pitNumber = number;
   trialPit.coordinates = coords;
   trialPit.elevation = elevation;
@@ -70,7 +73,18 @@ void deleteTrialPit(TrialPit trialPit) {
 
 //! Layer functions:
 //*add layer
-Future addLayer(double depth, String moisture, String colour, String consistency, String structure, List<String> soilTypes, double wt, double pwt, double pm) async {
+Future addLayer(
+    List<Layer> layers,
+    double depth,
+    String moisture,
+    String colour,
+    String consistency,
+    String structure,
+    List<String> soilTypes,
+    double wt,
+    double pwt,
+    double pm) async {
+  final box = Boxes.getLayers();
   final Layer layer = Layer()
     ..depth = depth
     ..moisture = moisture
@@ -81,13 +95,22 @@ Future addLayer(double depth, String moisture, String colour, String consistency
     ..wtDepth = wt
     ..pwtDepth = pwt
     ..pmDepth = pm;
-
-  final box = Boxes.getLayers();
+  layers.add(layer);
   box.add(layer);
 }
 
 //*edit layer
-void editLayer(Layer layer, double depth, String moisture, String colour, String consistency, String structure, List<String> soilTypes, double wt, double pwt, double pm) {
+void editLayer(
+    Layer layer,
+    double depth,
+    String moisture,
+    String colour,
+    String consistency,
+    String structure,
+    List<String> soilTypes,
+    double wt,
+    double pwt,
+    double pm) {
   layer.depth = depth;
   layer.moisture = moisture;
   layer.colour = colour;
