@@ -18,6 +18,9 @@ Widget confirmDelete(BuildContext context, List<HiveObject>? objList, HiveObject
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
+            //! TODO: Must fix. Does not delete trial pits in Job detail page
+            //? does delete job cards
+            //? does delete trial pits belonging to deleted job cards
             objList!.isNotEmpty ? deletObject(objList, object) : deletObject(object);
           },
           child: const Text('yes', style: TextStyle(fontSize: 20)),
