@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 
-import '../../hive_components/boxes.dart';
 import '../../models/layer.dart';
 
 Widget buildLayersContent(List<Layer> layers) {
@@ -15,7 +13,7 @@ Widget buildLayersContent(List<Layer> layers) {
     return SizedBox(
       height: 400,
       child: Column(
-        children: [
+        children: const [
           // ValueListenableBuilder<Box<Layer>>(
           //   valueListenable: Boxes.geTrialPits().listenable(),
           //   builder: (context, box, _) {
