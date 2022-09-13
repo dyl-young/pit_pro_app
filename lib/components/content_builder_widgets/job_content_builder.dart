@@ -56,7 +56,7 @@ Widget buildJobContent(BuildContext context, List<Job> jobs) {
         Expanded(
           child: GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: currentWidth < 500 ? 2 : 3,
+              crossAxisCount: currentWidth < 500 ? 2 : currentWidth < 650 ? 3 : 4,
               crossAxisSpacing: 4,
               mainAxisSpacing: 4,
               childAspectRatio: 1 / 1.3,

@@ -19,6 +19,7 @@ class TrialPitAdapter extends TypeAdapter<TrialPit> {
     return TrialPit()
       ..pitNumber = fields[0] as String
       ..createdDate = fields[1] as DateTime
+      ..coordinates = (fields[2] as List).cast<double>()
       ..elevation = fields[3] as double
       ..layersList = (fields[4] as List).cast<Layer>();
   }

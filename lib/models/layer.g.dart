@@ -16,19 +16,18 @@ class LayerAdapter extends TypeAdapter<Layer> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Layer(
-      fields[0] as double,
-      fields[1] as String,
-      fields[2] as String,
-      fields[3] as String,
-      fields[4] as String,
-      (fields[5] as List).cast<String>(),
-      fields[6] as String,
-      fields[10] as String?,
-    )
+    return Layer()
+      ..depth = fields[0] as double
+      ..moisture = fields[1] as String
+      ..colour = fields[2] as String
+      ..consistency = fields[3] as String
+      ..structure = fields[4] as String
+      ..soilTypes = (fields[5] as List).cast<String>()
+      ..origin = fields[6] as String
       ..wtDepth = fields[7] as double
       ..pwtDepth = fields[8] as double
-      ..pmDepth = fields[9] as double;
+      ..pmDepth = fields[9] as double
+      ..note = fields[10] as String?;
   }
 
   @override
