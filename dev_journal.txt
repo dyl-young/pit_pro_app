@@ -1,5 +1,4 @@
-# notes journal
-
 include notes for later consideration
 
 note 1
+note 2
