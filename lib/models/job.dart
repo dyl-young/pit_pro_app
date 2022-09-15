@@ -3,7 +3,7 @@ import 'trial_pit.dart';
 
 part 'job.g.dart';
 
-//! Gen adapter command: flutter packages pub run build_runner build
+//* Gen adapter command: flutter packages pub run build_runner build
 @HiveType(typeId: 0)
 class Job extends HiveObject{
   @HiveField(0)

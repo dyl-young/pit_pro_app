@@ -5,7 +5,7 @@ import 'package:pit_pro_app/hive_components/add_edit_delete_functions.dart';
 import 'package:pit_pro_app/pages/Trial_pit_details_page.dart';
 
 import '../components/buttons.dart';
-import '../components/confirm_alert_dialog.dart';
+import '../components/content_builder_widgets/trial_pit_content_builder.dart';
 import '../hive_components/boxes.dart';
 import '../models/job.dart';
 import '../models/trial_pit.dart';
@@ -200,7 +200,6 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
   }
 }
 
-
 //! Borehole andg aguer buttons(if implemented, split up buttons)
 Widget addOtherButtons(String title) {
   return SizedBox(
@@ -228,91 +227,95 @@ Widget addTrialPittButton(
     width: 117,
     height: 40,
     child: ElevatedButton(
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(Icons.add),
-          Text(title),
-        ],
-      ),
-      onPressed: () => showDialog(
-        context: context,
-        builder: (context) => TrialPitDetailsPage(
-          onClickedDone: (pitNumber, coords, elevation, layersList) =>
-              addTrialPit(trialPits, pitNumber, coords, elevation, layersList),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.add),
+            Text(title),
+          ],
         ),
-      ),
-    ),
+
+        //?Navigator?
+        onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => TrialPitDetailsPage(
+                  onClickedDone: (pitNumber, coords, elevation, layersList) =>
+                      addTrialPit(trialPits, pitNumber, coords, elevation, layersList),
+                ),
+              ),
+            )
+        ),
   );
 }
 
-//TODOD: URGENT extract following wdiegts
-//! list builder
-Widget trialPitListViewBuilder(BuildContext context, List<TrialPit> trialPits) {
-  return ListView(
-    children: [
-      ...trialPits.map(
-        (e) => Container(
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            color: Color.fromARGB(255, 219, 219, 219),
-          ),
-          child: Theme(
-            data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-            child: ExpansionTile(
-              leading: const Icon(Icons.calendar_view_day),
-              tilePadding: const EdgeInsets.all(5),
-              title: Text('Trial Pit: ${trialPits.lastIndexOf(e) + 1}'),
-              // subtitle: Text(e.),
-              // subtitle: Text(
-              //     '  type: ${e.type} \n  height: ${e.height.toString()} m'),
-              children: [
-                buildTrialPitButtons(context, trialPits, e),
-              ],
-            ),
-          ),
-        ),
-      ),
-    ],
-  );
-}
-//! Expansion tile buttons
-Widget buildTrialPitButtons(
-    BuildContext context, List<TrialPit> trialPits, TrialPit trialPit) {
-  const color = Color.fromARGB(255, 9, 138, 13);
+// //TODOD: URGENT extract following wdiegts
+// //! list builder
+// Widget trialPitListViewBuilder(BuildContext context, List<TrialPit> trialPits) {
+//   return ListView(
+//     children: [
+//       ...trialPits.map(
+//         (e) => Container(
+//           decoration: const BoxDecoration(
+//             borderRadius: BorderRadius.all(Radius.circular(20)),
+//             color: Color.fromARGB(255, 219, 219, 219),
+//           ),
+//           child: Theme(
+//             data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+//             child: ExpansionTile(
+//               leading: const Icon(Icons.calendar_view_day),
+//               tilePadding: const EdgeInsets.all(5),
+//               title: Text('Trial Pit: ${trialPits.lastIndexOf(e) + 1}'),
+//               // subtitle: Text(e.),
+//               // subtitle: Text(
+//               //     '  type: ${e.type} \n  height: ${e.height.toString()} m'),
+//               children: [
+//                 buildTrialPitButtons(context, trialPits, e),
+//               ],
+//             ),
+//           ),
+//         ),
+//       ),
+//     ],
+//   );
+// }
+// //! Expansion tile buttons
+// Widget buildTrialPitButtons(
+//     BuildContext context, List<TrialPit> trialPits, TrialPit trialPit) {
+//   const color = Color.fromARGB(255, 9, 138, 13);
 
-  return Row(
-    children: [
-      //*edit button
-      Expanded(
-        child: TextButton.icon(
-            label: const Text('Edit', style: TextStyle(color: color)),
-            icon: const Icon(Icons.edit, color: color),
-            //TODO: implement edit Trial pit
-            onPressed: () {}
-            // => showDialog(
-            //   context: context,
-            //   builder: (context) => LayerDialogForm(
-            //     layer: layer,
-            //     onClickedDone: ((type, height) => editLayer(layer, type, height)),
-            //   ),
-            // ),
-            ),
-      ),
+//   return Row(
+//     children: [
+//       //*edit button
+//       Expanded(
+//         child: TextButton.icon(
+//             label: const Text('Edit', style: TextStyle(color: color)),
+//             icon: const Icon(Icons.edit, color: color),
+//             //TODO: implement edit Trial pit
+//             onPressed: () {}
+//             // => showDialog(
+//             //   context: context,
+//             //   builder: (context) => LayerDialogForm(
+//             //     layer: layer,
+//             //     onClickedDone: ((type, height) => editLayer(layer, type, height)),
+//             //   ),
+//             // ),
+//             ),
+//       ),
 
-      //*delete button
-      Expanded(
-        child: TextButton.icon(
-          label: const Text('Delete', style: TextStyle(color: color)),
-          icon: const Icon(Icons.delete, color: color),
-          onPressed: () => showDialog(
-            context: context,
-            builder: (context) =>
-                confirmDelete(context, trialPits, trialPit, deleteTrialPit),
-          ),
-        ),
-      )
-    ],
-  );
-}
+//       //*delete button
+//       Expanded(
+//         child: TextButton.icon(
+//           label: const Text('Delete', style: TextStyle(color: color)),
+//           icon: const Icon(Icons.delete, color: color),
+//           onPressed: () => showDialog(
+//             context: context,
+//             builder: (context) =>
+//                 confirmDelete(context, trialPits, trialPit, deleteTrialPit),
+//           ),
+//         ),
+//       )
+//     ],
+//   );
+// }
