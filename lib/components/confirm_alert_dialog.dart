@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
-//!Alert pop up box to confirm Job deletion or page exit
-Widget confirmDelete(BuildContext context, List<HiveObject>? objList, HiveObject object, Function deletObject) {
+//! Alert pop up box to confirm Job deletion or page exit
+//arguments: build context, list of objects containing object to be deleted,
+//object to be deleted, object specific delete function 
+Widget confirmDelete(BuildContext context, List<HiveObject>? objList,
+    HiveObject object, Function deletObject) {
+
+  //! Alert box
   return AlertDialog(
     title: const Text("Are you sure?", style: TextStyle(fontSize: 16)),
     shape: const RoundedRectangleBorder(
@@ -11,17 +16,17 @@ Widget confirmDelete(BuildContext context, List<HiveObject>? objList, HiveObject
     content: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        //*no button
         TextButton(
           onPressed: Navigator.of(context).pop,
           child: const Text('no', style: TextStyle(fontSize: 20)),
         ),
+        //*yes button
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
-            //! TODO: Must fix. Does not delete trial pits in Job detail page
-            //? does delete job cards
-            //? does delete trial pits belonging to deleted job cards
-            objList!.isNotEmpty ? deletObject(objList, object) : deletObject(object);
+            objList!.remove(object);      //remove object from object list
+            deletObject(object);          //delete object from Hive box
           },
           child: const Text('yes', style: TextStyle(fontSize: 20)),
         ),
