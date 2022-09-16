@@ -1,11 +1,16 @@
 //packages
+import 'dart:ffi';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:location/location.dart';
 
 //local imports
 import '../components/buttons.dart';
 import '../components/content_builder_widgets/layers_content_builder.dart';
 import '../components/custom_text_field.dart';
+import '../components/location_services.dart';
 import '../hive_components/boxes.dart';
 import '../models/layer.dart';
 import '../models/trial_pit.dart';
@@ -28,12 +33,18 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
   //*attributes
   final pitFormKey = GlobalKey<FormState>();
   final _pitNumController = TextEditingController();
-  final _xCoordController = TextEditingController();
+  late var _xCoordController = TextEditingController();
   final _yCoordController = TextEditingController();
   final _elevationController = TextEditingController();
   final _waterTableController = TextEditingController();
   final _perchedWaterTableController = TextEditingController();
+
   late List<Layer> madeLayers = [];
+
+  var location = Location();
+  late bool _serviceEnabled;
+  late PermissionStatus _permissionGranted;
+  late LocationData _locationData;
 
   //*initialise method
   @override
@@ -65,7 +76,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
     _elevationController.dispose();
     _waterTableController.dispose();
     _perchedWaterTableController.dispose();
-    
+
     super.dispose();
   }
 
@@ -134,7 +145,39 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
                     //*autofil location details
                     //TODO: implement location/elevation autofill
                     ElevatedButton(
-                        onPressed: () {}, child: const Text('Autofill'))
+                        onPressed: () => getLocation(_xCoordController, _yCoordController, _elevationController),
+                        // async {
+                        //   _serviceEnabled = await location.serviceEnabled();
+                        //   if (!_serviceEnabled) {
+                        //     _serviceEnabled = await location.requestService();
+                        //   } else {
+                        //     return;
+                        //   }
+                        //   _permissionGranted = await location.hasPermission();
+                        //   if (_permissionGranted == PermissionStatus.denied) {
+                        //     _permissionGranted =
+                        //         await location.requestPermission();
+                        //   }
+                        //   if (_permissionGranted != PermissionStatus.granted) {
+                        //     return;
+                        //   }
+
+                        //   _locationData = await location.getLocation();
+
+                        //   _xCoordController.text = (_locationData.longitude!
+                        //       .toStringAsFixed(2))
+                        //       .toString();
+                        //   // roundDouble(_locationData.longitude!).toString();
+                        //   _yCoordController.text =
+                        //       roundDouble(_locationData.latitude!).toString();
+                        //   _elevationController.text =
+                        //       roundDouble(_locationData.altitude!).toString();
+
+                        //   print(_xCoordController.text);
+                        //   print(_yCoordController.text);
+                        //   print(_elevationController.text);
+                        // },
+                        child: const Text('Autofill'))
                   ],
                 ),
                 //*location text fields
@@ -232,4 +275,26 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
       ),
     );
   }
+
+  double roundDouble(double value) {
+    num mod = pow(10.0, 2);
+    return ((value * mod).round().toDouble() / mod);
+  }
+
+   void getLocation(TextEditingController long, TextEditingController lat, TextEditingController elevation) async {
+    final service = LocationServices();
+    final locationData = await service.getLocation();
+
+    if(locationData != null){
+
+      // setState(() {
+        long.text = locationData.longitude!.toStringAsFixed(2);
+        lat.text = locationData.latitude!.toStringAsFixed(2);
+        elevation.text = locationData.altitude!.toStringAsFixed(2);
+      // },
+      // );
+    }
+  }
+
+
 }
