@@ -37,7 +37,6 @@ Widget confirmDelete(BuildContext context, List<HiveObject>? objList,
 
 //! Alert pop up box to confirm cancel
 Widget confirmCancel(BuildContext context, List<HiveObject>? objList) {
-  print('testing 2');
 
   //! Alert box
   return AlertDialog(

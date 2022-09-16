@@ -34,8 +34,8 @@ class _HomePageState extends State<HomePage> {
   //initialise states
   @override
   void initState() {
-    final testPitslist = Boxes.getJobs().values.toList().cast<Job>();
-    reversedJobs = (testPitslist).reversed.toList();
+    final jobList = Boxes.getJobs().values.toList().cast<Job>();
+    reversedJobs = (jobList).reversed.toList();
     foundList = reversedJobs;
     super.initState();
   }

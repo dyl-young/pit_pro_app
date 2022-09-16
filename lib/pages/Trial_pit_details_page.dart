@@ -1,8 +1,11 @@
+//packages
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:pit_pro_app/components/custom_text_field.dart';
+
+//local imports
 import '../components/buttons.dart';
 import '../components/content_builder_widgets/layers_content_builder.dart';
+import '../components/custom_text_field.dart';
 import '../hive_components/boxes.dart';
 import '../models/layer.dart';
 import '../models/trial_pit.dart';
@@ -23,7 +26,7 @@ class TrialPitDetailsPage extends StatefulWidget {
 
 class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
   //*attributes
-  final formKey = GlobalKey<FormState>();
+  final pitFormKey = GlobalKey<FormState>();
   final _pitNumController = TextEditingController();
   final _xCoordController = TextEditingController();
   final _yCoordController = TextEditingController();
@@ -35,6 +38,8 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
   //*initialise method
   @override
   void initState() {
+    Boxes.geTrialPits();
+    Boxes.getLayers();
     if (widget.trialPit != null) {
       final trialPit = widget.trialPit!;
       madeLayers = trialPit.layersList;
@@ -60,7 +65,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
     _elevationController.dispose();
     _waterTableController.dispose();
     _perchedWaterTableController.dispose();
-
+    
     super.dispose();
   }
 
@@ -68,7 +73,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
   Widget build(BuildContext context) {
     //detrmine title
     final isEditing = widget.trialPit != null;
-    final title = isEditing ? 'Edit Trail Pit' : 'Create TrialPit';
+    final title = isEditing ? 'Edit Trial Pit' : 'Create TrialPit';
 
     return WillPopScope(
       //disable back device button on this page
@@ -92,7 +97,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
 
         //! Trial Pit widgets:
         body: Form(
-          key: formKey,
+          key: pitFormKey,
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -208,7 +213,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
         ), //con
 
         onPressed: () async {
-          final isValid = formKey.currentState!.validate();
+          final isValid = pitFormKey.currentState!.validate();
 
           if (isValid) {
             final num = _pitNumController.text;

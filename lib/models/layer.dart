@@ -27,6 +27,8 @@ class Layer extends HiveObject{
   late double pmDepth;
   @HiveField(10)
   late String? note;
+  @HiveField(11)
+  late DateTime createdDate;
 
   // Layer(this.depth, this.moisture, this.colour, this.consistency,
   //     this.structure, this.soilTypes, this.origin, this.note);

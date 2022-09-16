@@ -13,10 +13,12 @@ Widget buildJobContent(BuildContext context, List<Job> jobs) {
   final Box box2 = Boxes.geTrialPits();
   final Box box3 = Boxes.getLayers();
   final currentWidth = MediaQuery.of(context).size.width;
+  final currentHeight = MediaQuery.of(context).size.height;
 
   if (jobs.isEmpty) {
     return const Center(
-      child: Text('No Jobs Found', style: TextStyle(fontSize: 20, color: Colors.grey)),
+      child: Text('No Jobs Found',
+          style: TextStyle(fontSize: 20, color: Colors.grey)),
     );
   } else {
     return Column(
@@ -26,12 +28,10 @@ Widget buildJobContent(BuildContext context, List<Job> jobs) {
 
         //!Temp widgets for dev purposes
         //-------------------------------------------------------------
-        SizedBox(
-            height: 40,
-            child: Text(
-              'Screen width: $currentWidth',
-              style: const TextStyle(color: Colors.red),
-            )),
+        Text('Screen width: $currentWidth',
+            style: const TextStyle(color: Colors.red)),
+        Text('Screen height: $currentHeight\n',
+            style: const TextStyle(color: Colors.red)),
         Text("Number of Jobs in box: ${box1.length}",
             style: const TextStyle(color: Colors.red)),
         Text("Number of Trial Pits in box: ${box2.length}",
@@ -56,7 +56,11 @@ Widget buildJobContent(BuildContext context, List<Job> jobs) {
         Expanded(
           child: GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: currentWidth < 500 ? 2 : currentWidth < 650 ? 3 : 4,
+              crossAxisCount: currentWidth < 500
+                  ? 2
+                  : currentWidth < 650
+                      ? 3
+                      : 4,
               crossAxisSpacing: 4,
               mainAxisSpacing: 4,
               childAspectRatio: 1 / 1.3,
@@ -103,7 +107,6 @@ Widget buildJobCard(BuildContext context, Job job) {
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 //*Job title heading
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),

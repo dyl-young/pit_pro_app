@@ -27,13 +27,14 @@ class LayerAdapter extends TypeAdapter<Layer> {
       ..wtDepth = fields[7] as double
       ..pwtDepth = fields[8] as double
       ..pmDepth = fields[9] as double
-      ..note = fields[10] as String?;
+      ..note = fields[10] as String?
+      ..createdDate = fields[11] as DateTime;
   }
 
   @override
   void write(BinaryWriter writer, Layer obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.depth)
       ..writeByte(1)
@@ -55,7 +56,9 @@ class LayerAdapter extends TypeAdapter<Layer> {
       ..writeByte(9)
       ..write(obj.pmDepth)
       ..writeByte(10)
-      ..write(obj.note);
+      ..write(obj.note)
+      ..writeByte(11)
+      ..write(obj.createdDate);
   }
 
   @override

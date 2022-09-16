@@ -6,7 +6,7 @@ import 'package:pit_pro_app/pages/layer_form_page.dart';
 import '../hive_components/add_edit_delete_functions.dart';
 import '../models/layer.dart';
 import '../models/trial_pit.dart';
-import '../pages/Trial_pit_details_page.dart';
+import '../pages/trial_pit_details_page.dart';
 
 Widget cancelButton(
     BuildContext context, List<HiveObject> objList, bool isNotEditing) {

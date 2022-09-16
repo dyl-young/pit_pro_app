@@ -8,11 +8,11 @@ class TrialPit extends HiveObject {
   @HiveField(0)
   late String pitNumber;
   @HiveField(1)
-  late DateTime createdDate; //?  TODO:check how this behaves with changes
+  late DateTime createdDate;
   @HiveField(2)
-  late List<double> coordinates = List.filled(2, 0.0); //?  TODO:check how this behaves with changes
+  late List<double> coordinates = List.filled(2, 0.0);
   @HiveField(3)
-  late double? elevation = 0;      //?  TODO:check how this behaves with changes
+  late double? elevation = 0;
   @HiveField(4)
   late double? wtDepth = 0;
   @HiveField(5)
@@ -22,5 +22,4 @@ class TrialPit extends HiveObject {
 
   double totalDepth() => layersList.fold(
       0, (previousValue, Layer layer) => previousValue + layer.depth);
-
 }

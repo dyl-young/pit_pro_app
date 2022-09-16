@@ -1,11 +1,11 @@
+//packages
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:pit_pro_app/components/custom_text_field.dart';
-import 'package:pit_pro_app/hive_components/add_edit_delete_functions.dart';
-import 'package:pit_pro_app/pages/Trial_pit_details_page.dart';
 
+//local imports
 import '../components/buttons.dart';
 import '../components/content_builder_widgets/trial_pit_content_builder.dart';
+import '../components/custom_text_field.dart';
 import '../hive_components/boxes.dart';
 import '../models/job.dart';
 import '../models/trial_pit.dart';
@@ -25,7 +25,7 @@ class JobDeatilsPage extends StatefulWidget {
 
 class _JobDeatilsPageState extends State<JobDeatilsPage> {
   //*attributes
-  final formKey = GlobalKey<FormState>();
+  final jobFormKey = GlobalKey<FormState>();
   final _jobNumController = TextEditingController();
   final _jobTitleController = TextEditingController();
   late List<TrialPit> madeTrialPits = [];
@@ -33,9 +33,19 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
   //*initialise method
   @override
   void initState() {
+    Boxes.geTrialPits();
     if (widget.job != null) {
       final job = widget.job!;
-      madeTrialPits = job.trialPitList;
+
+      //! Get relevant objects from the objecr box using the created date (kill me) 
+      for (var i = 0; i < Boxes.geTrialPits().values.toList().length; i++) {
+        for (var j = 0; j < job.trialPitList.length; j++) {
+          Boxes.geTrialPits().values.toList()[i].createdDate ==
+                  job.trialPitList[j].createdDate
+              ? madeTrialPits.add(Boxes.geTrialPits().values.toList()[i])
+              : [];
+        }
+      }
 
       _jobNumController.text = job.jobNumber;
       _jobTitleController.text = job.jobTitle;
@@ -80,7 +90,7 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
 
         //! Job widgets:
         body: Form(
-          key: formKey,
+          key: jobFormKey,
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -184,7 +194,7 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
         ), //con
 
         onPressed: () async {
-          final isValid = formKey.currentState!.validate();
+          final isValid = jobFormKey.currentState!.validate();
 
           if (isValid) {
             final num = _jobNumController.text;
@@ -200,4 +210,3 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
     );
   }
 }
-

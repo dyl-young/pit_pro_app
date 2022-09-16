@@ -93,7 +93,8 @@ Future addLayer(
     List<String> soilTypes,
     double wt,
     double pwt,
-    double pm) async {
+    double pm,
+    String note) async {
   final box = Boxes.getLayers();
   final Layer layer = Layer()
     ..depth = depth
@@ -104,7 +105,9 @@ Future addLayer(
     ..soilTypes = soilTypes
     ..wtDepth = wt
     ..pwtDepth = pwt
-    ..pmDepth = pm;
+    ..pmDepth = pm
+    ..note = note
+    ..createdDate = DateTime.now();
   layers.add(layer);
   box.add(layer);
 }

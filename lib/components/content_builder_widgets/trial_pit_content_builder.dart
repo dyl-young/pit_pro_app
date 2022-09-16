@@ -1,32 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:intl/intl.dart';
 
 import '../../hive_components/add_edit_delete_functions.dart';
 import '../../models/trial_pit.dart';
-import '../../pages/Trial_pit_details_page.dart';
+import '../../pages/trial_pit_details_page.dart';
 import '../confirm_alert_dialog.dart';
-
-// Widget buildTrialPitContent(List<TrialPit> trialPits) {
-//   if (trialPits.isEmpty) {
-//     return const SizedBox(height: 400, child: Center(child: Text('No Activities Found', style: TextStyle(color: Colors.grey, fontSize: 20))));
-//   } else {
-//     return
-//     SizedBox(
-//       height: 400,
-//       child: Column(
-//         children: [
-//           ValueListenableBuilder<Box<TrialPit>>(
-//             valueListenable: Boxes.geTrialPits().listenable(),
-//             builder: (context, box, _) {
-//               return trialPitListViewBuilder(context, trialPits);
-//             },
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
 
 //!list view builder
 Widget trialPitListViewBuilder(BuildContext context, List<TrialPit> trialPits) {
