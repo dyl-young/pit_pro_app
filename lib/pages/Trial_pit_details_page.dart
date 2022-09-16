@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:pit_pro_app/components/custom_text_field.dart';
 import '../components/buttons.dart';
+import '../components/content_builder_widgets/layers_content_builder.dart';
+import '../hive_components/boxes.dart';
 import '../models/layer.dart';
 import '../models/trial_pit.dart';
 
@@ -11,8 +14,8 @@ class TrialPitDetailsPage extends StatefulWidget {
 
   //*class arguments
   final TrialPit? trialPit;
-  final Function(String pitNumber, List<double> coords, double elevation,
-      List<Layer> layersList) onClickedDone;
+  final Function(String pitNumber, double wt, double pwt, List<double> coords,
+      double elevation, List<Layer> layersList) onClickedDone;
 
   @override
   State<TrialPitDetailsPage> createState() => _TrialPitDetailsPageState();
@@ -25,6 +28,8 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
   final _xCoordController = TextEditingController();
   final _yCoordController = TextEditingController();
   final _elevationController = TextEditingController();
+  final _waterTableController = TextEditingController();
+  final _perchedWaterTableController = TextEditingController();
   late List<Layer> madeLayers = [];
 
   //*initialise method
@@ -35,6 +40,10 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
       madeLayers = trialPit.layersList;
 
       _pitNumController.text = trialPit.pitNumber;
+
+      _waterTableController.text = trialPit.wtDepth.toString();
+      _perchedWaterTableController.text = trialPit.pwtDepth.toString();
+
       _xCoordController.text = trialPit.coordinates[0].toString();
       _yCoordController.text = trialPit.coordinates[1].toString();
       _elevationController.text = trialPit.elevation.toString();
@@ -49,6 +58,8 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
     _xCoordController.dispose();
     _yCoordController.dispose();
     _elevationController.dispose();
+    _waterTableController.dispose();
+    _perchedWaterTableController.dispose();
 
     super.dispose();
   }
@@ -92,25 +103,41 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
                 //*trial pit details heading
                 sectionHeading('Trial Pit Details'),
                 //*Trial Pit Number
-                customTextField('Hole Number', _pitNumController),
-                //*location sub heading
-                Row(
-                  children: [
-                    subSectionHeading('      Location details:  '),
-                    //*autofil location details
-                    //TODO: implement location/elevation autofill
-                    Center(
-                      child: ElevatedButton(
-                          onPressed: () {}, child: const Text('Autofill')),
-                    )
-                  ],
-                ),
+                customTextField('*Hole Number', _pitNumController),
+
                 Padding(
-                  padding:
-                      const EdgeInsets.only(left: 6, right: 6, bottom: 8.0, top: 4),
+                  padding: const EdgeInsets.only(
+                      left: 6, right: 6, bottom: 15, top: 4),
                   child: Row(
                     children: [
-                      //TODO: implement digits only keybaord pop up
+                      //*//*Water table
+                      Expanded(
+                          child: customTextField2(
+                              'Water table (m)', _waterTableController)),
+                      //*Perched water table
+                      Expanded(
+                          child: customTextField2(
+                              'Perched WT (m)', _perchedWaterTableController)),
+                    ],
+                  ),
+                ),
+                //*location sub heading adn autofill button
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    subSectionHeading('Location details:  '),
+                    //*autofil location details
+                    //TODO: implement location/elevation autofill
+                    ElevatedButton(
+                        onPressed: () {}, child: const Text('Autofill'))
+                  ],
+                ),
+                //*location text fields
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 6, right: 6, bottom: 8.0, top: 4),
+                  child: Row(
+                    children: [
                       //*coordinates
                       Expanded(
                           child:
@@ -128,9 +155,22 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
 
                 const SizedBox(height: 8),
 
-                //*layers heading
+                //* layers heading
                 sectionHeading('Layers'),
-                // TODO: buildLayerscontent
+                //* add layer button
+                Center(child: addLayerPittButton(context, madeLayers, 'Layer')),
+
+                const SizedBox(height: 8),
+
+                SizedBox(
+                  height: 250,
+                  child: ValueListenableBuilder<Box<Layer>>(
+                    valueListenable: Boxes.getLayers().listenable(),
+                    builder: (context, box, _) {
+                      return layerListViewBuilder(context, madeLayers);
+                    },
+                  ),
+                ),
               ],
             ),
           ),
@@ -172,11 +212,14 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
 
           if (isValid) {
             final num = _pitNumController.text;
+            final wt = double.tryParse(_waterTableController.text) ?? 0;
+            final pwt = double.tryParse(_perchedWaterTableController.text) ?? 0;
             final xCoord = double.tryParse(_xCoordController.text) ?? 0;
             final yCoord = double.tryParse(_yCoordController.text) ?? 0;
             final elevation = double.tryParse(_elevationController.text) ?? 0;
 
-            widget.onClickedDone(num, [xCoord, yCoord], elevation, madeLayers);
+            widget.onClickedDone(
+                num, wt, pwt, [xCoord, yCoord], elevation, madeLayers);
 
             Navigator.of(context).pop();
           }

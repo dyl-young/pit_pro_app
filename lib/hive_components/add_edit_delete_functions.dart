@@ -37,12 +37,20 @@ void deleteJob(Job job) {
 
 //! Trial Pit functions
 //*add Trial Pit
-Future addTrialPit(List<TrialPit> trialPits, String number, List<double> coords,
-    double elevation, List<Layer> layers) async {
+Future addTrialPit(
+    List<TrialPit> trialPits,
+    double wt,
+    double pwt,
+    String number,
+    List<double> coords,
+    double elevation,
+    List<Layer> layers) async {
   final box = Boxes.geTrialPits();
   final TrialPit trialPit = TrialPit()
     ..pitNumber = number
     ..createdDate = DateTime.now()
+    ..wtDepth = wt
+    ..pwtDepth = pwt
     ..coordinates = coords
     ..elevation = elevation
     ..layersList = layers;
@@ -52,9 +60,11 @@ Future addTrialPit(List<TrialPit> trialPits, String number, List<double> coords,
 }
 
 //*edit Trial Pit
-void editTrialPit(TrialPit trialPit, String number, List<double> coords,
-    double elevation, List<Layer> layers) {
+void editTrialPit(TrialPit trialPit, double wt, double pwt, String number,
+    List<double> coords, double elevation, List<Layer> layers) {
   trialPit.pitNumber = number;
+  trialPit.wtDepth = wt;
+  trialPit.pwtDepth = pwt;
   trialPit.coordinates = coords;
   trialPit.elevation = elevation;
   trialPit.layersList = layers;

@@ -27,9 +27,17 @@ Widget buildLayersContent(List<Layer> layers) {
 }
 
 //!list view builder
-//TODO: implement layers list veiw builder
 Widget layerListViewBuilder(BuildContext context, List<Layer> layers) {
-  return ListView();
+  if (layers.isEmpty) {
+    return const SizedBox(
+        height: 250,
+        child: Center(
+            child: Text('No Layers Found',
+                style: TextStyle(color: Colors.grey, fontSize: 20))));
+  } else {
+    //TODO: implement layers list veiw builder
+    return ListView();
+  }
 }
 
 //! Expansion tile buttons

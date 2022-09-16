@@ -8,7 +8,7 @@ Widget customTextField(String text, TextEditingController controller) {
       maxLines: 1,
       controller: controller,
       decoration: InputDecoration(
-        labelText: '*$text',
+        labelText: text,
         border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(25))),
       ),
@@ -17,6 +17,8 @@ Widget customTextField(String text, TextEditingController controller) {
     ),
   );
 }
+
+//! smaller and for digits
 Widget customTextField2(String text, TextEditingController controller) {
   return Padding(
     padding: const EdgeInsets.only(left: 2, right: 2),
@@ -28,11 +30,32 @@ Widget customTextField2(String text, TextEditingController controller) {
         border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(25))),
       ),
+      keyboardType: TextInputType.number,
+      // validator: (title) =>
+      //     title != null && title.isEmpty ? 'Enter a $text' : null,
+    ),
+  );
+}
+
+//! smaller for digits  && validated
+Widget customTextField3(String text, TextEditingController controller) {
+  return Padding(
+    padding: const EdgeInsets.only(left: 2, right: 2),
+    child: TextFormField(
+      maxLines: 1,
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: '*$text',
+        border: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(25))),
+      ),
+      keyboardType: TextInputType.number,
       validator: (title) =>
           title != null && title.isEmpty ? 'Enter a $text' : null,
     ),
   );
 }
+
 
 //*Headings
 Widget sectionHeading(String heading) {

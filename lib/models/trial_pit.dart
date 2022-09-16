@@ -3,8 +3,6 @@ import 'layer.dart';
 
 part 'trial_pit.g.dart';
 
-//TODO: add wt and pwt back to Trial Pit structure
-
 @HiveType(typeId: 2)
 class TrialPit extends HiveObject {
   @HiveField(0)

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:intl/intl.dart';
 
 import '../../hive_components/add_edit_delete_functions.dart';
 import '../../models/trial_pit.dart';
@@ -29,32 +30,70 @@ import '../confirm_alert_dialog.dart';
 
 //!list view builder
 Widget trialPitListViewBuilder(BuildContext context, List<TrialPit> trialPits) {
-  return ListView(
-    children: [
-      ...trialPits.map(
-        (e) => Container(
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            color: Color.fromARGB(255, 219, 219, 219),
-          ),
-          child: Theme(
-            data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-            child: ExpansionTile(
-              leading: const Icon(Icons.calendar_view_day),
-              tilePadding: const EdgeInsets.all(5),
-              title: Text('Layer: ${trialPits.lastIndexOf(e) + 1}'),
-              subtitle: Text(e.pitNumber),
-              // subtitle: Text(
-              //     '  type: ${e.type} \n  height: ${e.height.toString()} m'),
-              children: [
-                buildTrialPitButtons(context, trialPits, e),
-              ],
+  if (trialPits.isEmpty) {
+    return const SizedBox(
+        height: 200,
+        child: Center(
+            child: Text('No Activities Found',
+                style: TextStyle(color: Colors.grey, fontSize: 20))));
+  } else {
+    return ListView(
+      children: [
+        ...trialPits.map(
+          (e) => Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+                color: Color.fromARGB(255, 219, 219, 219),
+              ),
+              child: Theme(
+                data: Theme.of(context)
+                    .copyWith(dividerColor: Colors.transparent),
+                child: ExpansionTile(
+                  // tilePadding: const EdgeInsets.all(1),
+
+                  //*leading icon
+                  leading: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Icon(Icons.calendar_view_day),
+                  ),
+
+                  //*date
+                  title: Text(
+                    DateFormat.yMd().format(e.createdDate),
+                    style: const TextStyle(color: Colors.grey, fontSize: 13),
+                  ),
+
+                  //*Hole number heaidng
+                  subtitle: Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Hole No: ${e.pitNumber}',
+                          style: const TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold),
+                        ),
+                        Text('no of layers: ${e.layersList.length}')
+                      ],
+                    ),
+                  ),
+                  //!Pit index in list of pits -> use this for the layers tile cards
+                  // title: Text('Trial Pit: ${trialPits.lastIndexOf(e) + 1}'),
+
+                  children: [
+                    buildTrialPitButtons(context, trialPits, e),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
-      ),
-    ],
-  );
+      ],
+    );
+  }
 }
 
 //! Expansion tile buttons
@@ -74,8 +113,10 @@ Widget buildTrialPitButtons(
             MaterialPageRoute(
               builder: (context) => TrialPitDetailsPage(
                 trialPit: trialPit,
-                onClickedDone: (pitNumber, coords, elevation, layersList) =>
-                    editTrialPit(trialPit, pitNumber, coords, elevation, layersList),
+                onClickedDone:
+                    (pitNumber, wt, pwt, coords, elevation, layersList) =>
+                        editTrialPit(trialPit, wt, pwt, pitNumber, coords,
+                            elevation, layersList),
               ),
             ),
           ),

@@ -78,6 +78,7 @@ Widget buildJobCard(BuildContext context, Job job) {
   //details
   final date = DateFormat.yMd().format(DateTime.now());
   final title = job.jobTitle;
+  final number = job.jobNumber;
 
   return Card(
     shape: const RoundedRectangleBorder(
@@ -87,26 +88,27 @@ Widget buildJobCard(BuildContext context, Job job) {
     child: Column(
       children: [
         Theme(
-          //remove divider line of expanded tile
+          //*Remove divider line of expanded tile
           data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
           child: ExpansionTile(
             tilePadding: const EdgeInsets.symmetric(horizontal: 20),
             textColor: const Color.fromARGB(255, 9, 138, 13),
 
-            //name
+            //*Date heading
             title: Text(
               date,
               style: const TextStyle(color: Colors.grey, fontSize: 13),
             ),
 
-            //Height
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
+                //*Job title heading
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                   child: Text(
-                    job.jobNumber,
+                    title,
                     maxLines: 1,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
@@ -114,8 +116,10 @@ Widget buildJobCard(BuildContext context, Job job) {
                     ),
                   ),
                 ),
+
+                //*Job number heading
                 Text(
-                  'Title: $title',
+                  'Job no: $number',
                   maxLines: 2,
                   style: const TextStyle(fontSize: 13),
                 ),

@@ -59,7 +59,8 @@ Widget confirmCancel(BuildContext context, List<HiveObject>? objList) {
             for (var element in objList!) {
               element.delete();
             }
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(); //pop alert box
+            Navigator.of(context).pop(); //pop to previous page
           },
           child: const Text('yes', style: TextStyle(fontSize: 20)),
         ),

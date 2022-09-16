@@ -92,10 +92,10 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
                 sectionHeading('Job Details'),
 
                 //*job number
-                customTextField('Job Number', _jobNumController),
+                customTextField('*Job Number', _jobNumController),
 
                 //*job title
-                customTextField('Job Title', _jobTitleController),
+                customTextField('*Job Title', _jobTitleController),
 
                 const SizedBox(height: 8),
 
@@ -123,7 +123,8 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
 
                 //*Trial Pit info tiles ListView
                 SizedBox(
-                  height: 400,
+                  //TODO: figure out how to make the size dynamic based on screen size
+                  height: 375,
                   child: ValueListenableBuilder<Box<TrialPit>>(
                     valueListenable: Boxes.geTrialPits().listenable(),
                     builder: (context, box, _) {
@@ -200,52 +201,3 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
   }
 }
 
-//! Borehole andg aguer buttons(if implemented, split up buttons)
-Widget addOtherButtons(String title) {
-  return SizedBox(
-    width: 117,
-    height: 40,
-    child: ElevatedButton(
-      style: ElevatedButton.styleFrom(primary: Colors.grey),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(Icons.add),
-          Text(title),
-        ],
-      ),
-      onPressed: () {},
-    ),
-  );
-}
-
-//! Trial Pit Button
-Widget addTrialPittButton(
-    BuildContext context, List<TrialPit> trialPits, String title) {
-  return SizedBox(
-    width: 117,
-    height: 40,
-    child: ElevatedButton(
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.add),
-            Text(title),
-          ],
-        ),
-
-        //?Navigator?
-        onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => TrialPitDetailsPage(
-                  onClickedDone: (pitNumber, coords, elevation, layersList) =>
-                      addTrialPit(trialPits, pitNumber, coords, elevation, layersList),
-                ),
-              ),
-            )
-        ),
-  );
-}
