@@ -143,40 +143,9 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
                   children: [
                     subSectionHeading('Location details:  '),
                     //*autofil location details
-                    //TODO: implement location/elevation autofill
                     ElevatedButton(
-                        onPressed: () => getLocation(_xCoordController, _yCoordController, _elevationController),
-                        // async {
-                        //   _serviceEnabled = await location.serviceEnabled();
-                        //   if (!_serviceEnabled) {
-                        //     _serviceEnabled = await location.requestService();
-                        //   } else {
-                        //     return;
-                        //   }
-                        //   _permissionGranted = await location.hasPermission();
-                        //   if (_permissionGranted == PermissionStatus.denied) {
-                        //     _permissionGranted =
-                        //         await location.requestPermission();
-                        //   }
-                        //   if (_permissionGranted != PermissionStatus.granted) {
-                        //     return;
-                        //   }
-
-                        //   _locationData = await location.getLocation();
-
-                        //   _xCoordController.text = (_locationData.longitude!
-                        //       .toStringAsFixed(2))
-                        //       .toString();
-                        //   // roundDouble(_locationData.longitude!).toString();
-                        //   _yCoordController.text =
-                        //       roundDouble(_locationData.latitude!).toString();
-                        //   _elevationController.text =
-                        //       roundDouble(_locationData.altitude!).toString();
-
-                        //   print(_xCoordController.text);
-                        //   print(_yCoordController.text);
-                        //   print(_elevationController.text);
-                        // },
+                        onPressed: () => getLocation(_xCoordController,
+                            _yCoordController, _elevationController),
                         child: const Text('Autofill'))
                   ],
                 ),
@@ -281,20 +250,16 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
     return ((value * mod).round().toDouble() / mod);
   }
 
-   void getLocation(TextEditingController long, TextEditingController lat, TextEditingController elevation) async {
+  //! Retreive locatio data
+  void getLocation(TextEditingController long, TextEditingController lat,
+      TextEditingController elevation) async {
     final service = LocationServices();
     final locationData = await service.getLocation();
 
-    if(locationData != null){
-
-      // setState(() {
-        long.text = locationData.longitude!.toStringAsFixed(2);
-        lat.text = locationData.latitude!.toStringAsFixed(2);
-        elevation.text = locationData.altitude!.toStringAsFixed(2);
-      // },
-      // );
+    if (locationData != null) {
+      long.text = locationData.longitude!.toStringAsFixed(4);
+      lat.text = locationData.latitude!.toStringAsFixed(4);
+      elevation.text = locationData.altitude!.toStringAsFixed(2);
     }
   }
-
-
 }

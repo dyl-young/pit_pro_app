@@ -109,13 +109,13 @@ Widget buildJobCard(BuildContext context, Job job) {
               children: [
                 //*Job title heading
                 Padding(
-                  padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                  padding: const EdgeInsets.only(top: 4.0, bottom: 2.0),
                   child: Text(
                     title,
-                    maxLines: 1,
+                    maxLines: 2,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                      fontSize: 15,
                     ),
                   ),
                 ),
@@ -123,7 +123,7 @@ Widget buildJobCard(BuildContext context, Job job) {
                 //*Job number heading
                 Text(
                   'Job no: $number',
-                  maxLines: 2,
+                  maxLines: 1,
                   style: const TextStyle(fontSize: 13),
                 ),
               ],

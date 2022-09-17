@@ -101,11 +101,11 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
                 //*Heading
                 sectionHeading('Job Details'),
 
-                //*job number
-                customTextField('*Job Number', _jobNumController),
-
                 //*job title
                 customTextField('*Job Title', _jobTitleController),
+
+                //*job number
+                customTextField('*Job Number', _jobNumController),
 
                 const SizedBox(height: 8),
 

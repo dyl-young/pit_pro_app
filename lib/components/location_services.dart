@@ -1,18 +1,29 @@
 import 'package:flutter/services.dart';
 import 'package:location/location.dart';
 
+//TODO: re write and alter
 class LocationServices {
-  late Location _location = Location();
+  late final Location _location = Location();
   bool _serviceEnabled = false;
   PermissionStatus? _grantedPermission;
 
-  locationServices() {
-    _location = Location();
+  // locationServices() {
+  //   _location = Location();
+  // }
+
+  Future<bool> _checkService() async {
+    _serviceEnabled = await _location.serviceEnabled();
+    if (_serviceEnabled == false) {
+      _serviceEnabled = await _location.requestService();
+    }
+    return _serviceEnabled;
   }
 
   Future<bool> _checkPermission() async {
-    if (await _checkService()) {
+
+    if (await _checkService() == true) {
       _grantedPermission = await _location.hasPermission();
+
       if (_grantedPermission == PermissionStatus.denied) {
         _grantedPermission = await _location.requestPermission();
       }
@@ -21,27 +32,55 @@ class LocationServices {
     return _grantedPermission == PermissionStatus.granted;
   }
 
-  Future<bool> _checkService() async {
-    try {
-      _serviceEnabled = await _location.serviceEnabled();
-      if (!_serviceEnabled) {
-        _serviceEnabled = await _location.requestService();
-      }
-    } on PlatformException catch (error) {
-      print('error code is ${error.code} and message = ${error.message}');
-      _serviceEnabled = false;
-      await _checkService();
-    }
-
-    return _serviceEnabled;
-  }
-
   Future<LocationData?> getLocation() async {
-    if (await _checkPermission()) {
-      final locationData = _location.getLocation();
-      return locationData;
-    }
 
-    return null;
+    late final locationData;
+
+    await _checkPermission()
+        ? locationData = _location.getLocation()
+        : locationData = null;
+
+    return locationData;
   }
 }
+
+// class LocationService {
+//   late Location _location;
+//   bool _serviceEnabled = false;
+//   PermissionStatus? _grantedPermission;
+
+//   LocationService() {
+//     _location = Location();
+//   }
+
+//   Future<bool> _checkPermission() async {
+//     if (await _checkService()) {
+//       _grantedPermission = await _location.hasPermission();
+//       if (_grantedPermission == PermissionStatus.denied) {
+//         _grantedPermission = await _location.requestPermission();
+//       }
+//     }
+
+//     return _grantedPermission == PermissionStatus.granted;
+//   }
+
+//   Future<bool> _checkService() async {
+//       _serviceEnabled = await _location.serviceEnabled();
+//       if (!_serviceEnabled) {
+//         _serviceEnabled = await _location.requestService();
+//       }
+
+
+//     return _serviceEnabled;
+//   }
+
+//   Future<LocationData?> getLocation() async {
+//     if (await _checkPermission()) {
+//       final locationData = _location.getLocation();
+//       return locationData;
+//     }
+
+//     return null;
+//   }
+
+// }
