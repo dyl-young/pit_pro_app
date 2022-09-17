@@ -1,5 +1,4 @@
 import 'package:hive/hive.dart';
-import '../hive_components/boxes.dart';
 import 'trial_pit.dart';
 
 part 'job.g.dart';

@@ -90,7 +90,7 @@ Widget addOtherButtons(String title) {
 Widget addLayerPittButton(
     BuildContext context, List<Layer> layers, String title) {
   return SizedBox(
-    width: 117,
+    width: 140,
     height: 40,
     child: ElevatedButton(
         child: Row(

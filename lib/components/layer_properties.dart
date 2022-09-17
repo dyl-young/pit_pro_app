@@ -1,11 +1,11 @@
   // ignore_for_file: constant_identifier_names
 
 class SoilMoisture {
-  static const String DRY = 'dry';
-  static const String S_MOIST = 'slightly moist';
-  static const String MOIST = 'moist';
-  static const String V_MOIST = 'very moist';
-  static const String WET = 'wet';
+  static const String DRY = 'Dry';
+  static const String S_MOIST = 'Slightly Moist';
+  static const String MOIST = 'Moist';
+  static const String V_MOIST = 'Very Moist';
+  static const String WET = 'Wet';
 
   List<String> getSoilMoisture() {
     return [DRY, S_MOIST, MOIST, V_MOIST, WET];
@@ -70,7 +70,7 @@ class SoilColour {
 
 class SoilConsistency {
 
-  //! Chohesive Consistency
+  //! Cohesive Consistency
   static const String V_SOFT = 'Very Soft';
   static const String SOFT = 'Soft';
   static const String FIRM = 'Firm';

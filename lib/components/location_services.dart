@@ -1,4 +1,3 @@
-import 'package:flutter/services.dart';
 import 'package:location/location.dart';
 
 //TODO: re write and alter
@@ -34,7 +33,7 @@ class LocationServices {
 
   Future<LocationData?> getLocation() async {
 
-    late final locationData;
+    late final Future<LocationData>? locationData;
 
     await _checkPermission()
         ? locationData = _location.getLocation()

@@ -128,27 +128,42 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
                       left: 6, right: 6, bottom: 15, top: 4),
                   child: Row(
                     children: [
-                      //*//*Water table
+                      //*Water table
                       Expanded(
-                          child: customTextField2(
+                          child: customTextField3(
                               'Water table (m)', _waterTableController)),
                       //*Perched water table
                       Expanded(
-                          child: customTextField2(
+                          child: customTextField3(
                               'Perched WT (m)', _perchedWaterTableController)),
                     ],
                   ),
                 ),
                 //*location sub heading adn autofill button
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    subSectionHeading('Location details:  '),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                      child: subSectionHeading('Location details:'),
+                    ),
                     //*autofil location details
-                    ElevatedButton(
-                        onPressed: () => getLocation(_xCoordController,
-                            _yCoordController, _elevationController),
-                        child: const Text('Autofill'))
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                      child: TextButton(
+                          onPressed: () {
+                            getLocation(_xCoordController, _yCoordController, _elevationController);
+                            final snackBar = SnackBar(
+                              backgroundColor: Colors.grey.shade400,
+                              // width: 100,
+                              content: const Text('Retriving location details...'),
+                              duration: const Duration(seconds: 5),
+                            );
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                          },
+                          child: const Text('Autofill')),
+                    )
                   ],
                 ),
                 //*location text fields
@@ -160,19 +175,19 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
                       //*coordinates
                       Expanded(
                           child:
-                              customTextField2('Longitude', _xCoordController)),
+                              customTextField3('Longitude', _xCoordController)),
                       Expanded(
                           child:
-                              customTextField2('Latitude', _yCoordController)),
+                              customTextField3('Latitude', _yCoordController)),
                       //*elevation
                       Expanded(
-                          child: customTextField2(
+                          child: customTextField3(
                               'Elevation', _elevationController)),
                     ],
                   ),
                 ),
 
-                const SizedBox(height: 8),
+                // const SizedBox(height: 8),
 
                 //* layers heading
                 sectionHeading('Layers'),
@@ -252,7 +267,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
     return ((value * mod).round().toDouble() / mod);
   }
 
-  //! Retreive locatio data
+  //! Retreive location data
   void getLocation(TextEditingController long, TextEditingController lat,
       TextEditingController elevation) async {
     final service = LocationServices();
