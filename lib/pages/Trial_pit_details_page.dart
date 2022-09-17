@@ -1,5 +1,4 @@
 //packages
-import 'dart:ffi';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -22,8 +21,14 @@ class TrialPitDetailsPage extends StatefulWidget {
 
   //*class arguments
   final TrialPit? trialPit;
-  final Function(String pitNumber, double wt, double pwt, List<double> coords,
-      double elevation, List<Layer> layersList) onClickedDone;
+  final Function(
+    String pitNumber,
+    double wt,
+    double pwt,
+    List<double> coords,
+    double elevation,
+    List<Layer> layersList,
+  ) onClickedDone;
 
   @override
   State<TrialPitDetailsPage> createState() => _TrialPitDetailsPageState();
@@ -33,7 +38,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
   //*attributes
   final pitFormKey = GlobalKey<FormState>();
   final _pitNumController = TextEditingController();
-  late var _xCoordController = TextEditingController();
+  final _xCoordController = TextEditingController();
   final _yCoordController = TextEditingController();
   final _elevationController = TextEditingController();
   final _waterTableController = TextEditingController();
@@ -42,9 +47,6 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
   late List<Layer> madeLayers = [];
 
   var location = Location();
-  late bool _serviceEnabled;
-  late PermissionStatus _permissionGranted;
-  late LocationData _locationData;
 
   //*initialise method
   @override

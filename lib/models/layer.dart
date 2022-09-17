@@ -20,13 +20,13 @@ class Layer extends HiveObject{
   @HiveField(6)
   late String origin;
    @HiveField(7)
-  late double wtDepth;
+  late double? wtDepth;
   @HiveField(8)
-  late double pwtDepth;
+  late double? pwtDepth;
   @HiveField(9)
-  late double pmDepth;
+  late double? pmDepth;
   @HiveField(10)
-  late String? note;
+  late String? notes;
   @HiveField(11)
   late DateTime createdDate;
 

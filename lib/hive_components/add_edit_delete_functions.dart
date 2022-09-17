@@ -91,10 +91,11 @@ Future addLayer(
     String consistency,
     String structure,
     List<String> soilTypes,
-    double wt,
-    double pwt,
+    String origin,
+    // double wt,
+    // double pwt,
     double pm,
-    String note) async {
+    String notes) async {
   final box = Boxes.getLayers();
   final Layer layer = Layer()
     ..depth = depth
@@ -103,10 +104,11 @@ Future addLayer(
     ..consistency = consistency
     ..structure = structure
     ..soilTypes = soilTypes
-    ..wtDepth = wt
-    ..pwtDepth = pwt
+    ..origin = origin
+    // ..wtDepth = wt
+    // ..pwtDepth = pwt
     ..pmDepth = pm
-    ..note = note
+    ..notes = notes
     ..createdDate = DateTime.now();
   layers.add(layer);
   box.add(layer);
@@ -130,8 +132,8 @@ void editLayer(
   layer.consistency = consistency;
   layer.structure = structure;
   layer.soilTypes = soilTypes;
-  layer.wtDepth = wt;
-  layer.pwtDepth = pwt;
+  // layer.wtDepth = wt;
+  // layer.pwtDepth = pwt;
   layer.pmDepth = pm;
 
   layer.save();

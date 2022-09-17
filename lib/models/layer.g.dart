@@ -24,10 +24,10 @@ class LayerAdapter extends TypeAdapter<Layer> {
       ..structure = fields[4] as String
       ..soilTypes = (fields[5] as List).cast<String>()
       ..origin = fields[6] as String
-      ..wtDepth = fields[7] as double
-      ..pwtDepth = fields[8] as double
-      ..pmDepth = fields[9] as double
-      ..note = fields[10] as String?
+      ..wtDepth = fields[7] as double?
+      ..pwtDepth = fields[8] as double?
+      ..pmDepth = fields[9] as double?
+      ..notes = fields[10] as String?
       ..createdDate = fields[11] as DateTime;
   }
 
@@ -56,7 +56,7 @@ class LayerAdapter extends TypeAdapter<Layer> {
       ..writeByte(9)
       ..write(obj.pmDepth)
       ..writeByte(10)
-      ..write(obj.note)
+      ..write(obj.notes)
       ..writeByte(11)
       ..write(obj.createdDate);
   }

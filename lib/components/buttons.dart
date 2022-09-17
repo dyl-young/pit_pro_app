@@ -21,9 +21,9 @@ Widget cancelButton(
       ), //const ,
 
       onPressed: () => showDialog(
-        context: context, 
+        context: context,
         builder: (context) => confirmCancel(context, objList),
-        ),
+      ),
       // onPressed: () {
       //   print('testing 1');
       //   confirmCancel(context, objList);
@@ -56,12 +56,13 @@ Widget addTrialPittButton(
               context,
               MaterialPageRoute(
                 builder: (context) => TrialPitDetailsPage(
-                  onClickedDone: (pitNumber, wt, pwt, coords, elevation, layersList) =>
-                      addTrialPit(trialPits, wt, pwt, pitNumber, coords, elevation, layersList),
+                  onClickedDone:
+                      (pitNumber, wt, pwt, coords, elevation, layersList) =>
+                          addTrialPit(trialPits, wt, pwt, pitNumber, coords,
+                              elevation, layersList),
                 ),
               ),
-            )
-        ),
+            )),
   );
 }
 
@@ -102,14 +103,40 @@ Widget addLayerPittButton(
         ),
 
         //?Navigator?
-        //TODO:  Navigate to layer form page 
+        //TODO:  Navigate to layer form page
         onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const LayerFormPage(),
+                builder: (context) => LayerFormPage(
+                  onClickedDone: (
+                    depth,
+                    moisture,
+                    colour,
+                    consistency,
+                    structure,
+                    soilTypes,
+                    origin,
+                    // wt,
+                    // pwt,
+                    pm,
+                    notes,
+                  ) =>
+                      addLayer(
+                    layers,
+                    depth,
+                    moisture,
+                    colour,
+                    consistency,
+                    structure,
+                    soilTypes,
+                    origin,
+                    // wt,
+                    // pwt,
+                    pm,
+                    notes,
+                  ),
+                ),
               ),
-            )
-        ),
+            )),
   );
 }
-
