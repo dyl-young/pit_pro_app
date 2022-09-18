@@ -1,4 +1,4 @@
-  // ignore_for_file: constant_identifier_names
+// ignore_for_file: constant_identifier_names
 
 class SoilMoisture {
   static const String DRY = 'Dry';
@@ -69,7 +69,6 @@ class SoilColour {
 }
 
 class SoilConsistency {
-
   //! Cohesive Consistency
   static const String V_SOFT = 'Very Soft';
   static const String SOFT = 'Soft';
@@ -105,13 +104,31 @@ class SoilTypes {
   static const String CLAY = 'Clay';
 
   //! Secondary Soil
-  static const String L_BOULDERS ='Scattered Boulders'; //Scattered Boulders in [Primary Soil]
+  static const String L_BOULDERS =
+      'Scattered Boulders'; //Scattered Boulders in [Primary Soil]
   static const String L_GRAVEL = 'Garvelly';
   static const String L_SAND = 'Sandy';
   static const String L_SILT = 'Silty';
   static const String L_CLAY = 'Clayey';
 
   //TODO: provide rock types if there is time
+
+  Map<String, bool> primTypes = {
+    GRAVEL: false,
+    SAND: false,
+    SILT: false,
+    CLAY: false,
+    ROOTS: false,
+    FILL: false,
+    BOULDERS: false
+  };
+  Map<String, bool> secTypes = {
+    L_GRAVEL: false,
+    L_SAND: false,
+    L_SILT: false,
+    L_CLAY: false,
+    L_BOULDERS: false
+  };
 
   List<String> getPrimSoilTypes() {
     return [GRAVEL, SAND, SILT, CLAY, ROOTS, FILL, BOULDERS];
@@ -120,13 +137,13 @@ class SoilTypes {
   List<String> getSecSoilTypes() {
     return [L_GRAVEL, L_SAND, L_SILT, L_CLAY, L_BOULDERS];
   }
-
 }
 
 class SoilStructure {
   static const String INTACT = 'Intact';
   static const String FISSURED = 'Fissured';
-  static const String SLICKEN_SIDED = 'Slicked-sided'; //[Secondary Soil] with boulders
+  static const String SLICKEN_SIDED =
+      'Slicked-sided'; //[Secondary Soil] with boulders
 
   static const String SHATTERED = 'Shattered';
   static const String M_SHATTERED = 'Micro-shattered';
@@ -135,11 +152,20 @@ class SoilStructure {
   static const String STRATIFIED = 'Stratified';
 
   List<String> getSoilStructure() {
-    return [INTACT, FISSURED, SLICKEN_SIDED, SHATTERED, M_SHATTERED, LAMINATED, FOLIATED, STRATIFIED];
+    return [
+      INTACT,
+      FISSURED,
+      SLICKEN_SIDED,
+      SHATTERED,
+      M_SHATTERED,
+      LAMINATED,
+      FOLIATED,
+      STRATIFIED
+    ];
   }
 }
 
-class TransportedSoilOrigin{
+class TransportedSoilOrigin {
   static const String TALUS = 'Talus';
   static const String HILLWASH = 'Hillwash';
   static const String ALLUVIUM = 'Alluvium'; //[Secondary Soil] with boulders
@@ -150,6 +176,14 @@ class TransportedSoilOrigin{
   static const String AEOLIAN = 'Aeolian Deosits';
 
   List<String> getTransportedSoil() {
-    return [TALUS, HILLWASH, ALLUVIUM, LACUSTRINE, ESTUARINE, LITTORAL, AEOLIAN];
+    return [
+      TALUS,
+      HILLWASH,
+      ALLUVIUM,
+      LACUSTRINE,
+      ESTUARINE,
+      LITTORAL,
+      AEOLIAN
+    ];
   }
 }

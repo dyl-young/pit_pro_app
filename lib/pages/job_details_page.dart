@@ -37,7 +37,7 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
     if (widget.job != null) {
       final job = widget.job!;
 
-      //! Get relevant objects from the objecr box using the created date (kill me) 
+      //! Get relevant objects from the object box using the created date (kill me) 
       for (var i = 0; i < Boxes.geTrialPits().values.toList().length; i++) {
         for (var j = 0; j < job.trialPitList.length; j++) {
           Boxes.geTrialPits().values.toList()[i].createdDate ==
