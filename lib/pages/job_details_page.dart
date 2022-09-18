@@ -74,7 +74,14 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
       child: Scaffold(
         //! appbar
         appBar: AppBar(
-          title: Text(title),
+          title: Row(
+            mainAxisSize: MainAxisSize.min,
+             mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              const Icon(Icons.work_rounded),
+              Text(' $title'),
+            ],
+          ),
           centerTitle: true,
           //*disable automatic back button
           automaticallyImplyLeading: false,
@@ -119,13 +126,13 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     //*Borehole button
-                    addOtherButtons('Borehole'),
+                    addBoreholeButtons('Borehole'),
 
                     //*Trial Pit button
                     addTrialPittButton(context, madeTrialPits, 'Trial Pit'),
 
                     //*Auger button
-                    addOtherButtons('Auger'),
+                    addAugerButtons('Auger'),
                   ],
                 ),
 

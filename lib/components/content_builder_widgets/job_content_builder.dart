@@ -16,7 +16,8 @@ Widget buildJobContent(BuildContext context, List<Job> jobs) {
   final currentHeight = MediaQuery.of(context).size.height;
 
   if (jobs.isEmpty) {
-    return const Center(
+    return const Padding(
+      padding: EdgeInsets.fromLTRB(8,100,8,8),
       child: Text('No Jobs Found',
           style: TextStyle(fontSize: 20, color: Colors.grey)),
     );
@@ -128,6 +129,8 @@ Widget buildJobCard(BuildContext context, Job job) {
                 ),
               ],
             ),
+            // leading: Icone(Icons.abc),
+            // trailing: SizedBox.shrink(),
 
             //date
             //default trailing is a down arrow

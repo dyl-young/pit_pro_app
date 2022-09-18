@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -32,9 +34,11 @@ Widget trialPitListViewBuilder(BuildContext context, List<TrialPit> trialPits) {
                   // tilePadding: const EdgeInsets.all(1),
 
                   //*leading icon
-                  leading: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Icon(Icons.calendar_view_day),
+                  leading: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    // child: Icon(Icons.calendar_view_day),
+                    child: Transform.rotate(angle: pi, child: const Icon(Icons.line_style_outlined)),
+
                   ),
 
                   //*date

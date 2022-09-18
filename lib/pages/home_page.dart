@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:pit_pro_app/pages/job_details_page.dart';
@@ -51,7 +53,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return GestureDetector(
       //onTap: block below stopped the keybaord from popping up
-      //when the custon drawer is opended 
+      //when the custon drawer is opended
       onTap: () {
         final FocusScopeNode currentScope = FocusScope.of(context);
         if (!currentScope.hasPrimaryFocus && currentScope.hasFocus) {
@@ -61,22 +63,30 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         //!appbar
         appBar: AppBar(
-          title: const Text('Test Pit Log'),
+          title: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center
+            ,
+            children: const [
+              Icon(Icons.broken_image_outlined),
+              Text(' PIT PRO'),
+            ],
+          ),
           centerTitle: true,
         ),
-    
+
         //!User Drawer
         drawer: Drawer(
           backgroundColor: Colors.green,
           child: buildUserDrawer(context, user),
         ),
-    
+
         body: SingleChildScrollView(
           child: Column(
             children: [
               //*Search bar
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(8.0),
                 child: TextField(
                   controller: _searchController,
                   decoration: InputDecoration(
@@ -95,10 +105,22 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
               ),
-    
+
               //!Job card view
               //*listenable Box List :
               //returns a list of detail cards built in test_pit_content builder
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                  Icon(Icons.work_rounded),
+                  Text(
+                    ' Created Jobs',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  )
+                ]),
+              ),
               SizedBox(
                 height: 669.5,
                 child: ValueListenableBuilder<Box<Job>>(
@@ -107,7 +129,7 @@ class _HomePageState extends State<HomePage> {
                     final jobs = box.values.toList().cast<Job>();
                     reversedJobs = jobs.reversed.toList();
                     List<Job> answerList;
-    
+
                     if (!searching) {
                       //not searching -> display full list
                       answerList = reversedJobs;
@@ -125,10 +147,10 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-    
+
         //!floating action button: navigates to Trial Pit page
         floatingActionButton: FloatingActionButton(
-          tooltip: 'Add New Test Pit',
+          tooltip: 'Create a new Job',
           child: const Icon(Icons.add, size: 30),
           onPressed: () => Navigator.push(
             context,
@@ -139,9 +161,9 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-    
+
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-    
+
         //*bottom bar: no function
         bottomNavigationBar: BottomAppBar(
           //bottom navigation bar on scaffold

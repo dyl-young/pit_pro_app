@@ -3,7 +3,7 @@ import 'package:pit_pro_app/components/custom_text_field.dart';
 import 'package:pit_pro_app/components/layer_properties.dart';
 
 import '../components/buttons.dart';
-import '../components/content_builder_widgets/custom_drop_down.dart';
+import '../components/custom_drop_down.dart';
 import '../models/layer.dart';
 
 class LayerFormPage extends StatefulWidget {
@@ -29,13 +29,12 @@ class LayerFormPage extends StatefulWidget {
 }
 
 class _LayerFormPageState extends State<LayerFormPage> {
-
   //*Note wt and pwt will be set in pdf gen
   //*attributes
   final layerFormKey = GlobalKey<FormState>();
-  
+
   //implemented
-  final _depthController = TextEditingController(); 
+  final _depthController = TextEditingController();
   String? selectedMoisture;
   String? selectedColour;
   String? selectedConsistency;
@@ -52,6 +51,10 @@ class _LayerFormPageState extends State<LayerFormPage> {
   // implemented
   final List<String> moisture = SoilMoisture().getSoilMoisture();
   final List<String> colour = SoilColour().getSoilColour();
+  final List<String> consisCohesive =
+      SoilConsistency().getCohesiveConsistency();
+  final List<String> consisGranular =
+      SoilConsistency().getGranularConsistency();
   List<String> consistency = [];
   List<String> consistencyType = ['Cohesive', 'Granular'];
   final List<String> structure = SoilStructure().getSoilStructure();
@@ -59,7 +62,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
   //unimplemented
   final List<String> primSoilTypes = SoilTypes().getPrimSoilTypes();
   final List<String> secSoilTypes = SoilTypes().getSecSoilTypes();
-    // transported or residual
+  // transported or residual
   final List<String> origin = TransportedSoilOrigin().getTransportedSoil();
 
   @override
@@ -70,12 +73,12 @@ class _LayerFormPageState extends State<LayerFormPage> {
       _depthController.text = layer!.depth.toString();
       selectedMoisture = layer.moisture;
       selectedColour = layer.colour;
-      if (SoilConsistency()
-          .getCohesiveConsistency()
-          .contains(layer.consistency)) {
+      if (consisCohesive.contains(layer.consistency)) {
         selectedConsistencyType = consistencyType[0];
+        consistency = consisCohesive;
       } else {
         selectedConsistencyType = consistencyType[1];
+        consistency = consisGranular;
       }
       selectedConsistency = layer.consistency;
       selectedStructure = layer.structure;
@@ -89,7 +92,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
       // final _pwtController = layer. ;
       _pmController.text = layer.pmDepth.toString();
     } else {
-      selectedConsistencyType = 'Granular';
+      // selectedConsistencyType = consistencyType[0];
       // consistency = SoilConsistency().getGranularConsistency();
     }
 
@@ -108,7 +111,14 @@ class _LayerFormPageState extends State<LayerFormPage> {
       child: Scaffold(
         //! appbar
         appBar: AppBar(
-          title: Text(title),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.layers_rounded),
+              Text(' $title'),
+            ],
+          ),
           centerTitle: true,
           //*disable automatic back button
           automaticallyImplyLeading: false,
@@ -145,10 +155,67 @@ class _LayerFormPageState extends State<LayerFormPage> {
                 customDropDownMenu(selectedColour, colour, '*Soil Colour'),
 
                 //! Consistency: multilevel dropdown
+                //* multilevel drop-down menu
                 sectionHeading('Soil Consistency'),
-                Center(
-                  child: consistencyDropDowMenu(
-                      selectedConsistencyType, consistencyType, consistency),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SizedBox(
+                        width: 180,
+                        child: DropdownButtonFormField<String>(
+                          // hint: const Text('Select'),
+                          dropdownColor: Colors.green.shade50,
+                          decoration: const InputDecoration(
+                            labelText: 'Select',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(25)),
+                            ),
+                          ),
+                          value: selectedConsistencyType,
+                          items: consistencyType
+                              .map((item) => DropdownMenuItem<String>(
+                                  value: item, child: Text(item)))
+                              .toList(),
+                          onChanged: (item) => setState(() {
+                            switch (item) {
+                              case 'Cohesive':
+                                consistency = consisCohesive;
+                                break;
+                              case 'Granular':
+                                consistency = consisGranular;
+                                break;
+                              default:
+                            }
+                            selectedConsistencyType = item;
+                            selectedConsistency = null;
+                          }),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 180,
+                        child: DropdownButtonFormField<String>(
+                          value: selectedConsistency,
+                          dropdownColor: Colors.green.shade50,
+                          decoration: const InputDecoration(
+                            labelText: 'Soil Consistency',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(25)),
+                            ),
+                          ),
+                          // hint: const Text('Soil Consistency'),
+                          items: consistency
+                              .map((item) => DropdownMenuItem(
+                                  value: item, child: Text(item)))
+                              .toList(),
+                          onChanged: (item) => setState(() {
+                            selectedConsistency = item;
+                          }),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
 
                 //! Structure: dropdown
@@ -258,80 +325,6 @@ class _LayerFormPageState extends State<LayerFormPage> {
           ),
         ),
       ),
-    );
-  }
-
-//! multilevel drop-down menu
-  Widget consistencyDropDowMenu(
-      String? selectedConsistencyType, List<String> consisType,  List<String> consis) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SizedBox(
-            width: 180,
-            child: DropdownButtonFormField<String>(
-              value: selectedConsistencyType,
-              dropdownColor: Colors.green.shade50,
-              decoration: const InputDecoration(
-                // labelText: 'Soil Consistency',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(25)),
-                ),
-              ),
-              items: consisType
-                  .map((String item) => DropdownMenuItem<String>(
-                        value: item,
-                        child: Text(item),
-                      ))
-                  .toList(),
-              onChanged: (item) {
-                    
-                setState(
-                  () {
-                    if (selectedConsistencyType == 'Cohesive') {
-                      consistency = SoilConsistency().getCohesiveConsistency();
-                    } else if (selectedConsistencyType == 'Granular') {
-                      consistency = SoilConsistency().getGranularConsistency();
-                    }
-                    selectedConsistency = null;
-                    selectedConsistencyType = item!;
-                  },
-                );
-              },
-            ),
-          ),
-        ),
-        // const SizedBox(width: 20),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SizedBox(
-            width: 180,
-            child: DropdownButtonFormField<String>(
-              value: selectedConsistency,
-              dropdownColor: Colors.green.shade50,
-              decoration: const InputDecoration(
-                labelText: '*Soil Consistency',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(25)),
-                ),
-              ),
-              items: consistency
-                  .map((item) => DropdownMenuItem<String>(
-                        value: item,
-                        child: Text(item),
-                      ))
-                  .toList(),
-              onChanged: (item) => setState(
-                () {
-                  selectedConsistency = item;
-                },
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

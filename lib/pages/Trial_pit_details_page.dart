@@ -94,7 +94,14 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
       child: Scaffold(
         //! appbar
         appBar: AppBar(
-          title: Text(title),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Transform.rotate(angle: pi, child: const Icon(Icons.line_style_outlined)),
+              Text(' $title'),
+            ],
+          ),
           centerTitle: true,
           //*disable automatic back button
           automaticallyImplyLeading: false,

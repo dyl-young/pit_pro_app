@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:pit_pro_app/components/confirm_alert_dialog.dart';
@@ -46,8 +48,9 @@ Widget addTrialPittButton(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.add),
-            Text(title),
+            // const Icon(Icons.calendar_view_day),
+            Transform.rotate(angle: pi,child: const Icon(Icons.line_style_outlined)),
+            Text(' $title'),
           ],
         ),
 
@@ -67,7 +70,7 @@ Widget addTrialPittButton(
 }
 
 //! Add Borehole/aguer buttons(if implemented, split up buttons)
-Widget addOtherButtons(String title) {
+Widget addBoreholeButtons(String title) {
   return SizedBox(
     width: 117,
     height: 40,
@@ -77,7 +80,25 @@ Widget addOtherButtons(String title) {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.add),
+          Transform.rotate(angle: 0.5*pi,child: const Icon(Icons.calendar_view_day, )),
+          Text(title),
+        ],
+      ),
+      onPressed: () {},
+    ),
+  );
+}
+Widget addAugerButtons(String title) {
+  return SizedBox(
+    width: 117,
+    height: 40,
+    child: ElevatedButton(
+      style: ElevatedButton.styleFrom(primary: Colors.grey),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.tornado),
           Text(title),
         ],
       ),
@@ -97,8 +118,8 @@ Widget addLayerPittButton(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.add),
-            Text(title),
+            const Icon(Icons.layers_rounded),
+            Text(' $title'),
           ],
         ),
 
