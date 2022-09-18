@@ -20,9 +20,9 @@ class Layer extends HiveObject{
   @HiveField(6)
   late String origin;
    @HiveField(7)
-  late double? wtDepth;
+  double? wtDepth = 0;
   @HiveField(8)
-  late double? pwtDepth;
+  double? pwtDepth = 0;
   @HiveField(9)
   late double? pmDepth;
   @HiveField(10)

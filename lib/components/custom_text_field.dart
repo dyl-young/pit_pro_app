@@ -31,8 +31,8 @@ Widget customTextField2(String text, TextEditingController controller) {
           border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(25))),
         ),
-        validator: (title) =>
-            title != null && title.isEmpty ? 'Enter a $text' : null,
+        // validator: (title) =>
+        //     title != null && title.isEmpty ? 'Enter $text' : null,
       ),
     ),
   );
