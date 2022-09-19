@@ -86,7 +86,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
   //pm
   bool visiblePM = false;
 
-  //*Initialisation
+  //*Initialise method
   @override
   void initState() {
     if (widget.layer != null) {
@@ -144,6 +144,16 @@ class _LayerFormPageState extends State<LayerFormPage> {
     }
 
     super.initState();
+  }
+
+  //* Dispose method
+  @override
+  void dispose() {
+    _depthController.dispose();
+    _notesController.dispose();
+    _pmController.dispose();
+    _residualController.dispose();
+    super.dispose();
   }
 
   @override
@@ -233,6 +243,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
                 ),
 
                 //! Colour: dropdown
+                //TODO: Implement secondary colour description
                 sectionHeading('Soil Colour'),
                 Center(
                   child: Padding(

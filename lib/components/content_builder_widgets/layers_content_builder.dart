@@ -54,7 +54,7 @@ Widget layerListViewBuilder(BuildContext context, List<Layer> layers) {
                           style: const TextStyle(
                               fontSize: 15, fontWeight: FontWeight.bold),
                         ),
-                        Text('Layer Depth: ${e.depth} m')
+                        Text('layer Depth: ${e.depth} m')
                       ],
                     ),
                   ),

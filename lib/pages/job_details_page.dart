@@ -141,7 +141,7 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
                 //*Trial Pit info tiles ListView
                 SizedBox(
                   //TODO: figure out how to make the size dynamic based on screen size
-                  height: 418,
+                  height: 417,
                   child: ValueListenableBuilder<Box<TrialPit>>(
                     valueListenable: Boxes.geTrialPits().listenable(),
                     builder: (context, box, _) {

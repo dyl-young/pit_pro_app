@@ -46,7 +46,7 @@ Widget customTextField3(String text, TextEditingController controller) {
       maxLines: 1,
       controller: controller,
       decoration: InputDecoration(
-        labelText: '$text',
+        labelText: text,
         border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(25))),
       ),

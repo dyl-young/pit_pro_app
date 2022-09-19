@@ -7,20 +7,20 @@ import 'package:hive/hive.dart';
 Widget confirmDelete(BuildContext context, List<HiveObject>? objList,
     HiveObject object, Function deletObject) {
       
-  //! Alert box
+  //!Delete Alert box
   return AlertDialog(
-    title: const Text("Are you sure?", style: TextStyle(fontSize: 16)),
+    title: Column(
+      children: const [
+        Icon(Icons.delete_rounded, size: 40),
+        Text('Are you sure?', style: TextStyle(fontSize: 16)),
+      ],
+    ),
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(20)),
     ),
     content: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        //*no button
-        TextButton(
-          onPressed: Navigator.of(context).pop,
-          child: const Text('no', style: TextStyle(fontSize: 20)),
-        ),
         //*yes button
         TextButton(
           onPressed: () {
@@ -29,6 +29,11 @@ Widget confirmDelete(BuildContext context, List<HiveObject>? objList,
             deletObject(object); //delete object from Hive box
           },
           child: const Text('yes', style: TextStyle(fontSize: 20)),
+        ),
+        //*no button
+        TextButton(
+          onPressed: Navigator.of(context).pop,
+          child: const Text('no', style: TextStyle(fontSize: 20)),
         ),
       ],
     ),

@@ -48,7 +48,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
 
   var location = Location();
 
-  //*initialise method
+  //*Initialise method
   @override
   void initState() {
     Boxes.geTrialPits();
@@ -69,7 +69,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
     super.initState();
   }
 
-  //*dispose method
+  //*Dispose method
   @override
   void dispose() {
     _pitNumController.dispose();
@@ -122,7 +122,6 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 8),
 
                 //Trial Pit Details
                 //*trial pit details heading
@@ -132,7 +131,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
 
                 Padding(
                   padding: const EdgeInsets.only(
-                      left: 6, right: 6, bottom: 15, top: 4),
+                      left: 6, right: 6, top: 6),
                   child: Row(
                     children: [
                       //*Water table
@@ -204,7 +203,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
                 const SizedBox(height: 8),
 
                 SizedBox(
-                  height: 310,
+                  height: 330,
                   child: ValueListenableBuilder<Box<Layer>>(
                     valueListenable: Boxes.getLayers().listenable(),
                     builder: (context, box, _) {
