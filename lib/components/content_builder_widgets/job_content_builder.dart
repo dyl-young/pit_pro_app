@@ -5,10 +5,12 @@ import 'package:pit_pro_app/pages/job_details_page.dart';
 
 import '../../hive_components/boxes.dart';
 import '../../../models/job.dart';
+import '../../models/user.dart';
+import '../../pages/pdf/pfd_view_page.dart';
 import '../confirm_alert_dialog.dart';
 import '../../hive_components/add_edit_delete_functions.dart';
 
-Widget buildJobContent(BuildContext context, List<Job> jobs) {
+Widget buildJobContent(BuildContext context, User user, List<Job> jobs) {
   final Box box1 = Boxes.getJobs();
   final Box box2 = Boxes.geTrialPits();
   final Box box3 = Boxes.getLayers();
@@ -69,7 +71,7 @@ Widget buildJobContent(BuildContext context, List<Job> jobs) {
             itemCount: jobs.length,
             itemBuilder: (BuildContext context, int index) {
               final job = jobs[index];
-              return buildJobCard(context, job);
+              return buildJobCard(context, user, job);
             },
           ),
         ),
@@ -79,7 +81,7 @@ Widget buildJobContent(BuildContext context, List<Job> jobs) {
 }
 
 //!Job detail card
-Widget buildJobCard(BuildContext context, Job job) {
+Widget buildJobCard(BuildContext context,  User user, Job job) {
   //details
   final date = DateFormat.yMd().format(DateTime.now());
   final title = job.jobTitle;
@@ -149,7 +151,11 @@ Widget buildJobCard(BuildContext context, Job job) {
               minHeight: 400,
             ),
             //TODO: navigate to PDF on click
-            onPressed: () {},
+            onPressed: () {Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            PdfViewPage(user: user, job: job)));},
             icon: const Icon(Icons.picture_as_pdf),
             iconSize: 110,
             color: Colors.deepOrange,

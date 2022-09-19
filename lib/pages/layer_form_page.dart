@@ -493,7 +493,6 @@ class _LayerFormPageState extends State<LayerFormPage> {
                 Visibility(
                   visible: !visibleTransported,
                   child: SizedBox(
-                    height: 200,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
@@ -518,7 +517,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: 100,
+                      height: 70,
                       width: 100,
                       child: SwitchListTile(
                         value: visiblePM,

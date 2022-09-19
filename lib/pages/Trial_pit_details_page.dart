@@ -194,6 +194,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
                 ),
 
                 // const SizedBox(height: 8),
+                //TODO: Implement select/capture image of trial pits
 
                 //* layers heading
                 sectionHeading('Layers'),

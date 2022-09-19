@@ -138,7 +138,7 @@ class _HomePageState extends State<HomePage> {
                       foundList = reversedJobs;
                     }
                     //*builder
-                    return buildJobContent(context, answerList);
+                    return buildJobContent(context, user, answerList);
                   },
                 ),
               ),
