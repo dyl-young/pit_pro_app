@@ -204,7 +204,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
                 const SizedBox(height: 8),
 
                 SizedBox(
-                  height: 250,
+                  height: 310,
                   child: ValueListenableBuilder<Box<Layer>>(
                     valueListenable: Boxes.getLayers().listenable(),
                     builder: (context, box, _) {

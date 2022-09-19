@@ -49,7 +49,8 @@ Widget addTrialPittButton(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // const Icon(Icons.calendar_view_day),
-            Transform.rotate(angle: pi,child: const Icon(Icons.line_style_outlined)),
+            Transform.rotate(
+                angle: pi, child: const Icon(Icons.line_style_outlined)),
             Text(' $title'),
           ],
         ),
@@ -80,7 +81,11 @@ Widget addBoreholeButtons(String title) {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Transform.rotate(angle: 0.5*pi,child: const Icon(Icons.calendar_view_day, )),
+          Transform.rotate(
+              angle: 0.5 * pi,
+              child: const Icon(
+                Icons.calendar_view_day,
+              )),
           Text(title),
         ],
       ),
@@ -88,6 +93,7 @@ Widget addBoreholeButtons(String title) {
     ),
   );
 }
+
 Widget addAugerButtons(String title) {
   return SizedBox(
     width: 117,
@@ -114,50 +120,50 @@ Widget addLayerPittButton(
     width: 140,
     height: 40,
     child: ElevatedButton(
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.layers_rounded),
-            Text(' $title'),
-          ],
-        ),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.layers_rounded),
+          Text(' $title'),
+        ],
+      ),
 
-        //?Navigator?
-        //TODO:  Navigate to layer form page
-        onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => LayerFormPage(
-                  onClickedDone: (
-                    depth,
-                    moisture,
-                    colour,
-                    consistency,
-                    structure,
-                    soilTypes,
-                    origin,
-                    // wt,
-                    // pwt,
-                    pm,
-                    notes,
-                  ) =>
-                      addLayer(
-                    layers,
-                    depth,
-                    moisture,
-                    colour,
-                    consistency,
-                    structure,
-                    soilTypes,
-                    origin,
-                    // wt,
-                    // pwt,
-                    pm,
-                    notes,
-                  ),
-                ),
-              ),
-            )),
+      //?Navigator?
+      onPressed: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LayerFormPage(
+            onClickedDone: (
+              depth,
+              moisture,
+              colour,
+              consistency,
+              structure,
+              soilTypes,
+              origin,
+              // wt,
+              // pwt,
+              pm,
+              notes,
+            ) =>
+                addLayer(
+              layers,
+              depth,
+              moisture,
+              colour,
+              consistency,
+              structure,
+              soilTypes,
+              origin,
+              // wt,
+              // pwt,
+              pm,
+              notes,
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 }

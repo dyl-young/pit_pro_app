@@ -115,16 +115,16 @@ class _LayerFormPageState extends State<LayerFormPage> {
       selectedSoilTypes = layer.soilTypes;
       primTypeMap.forEach((key, value) {
         if (selectedSoilTypes.contains(key)) {
-          value = true;
+          primTypeMap[key] = true;
         }
       });
       secTypeMap.forEach((key, value) {
         if (selectedSoilTypes.contains(key)) {
-          value = true;
+          secTypeMap[key] = true;
         }
       });
       //origin
-      if (layer.origin == originType[0]) {
+      if (transpotOrigin.contains(layer.origin)) {
         selectedOriginType = originType[0];
         selecetedTransport = layer.origin;
         visibleTransported = true;
@@ -394,8 +394,51 @@ class _LayerFormPageState extends State<LayerFormPage> {
 
                 //! Origin: drop down -> dropdown or -> textField
                 sectionHeading('Soil Origin'),
-                originDropDownMenu(
-                    selectedOriginType, originType, '*Soil Origin'),
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      width: 300,
+                      child: DropdownButtonFormField<String>(
+                          value: selectedOriginType,
+                          decoration: const InputDecoration(
+                            labelText: '*Soil Origin',
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(25)),
+                            ),
+                          ),
+                          dropdownColor: Colors.green.shade50,
+                          items: originType
+                              .map((item) => DropdownMenuItem<String>(
+                                    value: item,
+                                    child: Text(
+                                        item), //style: const TextStyle(color: Colors.green)),
+                                  ))
+                              .toList(),
+                          onChanged: (item) {
+                            if (item == 'Transported Soil') {
+                              visibleTransported = true;
+                              _residualController.text = '';
+                            } else {
+                              visibleTransported = false;
+                              selecetedTransport = null;
+                            }
+                            setState(
+                              () {
+                                mustIgnore = false;
+                                selectedOriginType = item;
+                              },
+                            );
+                          },
+                          validator: (title) {
+                            if (title == null) {
+                              return '*Soil Origin is required';
+                            }
+                          }),
+                    ),
+                  ),
+                ),
                 Visibility(
                   visible: visibleTransported,
                   child: Center(
@@ -471,6 +514,9 @@ class _LayerFormPageState extends State<LayerFormPage> {
                         controlAffinity: ListTileControlAffinity.leading,
                         onChanged: (val) => setState(() {
                           visiblePM = val;
+                          if (visiblePM == false) {
+                            _pmController.text = '0.0';
+                          }
                         }),
                       ),
                     ),
@@ -535,17 +581,17 @@ class _LayerFormPageState extends State<LayerFormPage> {
             final consistency = selectedConsistency ?? '';
             final structure = selectedStructure ?? '';
             selectedOriginType == 'Transported Soil'
-                ? originItem = 'Transported Soil: $selecetedTransport'
-                : originItem = 'Residual Soil: ${_residualController.text}';
-            final origin = originItem;
+                ? originItem = selecetedTransport
+                : originItem = _residualController.text;
+            final origin = originItem ?? '';
             final notes = _notesController.text;
             final pm = double.tryParse(_pmController.text) ?? 0;
 
             print('1 $depth');
-            print('2 $moisture'); //!
-            print('3 $colour'); //!
+            print('2 $moisture');
+            print('3 $colour');
             print('4 $consistency');
-            print('5 $structure'); //!
+            print('5 $structure');
             print('6 ${selectedSoilTypes.toString()}');
             print('7 $origin');
             print('8 $pm');

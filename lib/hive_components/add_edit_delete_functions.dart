@@ -123,18 +123,22 @@ void editLayer(
     String consistency,
     String structure,
     List<String> soilTypes,
-    double wt,
-    double pwt,
-    double pm) {
+    String origin,
+    // double wt,
+    // double pwt,
+    double pm,
+    String notes) {
   layer.depth = depth;
   layer.moisture = moisture;
   layer.colour = colour;
   layer.consistency = consistency;
   layer.structure = structure;
   layer.soilTypes = soilTypes;
+  layer.origin = origin;
   // layer.wtDepth = wt;
   // layer.pwtDepth = pwt;
   layer.pmDepth = pm;
+  layer.notes = notes;
 
   layer.save();
 }
