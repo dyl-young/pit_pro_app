@@ -10,6 +10,7 @@ import '../models/layer.dart';
 import '../models/trial_pit.dart';
 import '../pages/trial_pit_details_page.dart';
 
+//! Cancel button
 Widget cancelButton(
     BuildContext context, List<HiveObject> objList, bool isNotEditing) {
   if (isNotEditing) {
@@ -70,7 +71,7 @@ Widget addTrialPittButton(
   );
 }
 
-//! Add Borehole/aguer buttons(if implemented, split up buttons)
+//! Add Borehole button (if implemented)
 Widget addBoreholeButtons(String title) {
   return SizedBox(
     width: 117,
@@ -94,6 +95,7 @@ Widget addBoreholeButtons(String title) {
   );
 }
 
+//! Add aguer button
 Widget addAugerButtons(String title) {
   return SizedBox(
     width: 117,
