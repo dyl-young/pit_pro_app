@@ -5,8 +5,6 @@ import 'package:pit_pro_app/components/layer_properties.dart';
 import '../components/buttons.dart';
 import '../models/layer.dart';
 
-
-
 //TODO: FIX LAYER DELETE!!!!!!
 //TODO: FIX SAVE BUTON ON EDIT PAGE
 
@@ -23,6 +21,7 @@ class LayerFormPage extends StatefulWidget {
       String structure,
       List<String> soilTypes,
       String origin,
+      String originType,
       // double wt,
       // double pwt,
       double pm,
@@ -595,10 +594,11 @@ class _LayerFormPageState extends State<LayerFormPage> {
             final colour = selectedColour ?? '';
             final consistency = selectedConsistency ?? '';
             final structure = selectedStructure ?? '';
+            final originType = selectedOriginType??' ';
             selectedOriginType == 'Transported Soil'
-                ? originItem = 'Transported Soil: $selecetedTransport'
-                : originItem = 'Resdiual Soil: $_residualController.text';
-            final origin = originItem;
+                ? originItem = selecetedTransport
+                : originItem = _residualController.text;
+            final origin = originItem ?? ' ';
             final notes = _notesController.text;
             final pm = double.tryParse(_pmController.text) ?? 0;
 
@@ -614,7 +614,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
             print('9 $notes');
 
             widget.onClickedDone(depth, moisture, colour, consistency,
-                structure, selectedSoilTypes, origin, pm, notes);
+                structure, selectedSoilTypes, origin, originType, pm, notes);
 
             Navigator.of(context).pop();
           }
@@ -741,7 +741,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
 
   Widget customCheckBox(String key, Map<String, bool> map) {
     return SizedBox(
-      width: 165,
+      width: 170,
       child: CheckboxListTile(
         // controlAffinity: ListTileControlAffinity.leading,
         title: Text(key, maxLines: 2),

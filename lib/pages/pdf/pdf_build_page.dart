@@ -209,9 +209,11 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Text('Layer details:', style: TextStyle(fontWeight: FontWeight.bold)),
                           Text(
-                              'Layer details: ${layers[i].moisture}, ${layers[i].colour}, ${layers[i].consistency}, ${layers[i].soilToString()}, ${layers[i].origin}:, ${layers[i].structure}'),
-                          Text('Notes: ${layers[i].notes}')
+                              '${layers[i].moisture}, ${layers[i].colour}, ${layers[i].consistency}, ${layers[i].soilToString()}, ${layers[i].structure}, ${layers[i].originType}: ${layers[i].origin}'),
+                          Text('Notes:', style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text('${layers[i].notes}')
                         ],
                       ),
                     ],
@@ -276,24 +278,24 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                       Text(
                           'Date: ${trialPit.createdDate.day}-${trialPit.createdDate.month}-${trialPit.createdDate.year}'),
                     ]),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //TODO: implement contractor and machine in Job
-                    Text('Contractor: 123 Civils'),
-                    Text('Machnine: big ol digger'),
-                  ],
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //TODO: Implememht inclinations and diameter in Trial pit
-                    Text('Inclination: Vertical'),
-                    Text('Hole Diam: 1 m'),
-                  ],
-                ),
+                // Column(
+                //   mainAxisAlignment: MainAxisAlignment.start,
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [
+                //     //TODO: implement contractor and machine in Job
+                //     Text('Contractor: 123 Civils'),
+                //     Text('Machnine: big ol digger'),
+                //   ],
+                // ),
+                // Column(
+                //   mainAxisAlignment: MainAxisAlignment.start,
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [
+                //     //TODO: Implememht inclinations and diameter in Trial pit
+                //     Text('Inclination: Vertical'),
+                //     Text('Hole Diam: 1 m'),
+                //   ],
+                // ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,

@@ -92,6 +92,7 @@ Future addLayer(
     String structure,
     List<String> soilTypes,
     String origin,
+    String originType,
     // double wt,
     // double pwt,
     double pm,
@@ -105,6 +106,7 @@ Future addLayer(
     ..structure = structure
     ..soilTypes = soilTypes
     ..origin = origin
+    ..originType = originType
     // ..wtDepth = wt
     // ..pwtDepth = pwt
     ..pmDepth = pm
@@ -124,6 +126,7 @@ void editLayer(
     String structure,
     List<String> soilTypes,
     String origin,
+    String originType,
     // double wt,
     // double pwt,
     double pm,
@@ -134,6 +137,7 @@ void editLayer(
   layer.consistency = consistency;
   layer.structure = structure;
   layer.soilTypes = soilTypes;
+  layer.originType = originType;
   layer.origin = origin;
   // layer.wtDepth = wt;
   // layer.pwtDepth = pwt;

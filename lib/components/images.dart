@@ -8,7 +8,7 @@ class Images {
 
   static const String logo = 'assets/su_logo.png';
 
-  static const String gravel = 'assets/Gravel.png';       //TODO: FIX
+  static const String gravel = 'assets/Gravel.png';  
   static const String gravelley = 'assets/Gravelley.png'; //TODO: FIX
   static const String clay = 'assets/Clay.png';           //TODO: Redo png
   static const String calyey = 'assets/Clayey.png';       //TODO: FIX

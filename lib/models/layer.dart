@@ -1,10 +1,11 @@
-
 import 'package:hive/hive.dart';
+
+import '../components/layer_properties.dart';
 
 part 'layer.g.dart';
 
 @HiveType(typeId: 3)
-class Layer extends HiveObject{
+class Layer extends HiveObject {
   @HiveField(0)
   late double depth;
   @HiveField(1)
@@ -19,7 +20,7 @@ class Layer extends HiveObject{
   late List<String> soilTypes;
   @HiveField(6)
   late String origin;
-   @HiveField(7)
+  @HiveField(7)
   double? wtDepth = 0;
   @HiveField(8)
   double? pwtDepth = 0;
@@ -29,15 +30,55 @@ class Layer extends HiveObject{
   late String? notes;
   @HiveField(11)
   late DateTime createdDate;
+  @HiveField(12)
+  late String? originType;
 
   // Layer(this.depth, this.moisture, this.colour, this.consistency,
   //     this.structure, this.soilTypes, this.origin, this.note);
 
+  // String soilToString() {
+  //   List<String> revSoilTypes = soilTypes.reversed.toList();
+  //   String result = revSoilTypes.first;
+  //   for (int i = 0; i < revSoilTypes.length; i++) {
+  //     // if (i==1 &&  revSoilTypes[i] != 'Scattered Boulders' || i>=1 && revSoilTypes[i-1] == 'Scattered Boulders') {
+  //     //   result += ' ${revSoilTypes[i]}';
+  //     // } else if (revSoilTypes[i - 1] == 'Boulders') {
+  //     //   result += ' in ${revSoilTypes[i]}';
+  //     // } else if (revSoilTypes[i] == 'Scattered Boulders') {
+  //     //   result += ' ${revSoilTypes[i]} in';
+  //     // }else if(i>0){
+  //     //   result += ' and ${revSoilTypes[i]}';
+  //     // }
+  //     if(i==1){
+  //        result += ' ${revSoilTypes[i]}';
+  //     } else if(i>1){
+  //        result += ' and ${revSoilTypes[i]}';
+  //     }
+
+  //   }
+  //   return result;
+  // }
+
   String soilToString() {
-    String result = soilTypes.first;
-    for (int i = 1; i < soilTypes.length; i++) {
-      result += ' and ${soilTypes[i]}';
+    List<String> revSoilTypes = soilTypes.reversed.toList();
+    String result = revSoilTypes[0];
+    List<String> sec = ['Silty', 'Gravelly', 'Sandy', 'Clayey'];
+    List<String> prim = ['Silt', 'Gravel', 'Sand', 'Clay'];
+
+
+    if (revSoilTypes.length > 1) {
+      for (int i = 0; i < revSoilTypes.length; i++) {
+
+        
+        if(sec.contains(revSoilTypes[i])){
+          result += ' ${revSoilTypes[i]}';
+        } else if (i == 1) {
+          result += ' ${revSoilTypes[i]}';
+        }
+        
+      }
     }
+
     return result;
   }
 }

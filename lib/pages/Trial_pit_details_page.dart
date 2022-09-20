@@ -55,7 +55,17 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
     Boxes.getLayers();
     if (widget.trialPit != null) {
       final trialPit = widget.trialPit!;
-      madeLayers = trialPit.layersList;
+      // madeLayers = trialPit.layersList;
+
+       //! Get relevant objects from the object box using the created date (kill me) 
+      for (var i = 0; i < Boxes.getLayers().values.toList().length; i++) {
+        for (var j = 0; j < trialPit.layersList.length; j++) {
+          Boxes.getLayers().values.toList()[i].createdDate ==
+                  trialPit.layersList[j].createdDate
+              ? madeLayers.add(Boxes.getLayers().values.toList()[i])
+              : [];
+        }
+      }
 
       _pitNumController.text = trialPit.pitNumber;
 

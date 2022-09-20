@@ -98,7 +98,7 @@ class SoilTypes {
   static const String FILL = 'Fill';
   static const String BOULDERS = 'Boulders'; //[Secondary Soil] with boulders
 
-  static const String GRAVEL = 'Garvel';
+  static const String GRAVEL = 'Gravel';
   static const String SAND = 'Sand';
   static const String SILT = 'Silt';
   static const String CLAY = 'Clay';
@@ -106,7 +106,7 @@ class SoilTypes {
   //! Secondary Soil
   static const String L_BOULDERS =
       'Scattered Boulders'; //Scattered Boulders in [Primary Soil]
-  static const String L_GRAVEL = 'Garvelly';
+  static const String L_GRAVEL = 'Gravelly';
   static const String L_SAND = 'Sandy';
   static const String L_SILT = 'Silty';
   static const String L_CLAY = 'Clayey';
@@ -123,19 +123,19 @@ class SoilTypes {
     BOULDERS: false
   };
   Map<String, bool> secTypes = {
+    L_BOULDERS: false,
     L_GRAVEL: false,
     L_SAND: false,
     L_SILT: false,
     L_CLAY: false,
-    L_BOULDERS: false
   };
 
   List<String> getPrimSoilTypes() {
-    return [GRAVEL, SAND, SILT, CLAY, ROOTS, FILL, BOULDERS];
+    return [BOULDERS, GRAVEL, SAND, SILT, CLAY, ROOTS, FILL];
   }
 
   List<String> getSecSoilTypes() {
-    return [L_GRAVEL, L_SAND, L_SILT, L_CLAY, L_BOULDERS];
+    return [L_BOULDERS, L_GRAVEL, L_SAND, L_SILT, L_CLAY];
   }
 }
 
