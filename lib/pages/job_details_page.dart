@@ -153,18 +153,6 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
           ),
         ),
 
-        // //!PDF generate Floating action button
-        // floatingActionButton: isEditing
-        //     ? FloatingActionButton(
-        //         tooltip: 'Generate PDF',
-        //         //TODO: implement pdf view page
-        //         onPressed: () {
-        //         },
-        //         child: const Icon(Icons.picture_as_pdf_rounded),
-        //       )
-        //     : const SizedBox.shrink(),
-        // floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-
         //!bottom nav bar
         bottomNavigationBar: BottomAppBar(
           color: Colors.green,

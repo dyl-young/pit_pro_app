@@ -23,3 +23,5 @@ class TrialPit extends HiveObject {
   double totalDepth() => layersList.fold(
       0, (previousValue, Layer layer) => previousValue + layer.depth);
 }
+
+//TODO: add image of pitt from device

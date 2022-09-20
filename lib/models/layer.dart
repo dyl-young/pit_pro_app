@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-import '../components/layer_properties.dart';
+import '../constants/layer_properties.dart';
 
 part 'layer.g.dart';
 
@@ -61,13 +61,13 @@ class Layer extends HiveObject {
 
   String soilToString() {
     List<String> revSoilTypes = soilTypes.reversed.toList();
-    String result = revSoilTypes[0];
+    String result = soilTypes.isNotEmpty ? revSoilTypes[0]: ' ';
     List<String> sec = ['Silty', 'Gravelly', 'Sandy', 'Clayey'];
     List<String> prim = ['Silt', 'Gravel', 'Sand', 'Clay'];
 
 
-    if (revSoilTypes.length > 1) {
-      for (int i = 0; i < revSoilTypes.length; i++) {
+    if (revSoilTypes.length >= 1) {
+      for (int i = 1; i < revSoilTypes.length; i++) {
 
         
         if(sec.contains(revSoilTypes[i])){

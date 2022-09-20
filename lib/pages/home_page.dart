@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:pit_pro_app/components/images.dart';
+import 'package:pit_pro_app/constants/images.dart';
 import 'package:pit_pro_app/pages/job_details_page.dart';
 
 import '../components/content_builder_widgets/user_drawer_builder.dart';
@@ -121,7 +121,8 @@ class _HomePageState extends State<HomePage> {
                 ]),
               ),
               SizedBox(
-                height: 669.5,
+                // height: 669.5,
+                height: MediaQuery.of(context).size.height - 235,
                 child: ValueListenableBuilder<Box<Job>>(
                   valueListenable: Boxes.getJobs().listenable(),
                   builder: (context, box, _) {

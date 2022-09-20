@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pit_pro_app/components/custom_text_field.dart';
-import 'package:pit_pro_app/components/layer_properties.dart';
+import 'package:pit_pro_app/constants/layer_properties.dart';
 
 import '../components/buttons.dart';
 import '../models/layer.dart';
@@ -608,10 +608,10 @@ class _LayerFormPageState extends State<LayerFormPage> {
             print('4 $consistency');
             print('5 $structure');
             print('6 ${selectedSoilTypes.toString()}');
-            //TODO: implement a way to know whethere origin variable is residual or transported
-            print('7 $origin');
-            print('8 $pm');
-            print('9 $notes');
+            print('7 $originType');
+            print('8 $origin');
+            print('9 $pm');
+            print('10 $notes');
 
             widget.onClickedDone(depth, moisture, colour, consistency,
                 structure, selectedSoilTypes, origin, originType, pm, notes);

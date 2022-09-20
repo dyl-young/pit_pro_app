@@ -31,27 +31,27 @@ Widget buildJobContent(BuildContext context, User user, List<Job> jobs) {
 
         //!Temp widgets for dev purposes
         //-------------------------------------------------------------
-        Text('Screen width: $currentWidth',
-            style: const TextStyle(color: Colors.red)),
-        Text('Screen height: $currentHeight\n',
-            style: const TextStyle(color: Colors.red)),
-        Text("Number of Jobs in box: ${box1.length}",
-            style: const TextStyle(color: Colors.red)),
-        Text("Number of Trial Pits in box: ${box2.length}",
-            style: const TextStyle(color: Colors.red)),
-        Text("Number of Layers in box: ${box3.length}",
-            style: const TextStyle(color: Colors.red)),
-        TextButton(
-          style: ElevatedButton.styleFrom(
-            side: const BorderSide(width: 2.0, color: Colors.red),
-          ),
-          onPressed: () {
-            box1.clear();
-            box2.clear();
-            box3.clear();
-          },
-          child: const Text('Delete All', style: TextStyle(color: Colors.red)),
-        ),
+        // Text('Screen width: $currentWidth',
+        //     style: const TextStyle(color: Colors.red)),
+        // Text('Screen height: $currentHeight\n',
+        //     style: const TextStyle(color: Colors.red)),
+        // Text("Number of Jobs in box: ${box1.length}",
+        //     style: const TextStyle(color: Colors.red)),
+        // Text("Number of Trial Pits in box: ${box2.length}",
+        //     style: const TextStyle(color: Colors.red)),
+        // Text("Number of Layers in box: ${box3.length}",
+        //     style: const TextStyle(color: Colors.red)),
+        // TextButton(
+        //   style: ElevatedButton.styleFrom(
+        //     side: const BorderSide(width: 2.0, color: Colors.red),
+        //   ),
+        //   onPressed: () {
+        //     box1.clear();
+        //     box2.clear();
+        //     box3.clear();
+        //   },
+        //   child: const Text('Delete All', style: TextStyle(color: Colors.red)),
+        // ),
         //-------------------------------------------------------------
 
         //!Grid view display of all Job detail cards
@@ -154,7 +154,6 @@ Widget buildJobCard(BuildContext context, User user, Job job) {
                 minWidth: 400,
                 minHeight: 400,
               ),
-              //TODO: navigate to PDF on click
               onPressed: () {
                 final snackBar = SnackBar(
                   backgroundColor: Colors.grey.shade400,
