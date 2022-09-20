@@ -5,6 +5,11 @@ import 'package:pit_pro_app/components/layer_properties.dart';
 import '../components/buttons.dart';
 import '../models/layer.dart';
 
+
+
+//TODO: FIX LAYER DELETE!!!!!!
+//TODO: FIX SAVE BUTON ON EDIT PAGE
+
 class LayerFormPage extends StatefulWidget {
   const LayerFormPage({Key? key, this.layer, required this.onClickedDone})
       : super(key: key);
@@ -591,9 +596,9 @@ class _LayerFormPageState extends State<LayerFormPage> {
             final consistency = selectedConsistency ?? '';
             final structure = selectedStructure ?? '';
             selectedOriginType == 'Transported Soil'
-                ? originItem = selecetedTransport
-                : originItem = _residualController.text;
-            final origin = originItem ?? '';
+                ? originItem = 'Transported Soil: $selecetedTransport'
+                : originItem = 'Resdiual Soil: $_residualController.text';
+            final origin = originItem;
             final notes = _notesController.text;
             final pm = double.tryParse(_pmController.text) ?? 0;
 
@@ -603,6 +608,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
             print('4 $consistency');
             print('5 $structure');
             print('6 ${selectedSoilTypes.toString()}');
+            //TODO: implement a way to know whethere origin variable is residual or transported
             print('7 $origin');
             print('8 $pm');
             print('9 $notes');

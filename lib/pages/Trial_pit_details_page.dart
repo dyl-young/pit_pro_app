@@ -92,6 +92,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
       //disable back device button on this page
       onWillPop: () async => false,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         //! appbar
         appBar: AppBar(
           title: Row(
@@ -118,102 +119,99 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
         //! Trial Pit widgets:
         body: Form(
           key: pitFormKey,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
 
-                //Trial Pit Details
-                //*trial pit details heading
-                sectionHeading('Trial Pit Details'),
-                //*Trial Pit Number
-                customTextField('*Hole Number', _pitNumController),
+              //Trial Pit Details
+              //*trial pit details heading
+              sectionHeading('Trial Pit Details'),
+              //*Trial Pit Number
+              customTextField('*Hole Number', _pitNumController),
 
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 6, right: 6, top: 6),
-                  child: Row(
-                    children: [
-                      //*Water table
-                      Expanded(
-                          child: customTextField3(
-                              'Water table (m)', _waterTableController)),
-                      //*Perched water table
-                      Expanded(
-                          child: customTextField3(
-                              'Perched WT (m)', _perchedWaterTableController)),
-                    ],
-                  ),
-                ),
-                //*location sub heading adn autofill button
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 6, right: 6, top: 6),
+                child: Row(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                      child: subSectionHeading('Location details:'),
-                    ),
-                    //*autofil location details
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                      child: TextButton(
-                          onPressed: () {
-                            getLocation(_xCoordController, _yCoordController, _elevationController);
-                            final snackBar = SnackBar(
-                              backgroundColor: Colors.grey.shade400,
-                              // width: 100,
-                              content: const Text('Retriving location details...'),
-                              duration: const Duration(seconds: 5),
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                          },
-                          child: const Text('Autofill')),
-                    )
+                    //*Water table
+                    Expanded(
+                        child: customTextField3(
+                            'Water table (m)', _waterTableController)),
+                    //*Perched water table
+                    Expanded(
+                        child: customTextField3(
+                            'Perched WT (m)', _perchedWaterTableController)),
                   ],
                 ),
-                //*location text fields
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 6, right: 6, bottom: 8.0, top: 4),
-                  child: Row(
-                    children: [
-                      //*coordinates
-                      Expanded(
-                          child:
-                              customTextField3('Longitude', _xCoordController)),
-                      Expanded(
-                          child:
-                              customTextField3('Latitude', _yCoordController)),
-                      //*elevation
-                      Expanded(
-                          child: customTextField3(
-                              'Elevation', _elevationController)),
-                    ],
+              ),
+              //*location sub heading adn autofill button
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                    child: subSectionHeading('Location details:'),
                   ),
+                  //*autofil location details
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                    child: TextButton(
+                        onPressed: () {
+                          getLocation(_xCoordController, _yCoordController, _elevationController);
+                          final snackBar = SnackBar(
+                            backgroundColor: Colors.grey.shade400,
+                            // width: 100,
+                            content: const Text('Retriving location details...'),
+                            duration: const Duration(seconds: 5),
+                          );
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(snackBar);
+                        },
+                        child: const Text('Autofill')),
+                  )
+                ],
+              ),
+              //*location text fields
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 6, right: 6, bottom: 8.0, top: 4),
+                child: Row(
+                  children: [
+                    //*coordinates
+                    Expanded(
+                        child:
+                            customTextField3('Longitude', _xCoordController)),
+                    Expanded(
+                        child:
+                            customTextField3('Latitude', _yCoordController)),
+                    //*elevation
+                    Expanded(
+                        child: customTextField3(
+                            'Elevation', _elevationController)),
+                  ],
                 ),
+              ),
 
-                // const SizedBox(height: 8),
-                //TODO: Implement select/capture image of trial pits
+              // const SizedBox(height: 8),
+              //TODO: Implement select/capture image of trial pits
 
-                //* layers heading
-                sectionHeading('Layers'),
-                //* add layer button
-                Center(child: addLayerPittButton(context, madeLayers, 'Layer')),
+              //* layers heading
+              sectionHeading('Layers'),
+              //* add layer button
+              Center(child: addLayerPittButton(context, madeLayers, 'Layer')),
 
-                const SizedBox(height: 8),
+              const SizedBox(height: 8),
 
-                SizedBox(
-                  height: 330,
-                  child: ValueListenableBuilder<Box<Layer>>(
-                    valueListenable: Boxes.getLayers().listenable(),
-                    builder: (context, box, _) {
-                      return layerListViewBuilder(context, madeLayers);
-                    },
-                  ),
+              Expanded(
+                child: ValueListenableBuilder<Box<Layer>>(
+                  valueListenable: Boxes.getLayers().listenable(),
+                  builder: (context, box, _) {
+                    return layerListViewBuilder(context, madeLayers);
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
 

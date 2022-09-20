@@ -72,6 +72,8 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
       //disable back device button on this page
       onWillPop: () async => false,
       child: Scaffold(
+        //avoid pixel overflow due to keyboard
+        resizeToAvoidBottomInset: false,
         //! appbar
         appBar: AppBar(
           title: Row(
@@ -98,76 +100,70 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
         //! Job widgets:
         body: Form(
           key: jobFormKey,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 8), //?difference
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 8), //?difference
 
-                //Job Details:
-                //*Heading
-                sectionHeading('Job Details'),
+              //Job Details:
+              //*Heading
+              sectionHeading('Job Details'),
 
-                //*job title
-                customTextField('*Job Title', _jobTitleController),
+              //*job title
+              customTextField('*Job Title', _jobTitleController),
 
-                //*job number
-                customTextField('*Job Number', _jobNumController),
+              //*job number
+              customTextField('*Job Number', _jobNumController),
 
-                const SizedBox(height: 8),
+              const SizedBox(height: 8),
 
-                //*Trial Pits Heading
-                sectionHeading('Job Activities'),
+              //*Trial Pits Heading
+              sectionHeading('Job Activities'),
 
-                const SizedBox(height: 8),
+              const SizedBox(height: 8),
 
-                //*Add Trial Pit button
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    //*Borehole button
-                    addBoreholeButtons('Borehole'),
+              //*Add Trial Pit button
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  //*Borehole button
+                  addBoreholeButtons('Borehole'),
 
-                    //*Trial Pit button
-                    addTrialPittButton(context, madeTrialPits, 'Trial Pit'),
+                  //*Trial Pit button
+                  addTrialPittButton(context, madeTrialPits, 'Trial Pit'),
 
-                    //*Auger button
-                    addAugerButtons('Auger'),
-                  ],
+                  //*Auger button
+                  addAugerButtons('Auger'),
+                ],
+              ),
+
+              const SizedBox(height: 8),
+
+              //*Trial Pit info tiles ListView
+              Expanded(
+                child: ValueListenableBuilder<Box<TrialPit>>(
+                  valueListenable: Boxes.geTrialPits().listenable(),
+                  builder: (context, box, _) {
+                    return trialPitListViewBuilder(context, madeTrialPits);
+                  },
                 ),
-
-                const SizedBox(height: 8),
-
-                //*Trial Pit info tiles ListView
-                SizedBox(
-                  //TODO: figure out how to make the size dynamic based on screen size
-                  height: 417,
-                  child: ValueListenableBuilder<Box<TrialPit>>(
-                    valueListenable: Boxes.geTrialPits().listenable(),
-                    builder: (context, box, _) {
-                      return trialPitListViewBuilder(context, madeTrialPits);
-                    },
-                  ),
-                ),
-                // buildTrialPitContent(madeTrialPits),
-              ],
-            ),
+              ),
+              // buildTrialPitContent(madeTrialPits),
+            ],
           ),
         ),
 
-        //!PDF generate Floating action button
-        floatingActionButton: isEditing
-            ? FloatingActionButton(
-                tooltip: 'Generate PDF',
-                //TODO: implement pdf view page
-                onPressed: () {
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context){} => const PdfViewPage()));
-                },
-                child: const Icon(Icons.picture_as_pdf_rounded),
-              )
-            : const SizedBox.shrink(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        // //!PDF generate Floating action button
+        // floatingActionButton: isEditing
+        //     ? FloatingActionButton(
+        //         tooltip: 'Generate PDF',
+        //         //TODO: implement pdf view page
+        //         onPressed: () {
+        //         },
+        //         child: const Icon(Icons.picture_as_pdf_rounded),
+        //       )
+        //     : const SizedBox.shrink(),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
 
         //!bottom nav bar
         bottomNavigationBar: BottomAppBar(

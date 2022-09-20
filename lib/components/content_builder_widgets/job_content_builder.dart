@@ -19,7 +19,7 @@ Widget buildJobContent(BuildContext context, User user, List<Job> jobs) {
 
   if (jobs.isEmpty) {
     return const Padding(
-      padding: EdgeInsets.fromLTRB(8,100,8,8),
+      padding: EdgeInsets.fromLTRB(8, 100, 8, 8),
       child: Text('No Jobs Found',
           style: TextStyle(fontSize: 20, color: Colors.grey)),
     );
@@ -81,13 +81,14 @@ Widget buildJobContent(BuildContext context, User user, List<Job> jobs) {
 }
 
 //!Job detail card
-Widget buildJobCard(BuildContext context,  User user, Job job) {
+Widget buildJobCard(BuildContext context, User user, Job job) {
   //details
   final date = DateFormat.yMd().format(DateTime.now());
   final title = job.jobTitle;
   final number = job.jobNumber;
 
   return Card(
+
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(20)),
     ),
@@ -145,20 +146,36 @@ Widget buildJobCard(BuildContext context,  User user, Job job) {
           ),
         ),
         Expanded(
-          child: IconButton(
-            constraints: const BoxConstraints(
-              minWidth: 400,
-              minHeight: 400,
+          child: Container(
+            margin: const EdgeInsets.all(20.0),
+            decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.grey.shade200,),
+            child: IconButton(
+              constraints: const BoxConstraints(
+                minWidth: 400,
+                minHeight: 400,
+              ),
+              //TODO: navigate to PDF on click
+              onPressed: () {
+                final snackBar = SnackBar(
+                  backgroundColor: Colors.grey.shade400,
+                  // width: 100,
+                  content: const Text('Empty PDF: No Job activities found'),
+                  duration: const Duration(seconds: 5),
+                );
+
+                job.trialPitList.isNotEmpty
+                    ? Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PdfViewPage(user: user, job: job),
+                        ),
+                      )
+                    : ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              },
+              icon: const Icon(Icons.picture_as_pdf_rounded),
+              iconSize: 80,
+              color: Colors.green,
             ),
-            //TODO: navigate to PDF on click
-            onPressed: () {Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            PdfViewPage(user: user, job: job)));},
-            icon: const Icon(Icons.picture_as_pdf),
-            iconSize: 110,
-            color: Colors.deepOrange,
           ),
         ),
       ],

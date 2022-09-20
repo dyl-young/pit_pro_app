@@ -19,7 +19,7 @@ class _PdfViewPageState extends State<PdfViewPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
-        title: const Text("PDF"),
+        title: Center(child: const Text("PDF Profile Log")),
       ),
       body: PdfPreview(
         build: (context) => pdfBuildPage(widget.user, widget.job),
