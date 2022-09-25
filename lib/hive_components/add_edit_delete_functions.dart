@@ -1,7 +1,17 @@
 import '../models/layer.dart';
+import '../models/user.dart';
 import 'boxes.dart';
 import '../../models/job.dart';
 import '../../models/trial_pit.dart';
+
+//! User functions
+//*edit user
+void editUser(User user, String name, String company) {
+  user.userName = name;
+  user.institutionName = company;
+
+  user.save();
+}
 
 //! Job functions
 //*add new Job

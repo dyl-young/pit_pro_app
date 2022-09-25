@@ -1,7 +1,5 @@
 import 'package:hive/hive.dart';
 
-import '../constants/layer_properties.dart';
-
 part 'layer.g.dart';
 
 @HiveType(typeId: 3)
@@ -66,14 +64,14 @@ class Layer extends HiveObject {
     List<String> prim = ['Silt', 'Gravel', 'Sand', 'Clay'];
 
 
-    if (revSoilTypes.length >= 1) {
+    if (revSoilTypes.length > 1) {
       for (int i = 1; i < revSoilTypes.length; i++) {
 
         
-        if(sec.contains(revSoilTypes[i])){
+        if(sec.contains(revSoilTypes[i]) || sec.contains(revSoilTypes[i-1])){
           result += ' ${revSoilTypes[i]}';
-        } else if (i == 1) {
-          result += ' ${revSoilTypes[i]}';
+        } else if (i >= 1) {
+          result += ' and ${revSoilTypes[i]}';
         }
         
       }

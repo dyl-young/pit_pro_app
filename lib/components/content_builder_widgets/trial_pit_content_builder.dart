@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import '../../hive_components/add_edit_delete_functions.dart';
 import '../../models/trial_pit.dart';
 import '../../pages/trial_pit_details_page.dart';
-import '../confirm_alert_dialog.dart';
+import '../widgets/confirm_alert_dialog.dart';
 
 //!list view builder
 Widget trialPitListViewBuilder(BuildContext context, List<TrialPit> trialPits) {
@@ -37,7 +37,7 @@ Widget trialPitListViewBuilder(BuildContext context, List<TrialPit> trialPits) {
                   leading: Padding(
                     padding: const EdgeInsets.all(8.0),
                     // child: Icon(Icons.calendar_view_day),
-                    child: Transform.rotate(angle: pi, child: const Icon(Icons.line_style_outlined)),
+                    child: Transform.rotate(angle: pi, child: const Icon(Icons.line_style_outlined, size: 30)),
 
                   ),
 

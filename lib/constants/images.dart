@@ -1,7 +1,3 @@
-import 'dart:typed_data';
-
-import 'package:flutter/services.dart' show rootBundle;
-import 'package:pdf/widgets.dart';
 
 class Images {
   Images._();
@@ -9,9 +5,9 @@ class Images {
   static const String logo = 'assets/su_logo.png';
 
   static const String gravel = 'assets/Gravel.png';  
-  static const String gravelley = 'assets/Gravelley.png'; //TODO: FIX
+  static const String gravelly = 'assets/Gravelly.png'; //TODO: FIX
   static const String clay = 'assets/Clay.png';           
-  static const String calyey = 'assets/Clayey.png';       //TODO: FIX
+  static const String clayey = 'assets/Clayey.png';       //TODO: FIX
   static const String silt = 'assets/Silt.png';           
   static const String silty = 'assets/Silty.png';     
   static const String sand = 'assets/Sand.png';

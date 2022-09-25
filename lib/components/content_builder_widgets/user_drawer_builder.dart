@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pit_pro_app/hive_components/add_edit_delete_functions.dart';
 
 import '../../../models/user.dart';
-import '../info_textbox_widget.dart';
+import '../../pages/user_info_edit_page.dart';
+import '../widgets/info_textbox_widget.dart';
 
 Widget buildUserDrawer(BuildContext context, User user) {
   return ListView(
@@ -69,8 +71,13 @@ Widget buildUserDrawer(BuildContext context, User user) {
       Padding(
         padding: const EdgeInsets.only(left: 110, right: 110),
         child: ElevatedButton(
-          //TODO:Implement Alert dialog box to change user info
-          onPressed: () {},
+          onPressed: () => showDialog(
+            context: context,
+            builder: (context) => UserInfoEditPage(
+              user: user,
+              onClickedDone: ((name, company) => editUser(user, name, company)),
+            ),
+          ),
           child: const Icon(Icons.edit, color: Colors.white),
           // color: Colors.red,
         ),
@@ -109,4 +116,3 @@ Widget bottomSheet() {
 
 //TODO: Implement pick image function
 Future pickImage() async {}
-

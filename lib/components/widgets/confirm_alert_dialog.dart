@@ -28,12 +28,12 @@ Widget confirmDelete(BuildContext context, List<HiveObject>? objList,
             objList!.remove(object); //remove object from object list
             deletObject(object); //delete object from Hive box
           },
-          child: const Text('yes', style: TextStyle(fontSize: 20)),
+          child: const Text('yes', style: TextStyle(fontSize: 16)),
         ),
         //*no button
         TextButton(
           onPressed: Navigator.of(context).pop,
-          child: const Text('no', style: TextStyle(fontSize: 20)),
+          child: const Text('no', style: TextStyle(fontSize: 16)),
         ),
       ],
     ),

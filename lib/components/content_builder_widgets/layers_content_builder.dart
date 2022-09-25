@@ -4,7 +4,7 @@ import 'package:pit_pro_app/hive_components/add_edit_delete_functions.dart';
 
 import '../../models/layer.dart';
 import '../../pages/layer_form_page.dart';
-import '../confirm_alert_dialog.dart';
+import '../widgets/confirm_alert_dialog.dart';
 
 //!list view builder
 Widget layerListViewBuilder(BuildContext context, List<Layer> layers) {
@@ -33,7 +33,7 @@ Widget layerListViewBuilder(BuildContext context, List<Layer> layers) {
                   //*leading icon
                   leading: const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: Icon(Icons.layers_rounded)
+                    child: Icon(Icons.layers_rounded, size: 30)
 
                   ),
 

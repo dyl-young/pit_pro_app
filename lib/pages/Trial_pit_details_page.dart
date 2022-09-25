@@ -6,9 +6,9 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:location/location.dart';
 
 //local imports
-import '../components/buttons.dart';
 import '../components/content_builder_widgets/layers_content_builder.dart';
-import '../components/custom_text_field.dart';
+import '../components/widgets/buttons.dart';
+import '../components/widgets/custom_text_field.dart';
 import '../components/location_services.dart';
 import '../hive_components/boxes.dart';
 import '../models/layer.dart';
@@ -96,7 +96,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
   Widget build(BuildContext context) {
     //detrmine title
     final isEditing = widget.trialPit != null;
-    final title = isEditing ? 'Edit Trial Pit' : 'Create TrialPit';
+    final title = isEditing ? 'Edit Trial Pit' : 'Create Trial Pit';
 
     return WillPopScope(
       //disable back device button on this page

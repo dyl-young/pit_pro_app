@@ -29,12 +29,19 @@ class _HomePageState extends State<HomePage> {
   final _searchController = TextEditingController();
 
   //Initialise App User
-  final User user =
-      User('D Young', 'Stellenbsoch University', Images.logo);
+  late final User user;
 
   //initialise states
   @override
   void initState() {
+    if (Boxes.getUsers().isEmpty) {
+      user = User('', '', Images.logo);
+      final box = Boxes.getUsers();
+      box.add(user);
+    } else {
+      user = Boxes.getUsers().values.first;
+    }
+
     final jobList = Boxes.getJobs().values.toList().cast<Job>();
     reversedJobs = (jobList).reversed.toList();
     foundList = reversedJobs;
@@ -64,8 +71,7 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           title: Row(
             mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center
-            ,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: const [
               Icon(Icons.broken_image_outlined),
               Text(' PIT PRO'),
@@ -111,14 +117,15 @@ class _HomePageState extends State<HomePage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                  Icon(Icons.work_rounded),
-                  Text(
-                    ' Created Jobs',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  )
-                ]),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.work_rounded),
+                      Text(
+                        ' Created Jobs',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      )
+                    ]),
               ),
               SizedBox(
                 // height: 669.5,

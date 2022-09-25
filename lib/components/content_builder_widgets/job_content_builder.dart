@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:pit_pro_app/pages/job_details_page.dart';
 
-import '../../hive_components/boxes.dart';
 import '../../../models/job.dart';
 import '../../models/user.dart';
 import '../../pages/pdf/pfd_view_page.dart';
-import '../confirm_alert_dialog.dart';
+import '../widgets/confirm_alert_dialog.dart';
 import '../../hive_components/add_edit_delete_functions.dart';
 
 Widget buildJobContent(BuildContext context, User user, List<Job> jobs) {
-  final Box box1 = Boxes.getJobs();
-  final Box box2 = Boxes.geTrialPits();
-  final Box box3 = Boxes.getLayers();
+  // final Box box1 = Boxes.getJobs();
+  // final Box box2 = Boxes.geTrialPits();
+  // final Box box3 = Boxes.getLayers();
   final currentWidth = MediaQuery.of(context).size.width;
-  final currentHeight = MediaQuery.of(context).size.height;
+  // final currentHeight = MediaQuery.of(context).size.height;
 
   if (jobs.isEmpty) {
     return const Padding(

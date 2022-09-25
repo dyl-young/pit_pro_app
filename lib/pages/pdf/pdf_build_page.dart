@@ -28,12 +28,12 @@ Future<Uint8List> pdfBuildPage(User user, Job job) async {
   //soil symbols:
   final gravel =
       MemoryImage((await rootBundle.load(Images.gravel)).buffer.asUint8List());
-  final gravelley = MemoryImage(
-      (await rootBundle.load(Images.gravelley)).buffer.asUint8List());
+  final gravelly = MemoryImage(
+      (await rootBundle.load(Images.gravelly)).buffer.asUint8List());
   final clay =
       MemoryImage((await rootBundle.load(Images.clay)).buffer.asUint8List());
-  final calyey =
-      MemoryImage((await rootBundle.load(Images.calyey)).buffer.asUint8List());
+  final clayey =
+      MemoryImage((await rootBundle.load(Images.clayey)).buffer.asUint8List());
   final silt =
       MemoryImage((await rootBundle.load(Images.silt)).buffer.asUint8List());
   final silty =
@@ -67,9 +67,9 @@ Future<Uint8List> pdfBuildPage(User user, Job job) async {
   Map<String, MemoryImage> symbols = {
     'Logo': imageLogo,
     'Gravel': gravel,
-    'Gravelley': gravelley,
+    'Gravelly': gravelly,
     'Clay': clay,
-    'Calyey': calyey,
+    'Clayey': clayey,
     'Silt': silt,
     'Silty': silty,
     'Sand': sand,
@@ -118,11 +118,11 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
               ),
               //titles
               Column(children: [
+                Text(user.institutionName),
                 Padding(
                     padding: const EdgeInsets.all(4),
-                    child: Text('Trial Pit Log',
-                        style: const TextStyle(fontSize: 20))),
-                Text(user.institutionName),
+                    child: Text('Trial Pit Log',style: const TextStyle(fontSize: 20))
+                    ),
                 Text(job.jobTitle,
                     style: TextStyle(fontWeight: FontWeight.bold)),
               ]),
@@ -448,7 +448,7 @@ List<Widget> buildSoilSymbols(double height, ImageProvider image) {
   List<Widget> imageList = [];
   for (var i = 0; i < (count); i++) {
     imageList.add(SizedBox(
-        height: 32, width: 34, child: Image(image, fit: BoxFit.fitWidth)));
+        height: 32, width: 34, child: Image(image, fit: BoxFit.contain)));
     //?try boxfit.contains
   }
   return imageList;

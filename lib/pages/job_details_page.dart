@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 
 //local imports
-import '../components/buttons.dart';
+import '../components/widgets/buttons.dart';
 import '../components/content_builder_widgets/trial_pit_content_builder.dart';
-import '../components/custom_text_field.dart';
+import '../components/widgets/custom_text_field.dart';
 import '../hive_components/boxes.dart';
 import '../models/job.dart';
 import '../models/trial_pit.dart';

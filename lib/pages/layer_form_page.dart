@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pit_pro_app/components/custom_text_field.dart';
+import 'package:pit_pro_app/components/widgets/custom_text_field.dart';
 import 'package:pit_pro_app/constants/layer_properties.dart';
 
-import '../components/buttons.dart';
+import '../components/widgets/buttons.dart';
 import '../models/layer.dart';
 
 //TODO: FIX LAYER DELETE!!!!!!
@@ -248,7 +248,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
 
                 //! Colour: dropdown
                 //TODO: Implement secondary colour description
-                sectionHeading('Soil Colour'),
+                sectionHeading('Colour'),
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -288,7 +288,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
 
                 //! Consistency: multilevel dropdown
                 //* multilevel drop-down menu
-                sectionHeading('Soil Consistency'),
+                sectionHeading('Consistency'),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
@@ -358,7 +358,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
                 ),
 
                 //! Structure: dropdown
-                sectionHeading('Soil Structure'),
+                sectionHeading('Structure'),
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -408,7 +408,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
                 ),
 
                 //! Origin: drop down -> dropdown or -> textField
-                sectionHeading('Soil Origin'),
+                sectionHeading('Origin'),
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
