@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pit_pro_app/components/widgets/custom_text_field.dart';
 import 'package:pit_pro_app/constants/layer_properties.dart';
@@ -17,6 +18,7 @@ class LayerFormPage extends StatefulWidget {
       double depth,
       String moisture,
       String colour,
+      String colourPattern,
       String consistency,
       String structure,
       List<String> soilTypes,
@@ -45,6 +47,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
   String? selectedMoisture;
   //colour
   String? selectedColour;
+  String? selectedColourPattern;
   //consistency
   String? selectedConsistency;
   String? selectedConsistencyType;
@@ -54,12 +57,17 @@ class _LayerFormPageState extends State<LayerFormPage> {
   final _notesController = TextEditingController();
   //soil types
   List<String> selectedSoilTypes = [];
+  final _otherSoilTypeController = TextEditingController();
+  bool visibleOtherST = false;
   //origin
   String? selectedOriginType;
   String? selecetedTransport;
   final _residualController = TextEditingController();
+  bool visibleTransported = true;
+  bool mustIgnore = true;
   //pm
   final _pmController = TextEditingController();
+  bool visiblePM = false;
 
   //* Pedefined layer properties
   //?implemented
@@ -67,6 +75,8 @@ class _LayerFormPageState extends State<LayerFormPage> {
   final List<String> moisture = SoilMoisture().getSoilMoisture();
   //colour
   final List<String> colour = SoilColour().getSoilColour();
+  final List<String> colourPattern = SoilColour().getSoilColourPattern();
+  final Map<String, Color> colourValues = SoilColour().colourValues;
   //consistency
   final List<String> cohesiveConsistency =
       SoilConsistency().getCohesiveConsistency();
@@ -85,16 +95,16 @@ class _LayerFormPageState extends State<LayerFormPage> {
   final List<String> originType = ['Transported Soil', 'Residual Soil'];
   final List<String> transpotOrigin =
       TransportedSoilOrigin().getTransportedSoil();
-  bool visibleTransported = true;
-  bool mustIgnore = true;
-  //pm
-  bool visiblePM = false;
 
   //*Initialise method
   @override
   void initState() {
+    print('1: $selectedColourPattern');
+
     if (widget.layer != null) {
       final layer = widget.layer;
+
+      print('2: $selectedColourPattern');
 
       //depth
       _depthController.text = layer!.depth.toString();
@@ -102,6 +112,13 @@ class _LayerFormPageState extends State<LayerFormPage> {
       selectedMoisture = layer.moisture;
       //colour
       selectedColour = layer.colour;
+      // selectedColourPattern != null
+      //     ? selectedColourPattern = layer.colourPattern
+      //     : selectedColourPattern = '';
+      if (layer.colourPattern != null && layer.colourPattern != '') {
+        selectedColourPattern = layer.colourPattern;
+      }
+
       //consistency
       if (cohesiveConsistency.contains(layer.consistency)) {
         selectedConsistencyType = consistencyType[0];
@@ -127,6 +144,15 @@ class _LayerFormPageState extends State<LayerFormPage> {
           secTypeMap[key] = true;
         }
       });
+      //TODO: testing
+      selectedSoilTypes.forEach((e) {
+        print('entered..................');
+        if (!secTypeMap.keys.contains(e) && !primTypeMap.keys.contains(e)) {
+          visibleOtherST = true;
+          _otherSoilTypeController.text += e;
+        }
+      });
+
       //origin
       if (transpotOrigin.contains(layer.origin)) {
         selectedOriginType = originType[0];
@@ -154,9 +180,10 @@ class _LayerFormPageState extends State<LayerFormPage> {
   @override
   void dispose() {
     _depthController.dispose();
+    _otherSoilTypeController.dispose();
+    _residualController.dispose();
     _notesController.dispose();
     _pmController.dispose();
-    _residualController.dispose();
     super.dispose();
   }
 
@@ -200,13 +227,6 @@ class _LayerFormPageState extends State<LayerFormPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                //! Depth: numeric textfield
-                sectionHeading('Layer Depth'),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: customTextField4('Depth (m)', _depthController),
-                ),
-
                 //! Moisture: drop down
                 sectionHeading('Moisture Content'),
                 Center(
@@ -215,33 +235,33 @@ class _LayerFormPageState extends State<LayerFormPage> {
                     child: SizedBox(
                       width: 300,
                       child: DropdownButtonFormField<String>(
-                          // dropdownColor: Colors.green.shade100,
-                          value: selectedMoisture, //_moistureController.text,
-                          decoration: const InputDecoration(
-                            labelText: '*Soil Moisture Condition',
-                            border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(25)),
-                            ),
+                        // dropdownColor: Colors.green.shade100,
+                        value: selectedMoisture, //_moistureController.text,
+                        decoration: const InputDecoration(
+                          labelText: '*Soil Moisture Condition',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(25)),
                           ),
-                          dropdownColor: Colors.green.shade50,
-                          items: moisture
-                              .map((item) => DropdownMenuItem<String>(
-                                    value: item,
-                                    child: Text(
-                                        item), //style: const TextStyle(color: Colors.green)),
-                                  ))
-                              .toList(),
-                          onChanged: (item) => setState(
-                                () {
-                                  selectedMoisture = item;
-                                },
-                              ),
-                          validator: (title) {
-                            if (title == null) {
-                              return '*Soil Moisture Condition is required';
-                            }
-                          }),
+                        ),
+                        dropdownColor: Colors.green.shade50,
+                        items: moisture
+                            .map((item) => DropdownMenuItem<String>(
+                                  value: item,
+                                  child: Text(
+                                      item), //style: const TextStyle(color: Colors.green)),
+                                ))
+                            .toList(),
+                        onChanged: (item) => setState(
+                          () {
+                            selectedMoisture = item;
+                          },
+                        ),
+                        validator: (title) {
+                          if (title == null) {
+                            return '*Soil Moisture Condition is required';
+                          }
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -268,8 +288,19 @@ class _LayerFormPageState extends State<LayerFormPage> {
                           items: colour
                               .map((item) => DropdownMenuItem<String>(
                                     value: item,
-                                    child: Text(
-                                        item), //style: const TextStyle(color: Colors.green)),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Text(item),
+                                        SizedBox(
+                                            height: 30,
+                                            width: 50,
+                                            child: Container(
+                                                color: colourValues[item])),
+                                      ],
+                                    ),
                                   ))
                               .toList(),
                           onChanged: (item) => setState(
@@ -285,6 +316,46 @@ class _LayerFormPageState extends State<LayerFormPage> {
                     ),
                   ),
                 ),
+
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      width: 300,
+                      child: DropdownButtonFormField<String>(
+                        // dropdownColor: Colors.green.shade100,
+                        value:
+                            selectedColourPattern, //_moistureController.text,
+                        decoration: const InputDecoration(
+                          labelText: 'Colour Pattern',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(25)),
+                          ),
+                        ),
+                        dropdownColor: Colors.green.shade50,
+                        items: colourPattern
+                            .map((item) => DropdownMenuItem<String>(
+                                  value: item,
+                                  child: Text(
+                                      item), //style: const TextStyle(color: Colors.green)),
+                                ))
+                            .toList(),
+                        onChanged: (item) => setState(
+                          () {
+                            selectedColourPattern = item;
+                          },
+                        ),
+                        // validator: (title) {
+                        //   if (title == null) {
+                        //     return '*Soil Colour is required';
+                        //   }
+                        // },
+                      ),
+                    ),
+                  ),
+                ),
+
+                // customDropDownMenu(selectedColourPattern, colourPattern, 'Colour Pattern'),
 
                 //! Consistency: multilevel dropdown
                 //* multilevel drop-down menu
@@ -403,7 +474,46 @@ class _LayerFormPageState extends State<LayerFormPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     checkBoxGroup(primSoilTypes, primTypeMap),
-                    checkBoxGroup(secSoilTypes, secTypeMap)
+                    checkBoxGroup(secSoilTypes, secTypeMap),
+                  ],
+                ),
+                //*other soil types
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 26.25),
+                      child: SizedBox(
+                        width: 165,
+                        child: CheckboxListTile(
+                          // controlAffinity: ListTileControlAffinity.leading,
+                          title: const Text('Other'),
+                          value: visibleOtherST,
+                          onChanged: ((val) {
+                            setState(
+                              () {
+                                visibleOtherST = val!;
+                              },
+                            );
+                          }),
+                        ),
+                      ),
+                    ),
+                    Visibility(
+                      visible: visibleOtherST,
+                      child: SizedBox(
+                        width: 200,
+                        child: TextFormField(
+                          maxLines: 1,
+                          controller: _otherSoilTypeController,
+                          decoration: const InputDecoration(
+                            labelText: 'Other type',
+                            border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(25))),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
 
@@ -411,6 +521,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
                 sectionHeading('Origin'),
                 Center(
                   child: Padding(
+                    //*Primary drop down
                     padding: const EdgeInsets.all(8.0),
                     child: SizedBox(
                       width: 300,
@@ -454,6 +565,8 @@ class _LayerFormPageState extends State<LayerFormPage> {
                     ),
                   ),
                 ),
+
+                //*Transported drop down
                 Visibility(
                   visible: visibleTransported,
                   child: Center(
@@ -494,6 +607,8 @@ class _LayerFormPageState extends State<LayerFormPage> {
                     ),
                   ),
                 ),
+
+                //*Residual text field
                 Visibility(
                   visible: !visibleTransported,
                   child: SizedBox(
@@ -513,6 +628,13 @@ class _LayerFormPageState extends State<LayerFormPage> {
                       ),
                     ),
                   ),
+                ),
+
+                //! Depth: numeric textfield
+                sectionHeading('Layer Depth'),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: customTextField4('Depth (m)', _depthController),
                 ),
 
                 //! Pebble Marker: numeric textfield
@@ -584,17 +706,20 @@ class _LayerFormPageState extends State<LayerFormPage> {
           ],
         ),
         onPressed: () async {
-          selectedSoilTypes = exportSoilTypeValues(primTypeMap, secTypeMap);
-          final isValid = layerFormKey.currentState!.validate();
+          selectedSoilTypes = exportSoilTypeValues(
+              primTypeMap, secTypeMap, _otherSoilTypeController.text);
           final String? originItem;
+
+          final isValid = layerFormKey.currentState!.validate();
 
           if (isValid) {
             final depth = double.tryParse(_depthController.text) ?? 0;
             final moisture = selectedMoisture ?? '';
             final colour = selectedColour ?? '';
+            final colourPattern = selectedColourPattern ?? '';
             final consistency = selectedConsistency ?? '';
             final structure = selectedStructure ?? '';
-            final originType = selectedOriginType??' ';
+            final originType = selectedOriginType ?? ' ';
             selectedOriginType == 'Transported Soil'
                 ? originItem = selecetedTransport
                 : originItem = _residualController.text;
@@ -602,19 +727,32 @@ class _LayerFormPageState extends State<LayerFormPage> {
             final notes = _notesController.text;
             final pm = double.tryParse(_pmController.text) ?? 0;
 
-            print('1 $depth');
-            print('2 $moisture');
-            print('3 $colour');
-            print('4 $consistency');
-            print('5 $structure');
-            print('6 ${selectedSoilTypes.toString()}');
-            print('7 $originType');
-            print('8 $origin');
-            print('9 $pm');
-            print('10 $notes');
-
-            widget.onClickedDone(depth, moisture, colour, consistency,
-                structure, selectedSoilTypes, origin, originType, pm, notes);
+            if (kDebugMode) {
+              print('1 $depth');
+              print('2 $moisture');
+              print('3 $colour');
+              print('3 $colourPattern');
+              print('4 $consistency');
+              print('5 $structure');
+              print('6 ${selectedSoilTypes.toString()}');
+              print('7 $originType');
+              print('8 $origin');
+              print('9 $pm');
+              print('10 $notes');
+            }
+            
+            widget.onClickedDone(
+                depth,
+                moisture,
+                colour,
+                colourPattern,
+                consistency,
+                structure,
+                selectedSoilTypes,
+                origin,
+                originType,
+                pm,
+                notes);
 
             Navigator.of(context).pop();
           }
@@ -709,9 +847,9 @@ class _LayerFormPageState extends State<LayerFormPage> {
     );
   }
 
-  //! Check Boxes for soil types
+  //! extract soil type data from check boxes
   List<String> exportSoilTypeValues(
-      Map<String, bool> map1, Map<String, bool> map2) {
+      Map<String, bool> map1, Map<String, bool> map2, String other) {
     List<String> result = [];
 
     map1.forEach((key, value) {
@@ -719,6 +857,10 @@ class _LayerFormPageState extends State<LayerFormPage> {
         result.add(key);
       }
     });
+
+    if (other.isNotEmpty && visibleOtherST) {
+      result.add(other);
+    }
 
     map2.forEach((key, value) {
       if (value) {
@@ -729,19 +871,21 @@ class _LayerFormPageState extends State<LayerFormPage> {
     return result;
   }
 
+  //! Soil type checkbox group
   Widget checkBoxGroup(List<String> list, Map<String, bool> map) {
     return SizedBox(
-      height: 60 * list.length / 1,
-      width: 165,
+      // height: 60 * list.length / 1,
+      // width: 165,
       child: Column(
         children: [...list.map((e) => customCheckBox(e, map))],
       ),
     );
   }
 
+  //! Soil type checkbox
   Widget customCheckBox(String key, Map<String, bool> map) {
     return SizedBox(
-      width: 170,
+      width: 165,
       child: CheckboxListTile(
         // controlAffinity: ListTileControlAffinity.leading,
         title: Text(key, maxLines: 2),

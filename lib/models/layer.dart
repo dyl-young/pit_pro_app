@@ -30,6 +30,8 @@ class Layer extends HiveObject {
   late DateTime createdDate;
   @HiveField(12)
   late String? originType;
+  @HiveField(13)
+  late String? colourPattern;
 
   // Layer(this.depth, this.moisture, this.colour, this.consistency,
   //     this.structure, this.soilTypes, this.origin, this.note);

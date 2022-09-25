@@ -1,5 +1,9 @@
 // ignore_for_file: constant_identifier_names
 
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
+
 class SoilMoisture {
   static const String DRY = 'Dry';
   static const String S_MOIST = 'Slightly Moist';
@@ -13,30 +17,65 @@ class SoilMoisture {
 }
 
 class SoilColour {
+  //*colour Strings
   static const String D_BROWN = 'Dark Brown';
   static const String M_BROWN = 'Medium Brown';
   static const String L_BROWN = 'Light Brown';
   static const String D_RED_BROWN = 'Dark Red-Brown';
   static const String L_RED_BROWN = 'Light Red-Brown';
-  static const String L_YELLOW = 'Light Yellow';
   static const String D_YELLOW_BROWN = 'Dark Yellow-Brown';
   static const String L_YELLOW_BROWN = 'Light Yellow-Brown';
-  static const String D_GREEN_BROWN = 'Dark Green-Brown';
-  static const String L_GREEN_BROWN = 'Light Green-Brown';
+  static const String L_YELLOW = 'Light Yellow';
   static const String D_ORANGE_BROWN = 'Dark Orange-Brown';
   static const String L_ORANGE_BROWN = 'Light Orange-Brown';
+  static const String D_GREEN_BROWN = 'Dark Green-Brown';
+  static const String L_GREEN_BROWN = 'Light Green-Brown';
   static const String D_GREY = 'Dark Grey';
   static const String M_GREY = 'Medium Grey';
   static const String L_GREY = 'Light Grey';
+  static const String D_GREEN_GREY = 'Dark Green-Grey';
+  static const String L_GREEN_GREY = 'Light Green-Grey';
   static const String D_BLUE_GREY = 'Dark Blue-Grey';
   static const String L_BLUE_GREY = 'Light Blue-Grey';
   static const String D_YELLOW_GREY = 'Dark Yellow-Grey';
   static const String L_YELLOW_GREY = 'Light Yellow-Grey';
-  static const String D_GREEN_GREY = 'Dark Green-Grey';
-  static const String L_GREEN_GREY = 'Light Green-Grey';
   static const String D_OLIVE = 'Dark Olive';
   static const String M_OLIVE = 'Medium Olive';
   static const String L_OLIVE = 'Light Olive';
+
+  //*colour values
+  static const Color D_BROWN_Value = Color.fromARGB(255, 27, 19, 17);
+  static const Color M_BROWN_Value = Color.fromARGB(255, 133, 81, 68);
+  static const Color L_BROWN_Value = Color.fromARGB(255, 177, 135, 121);
+  static const Color D_RED_BROWN_Value = Color.fromARGB(255, 153, 62, 43);
+  static const Color L_RED_BROWN_Value = Color.fromARGB(255, 220, 139, 112);
+  static const Color D_YELLOW_BROWN_Value = Color.fromARGB(255, 82, 49, 33);
+  static const Color L_YELLOW_BROWN_Value = Color.fromARGB(255, 154, 123, 94);
+  static const Color L_YELLOW_Value = Color.fromARGB(255, 229, 212, 156);
+  static const Color D_ORANGE_BROWN_Value = Color.fromARGB(255, 197, 99, 86);
+  static const Color L_ORANGE_BROWN_Value = Color.fromARGB(255, 224, 149, 118);
+  static const Color D_GREEN_BROWN_Value = Color.fromARGB(255, 138, 105, 72);
+  static const Color L_GREEN_BROWN_Value = Color.fromARGB(255, 212, 160, 102);
+  static const Color D_GREY_Value = Color.fromARGB(255, 46, 41, 38);
+  static const Color M_GREY_Value = Color.fromARGB(255, 109, 100, 95);
+  static const Color L_GREY_Value = Color.fromARGB(255, 161, 154, 147);
+  static const Color D_GREEN_GREY_Value = Color.fromARGB(255, 135, 114, 83);
+  static const Color L_GREEN_GREY_Value = Color.fromARGB(255, 184, 165, 133);
+  static const Color D_BLUE_GREY_Value = Color.fromARGB(255, 40, 44, 55);
+  static const Color L_BLUE_GREY_Value = Color.fromARGB(255, 110, 114, 117);
+  static const Color D_YELLOW_GREY_Value = Color.fromARGB(255, 174, 144, 92);
+  static const Color L_YELLOW_GREY_Value = Color.fromARGB(255, 188, 167, 114);
+  static const Color D_OLIVE_Value = Color.fromARGB(255, 160, 160, 124);
+  static const Color M_OLIVE_Value = Color.fromARGB(255, 132, 134, 95);
+  static const Color L_OLIVE_Value = Color.fromARGB(255, 91, 92, 61);
+
+  //*patterns
+  static const String SPECKLED = 'Speckeled ';
+  static const String MOTTLED = 'Mottled ';
+  static const String BLOTCHED = 'Bloctched ';
+  static const String BANDED = 'Banded ';
+  static const String STREAKED = 'Streaked ';
+  static const String STAINED = 'Stained ';
 
   List<String> getSoilColour() {
     return [
@@ -66,6 +105,45 @@ class SoilColour {
       L_OLIVE
     ];
   }
+
+  List<String> getSoilColourPattern() {
+    return [
+      '',
+      SPECKLED,
+      MOTTLED,
+      BLOTCHED,
+      BANDED,
+      STREAKED,
+      STAINED,
+    ];
+  }
+
+  Map<String, Color> colourValues = {
+    D_BROWN: D_BROWN_Value,
+    M_BROWN: M_BROWN_Value,
+    L_BROWN: L_BROWN_Value,
+    D_RED_BROWN: D_RED_BROWN_Value,
+    L_RED_BROWN: L_RED_BROWN_Value,
+    D_YELLOW_BROWN: D_YELLOW_BROWN_Value,
+    L_YELLOW_BROWN: L_YELLOW_BROWN_Value,
+    L_YELLOW: L_YELLOW_Value,
+    D_ORANGE_BROWN: D_ORANGE_BROWN_Value,
+    L_ORANGE_BROWN: L_ORANGE_BROWN_Value,
+    D_GREEN_BROWN: D_GREEN_BROWN_Value,
+    L_GREEN_BROWN: L_GREEN_BROWN_Value,
+    D_GREY: D_GREY_Value,
+    M_GREY: M_GREY_Value,
+    L_GREY: L_GREY_Value,
+    D_GREEN_GREY: D_GREEN_GREY_Value,
+    L_GREEN_GREY: L_GREEN_GREY_Value,
+    D_BLUE_GREY: D_BLUE_GREY_Value,
+    L_BLUE_GREY: L_BLUE_GREY_Value,
+    D_YELLOW_GREY: D_YELLOW_GREY_Value,
+    L_YELLOW_GREY: L_YELLOW_GREY_Value,
+    D_OLIVE: D_OLIVE_Value,
+    M_OLIVE: M_OLIVE_Value,
+    L_OLIVE: L_OLIVE_Value
+  };
 }
 
 class SoilConsistency {

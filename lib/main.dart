@@ -35,8 +35,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: true,
-      showPerformanceOverlay: true,
-      debugShowMaterialGrid: true,
+      showPerformanceOverlay: false,
+      debugShowMaterialGrid: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.green,

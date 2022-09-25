@@ -18,6 +18,7 @@ Widget customTextField(String text, TextEditingController controller) {
   );
 }
 
+//! taller notes text field
 Widget customTextField2(String text, TextEditingController controller) {
   return SizedBox(
     height: 200,
@@ -72,6 +73,24 @@ Widget customTextField4(String text, TextEditingController controller) {
       keyboardType: TextInputType.number,
       validator: (title) =>
           title != null && title.isEmpty ? 'Enter a $text' : null,
+    ),
+  );
+}
+
+Widget customTextField5(String text, TextEditingController controller) {
+  return SizedBox(
+    width: 200,
+    child: TextFormField(
+      maxLines: 1,
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: text,
+        border: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(25))),
+      ),
+      // keyboardType: TextInputType.number,
+      // validator: (title) =>
+      //     title != null && title.isEmpty ? 'Enter a $text' : null,
     ),
   );
 }

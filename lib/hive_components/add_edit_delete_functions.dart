@@ -98,6 +98,7 @@ Future addLayer(
     double depth,
     String moisture,
     String colour,
+    String colourPattern,
     String consistency,
     String structure,
     List<String> soilTypes,
@@ -112,6 +113,7 @@ Future addLayer(
     ..depth = depth
     ..moisture = moisture
     ..colour = colour
+    ..colourPattern = colourPattern
     ..consistency = consistency
     ..structure = structure
     ..soilTypes = soilTypes
@@ -132,6 +134,7 @@ void editLayer(
     double depth,
     String moisture,
     String colour,
+    String colourPattern,
     String consistency,
     String structure,
     List<String> soilTypes,
@@ -144,6 +147,7 @@ void editLayer(
   layer.depth = depth;
   layer.moisture = moisture;
   layer.colour = colour;
+  layer.colourPattern = colourPattern;
   layer.consistency = consistency;
   layer.structure = structure;
   layer.soilTypes = soilTypes;

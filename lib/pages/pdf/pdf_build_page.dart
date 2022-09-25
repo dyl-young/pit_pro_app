@@ -269,7 +269,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                           Text('Layer details:',
                               style: TextStyle(fontWeight: FontWeight.bold)),
                           Text(
-                              '${layers[i].moisture}, ${layers[i].colour}, ${layers[i].consistency}, ${layers[i].soilToString()}, ${layers[i].structure}, ${layers[i].originType}: ${layers[i].origin}'),
+                              '${layers[i].moisture}, ${layers[i].colourPattern}${layers[i].colour}, ${layers[i].consistency}, ${layers[i].soilToString()}, ${layers[i].structure}, ${layers[i].originType}: ${layers[i].origin}'),
                           Text('Notes:',
                               style: TextStyle(fontWeight: FontWeight.bold)),
                           Text('${layers[i].notes}')

@@ -37,7 +37,7 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
     if (widget.job != null) {
       final job = widget.job!;
 
-      //! Get relevant objects from the object box using the created date (kill me) 
+      //! Get relevant objects from the object box using the created date (kill me)
       for (var i = 0; i < Boxes.geTrialPits().values.toList().length; i++) {
         for (var j = 0; j < job.trialPitList.length; j++) {
           Boxes.geTrialPits().values.toList()[i].createdDate ==
@@ -67,107 +67,216 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
     //detrmine title
     final isEditing = widget.job != null;
     final title = isEditing ? 'Edit Job' : 'Create Job';
+    final currentWidth = MediaQuery.of(context).size.width;
 
-    return WillPopScope(
-      //disable back device button on this page
-      onWillPop: () async => false,
-      child: Scaffold(
-        //avoid pixel overflow due to keyboard
-        resizeToAvoidBottomInset: false,
-        //! appbar
-        appBar: AppBar(
-          title: Row(
-            mainAxisSize: MainAxisSize.min,
-             mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const Icon(Icons.work_rounded),
-              Text(' $title'),
+    if (currentWidth < 650) {
+      return WillPopScope(
+        //disable back device button on this page
+        onWillPop: () async => false,
+        child: Scaffold(
+          //avoid pixel overflow due to keyboard
+          resizeToAvoidBottomInset: false,
+          //! appbar
+          appBar: AppBar(
+            title: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                const Icon(Icons.work_rounded),
+                Text(' $title'),
+              ],
+            ),
+            centerTitle: true,
+            //*disable automatic back button
+            automaticallyImplyLeading: false,
+
+            //*Cancel button
+            actions: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: cancelButton(context, madeTrialPits, !isEditing),
+              ),
             ],
           ),
-          centerTitle: true,
-          //*disable automatic back button
-          automaticallyImplyLeading: false,
 
-          //*Cancel button
-          actions: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: cancelButton(context, madeTrialPits, !isEditing),
+          //! Job widgets:
+          body: Form(
+            key: jobFormKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 8), //?difference
+
+                //Job Details:
+                //*Heading
+                sectionHeading('Job Details'),
+
+                //*job title
+                customTextField('*Job Title', _jobTitleController),
+
+                //*job number
+                customTextField('*Job Number', _jobNumController),
+
+                const SizedBox(height: 8),
+
+                //*Trial Pits Heading
+                sectionHeading('Job Activities'),
+
+                const SizedBox(height: 8),
+
+                //*Add Trial Pit button
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    //*Borehole button
+                    addBoreholeButtons('Borehole'),
+
+                    //*Trial Pit button
+                    addTrialPittButton(context, madeTrialPits, 'Trial Pit'),
+
+                    //*Auger button
+                    addAugerButtons('Auger'),
+                  ],
+                ),
+
+                const SizedBox(height: 8),
+
+                //*Trial Pit info tiles ListView
+                Expanded(
+                  child: ValueListenableBuilder<Box<TrialPit>>(
+                    valueListenable: Boxes.geTrialPits().listenable(),
+                    builder: (context, box, _) {
+                      return trialPitListViewBuilder(context, madeTrialPits);
+                    },
+                  ),
+                ),
+                // buildTrialPitContent(madeTrialPits),
+              ],
             ),
-          ],
+          ),
+
+          //!bottom nav bar
+          bottomNavigationBar: BottomAppBar(
+            color: Colors.green,
+            shape: const CircularNotchedRectangle(), //shape of notch
+            notchMargin: isEditing ? 5 : 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                //save button
+                buildSaveButton(context, isEditing: isEditing),
+              ],
+            ),
+          ),
         ),
+      );
+    } else {
+       return WillPopScope(
+        //disable back device button on this page
+        onWillPop: () async => false,
+        child: Scaffold(
+          //avoid pixel overflow due to keyboard
+          resizeToAvoidBottomInset: false,
+          //! appbar
+          appBar: AppBar(
+            title: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                const Icon(Icons.work_rounded),
+                Text(' $title'),
+              ],
+            ),
+            centerTitle: true,
+            //*disable automatic back button
+            automaticallyImplyLeading: false,
 
-        //! Job widgets:
-        body: Form(
-          key: jobFormKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 8), //?difference
-
-              //Job Details:
-              //*Heading
-              sectionHeading('Job Details'),
-
-              //*job title
-              customTextField('*Job Title', _jobTitleController),
-
-              //*job number
-              customTextField('*Job Number', _jobNumController),
-
-              const SizedBox(height: 8),
-
-              //*Trial Pits Heading
-              sectionHeading('Job Activities'),
-
-              const SizedBox(height: 8),
-
-              //*Add Trial Pit button
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  //*Borehole button
-                  addBoreholeButtons('Borehole'),
-
-                  //*Trial Pit button
-                  addTrialPittButton(context, madeTrialPits, 'Trial Pit'),
-
-                  //*Auger button
-                  addAugerButtons('Auger'),
-                ],
+            //*Cancel button
+            actions: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: cancelButton(context, madeTrialPits, !isEditing),
               ),
+            ],
+          ),
 
-              const SizedBox(height: 8),
-
-              //*Trial Pit info tiles ListView
-              Expanded(
-                child: ValueListenableBuilder<Box<TrialPit>>(
-                  valueListenable: Boxes.geTrialPits().listenable(),
-                  builder: (context, box, _) {
-                    return trialPitListViewBuilder(context, madeTrialPits);
-                  },
+          //! Job widgets:
+          body: SingleChildScrollView(
+            child: SizedBox(
+              height: 500,
+              child: Form(
+                key: jobFormKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 8), //?difference
+          
+                    //Job Details:
+                    //*Heading
+                    sectionHeading('Job Details'),
+          
+                    //*job title
+                    customTextField('*Job Title', _jobTitleController),
+          
+                    //*job number
+                    customTextField('*Job Number', _jobNumController),
+          
+                    const SizedBox(height: 8),
+          
+                    //*Trial Pits Heading
+                    sectionHeading('Job Activities'),
+          
+                    const SizedBox(height: 8),
+          
+                    //*Add Trial Pit button
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        //*Borehole button
+                        addBoreholeButtons('Borehole'),
+          
+                        //*Trial Pit button
+                        addTrialPittButton(context, madeTrialPits, 'Trial Pit'),
+          
+                        //*Auger button
+                        addAugerButtons('Auger'),
+                      ],
+                    ),
+          
+                    const SizedBox(height: 8),
+          
+                    //*Trial Pit info tiles ListView
+                    Expanded(
+                      child: ValueListenableBuilder<Box<TrialPit>>(
+                        valueListenable: Boxes.geTrialPits().listenable(),
+                        builder: (context, box, _) {
+                          return trialPitListViewBuilder(context, madeTrialPits);
+                        },
+                      ),
+                    ),
+                    // buildTrialPitContent(madeTrialPits),
+                  ],
                 ),
               ),
-              // buildTrialPitContent(madeTrialPits),
-            ],
+            ),
           ),
-        ),
 
-        //!bottom nav bar
-        bottomNavigationBar: BottomAppBar(
-          color: Colors.green,
-          shape: const CircularNotchedRectangle(), //shape of notch
-          notchMargin: isEditing ? 5 : 0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              //save button
-              buildSaveButton(context, isEditing: isEditing),
-            ],
+          //!bottom nav bar
+          bottomNavigationBar: BottomAppBar(
+            color: Colors.green,
+            shape: const CircularNotchedRectangle(), //shape of notch
+            notchMargin: isEditing ? 5 : 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                //save button
+                buildSaveButton(context, isEditing: isEditing),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   //!create/save button

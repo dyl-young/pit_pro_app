@@ -62,6 +62,7 @@ class _HomePageState extends State<HomePage> {
       //when the custon drawer is opended
       onTap: () {
         final FocusScopeNode currentScope = FocusScope.of(context);
+        // FocusManager.instance.primaryFocus.unfocus();
         if (!currentScope.hasPrimaryFocus && currentScope.hasFocus) {
           FocusManager.instance.primaryFocus?.unfocus();
         }
@@ -115,21 +116,17 @@ class _HomePageState extends State<HomePage> {
               //*listenable Box List :
               //returns a list of detail cards built in test_pit_content builder
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(4.0),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
                       Icon(Icons.work_rounded),
-                      Text(
-                        ' Created Jobs',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
-                      )
+                      Text(' Created Jobs', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))
                     ]),
               ),
               SizedBox(
                 // height: 669.5,
-                height: MediaQuery.of(context).size.height - 235,
+                height: MediaQuery.of(context).size.height - 220,
                 child: ValueListenableBuilder<Box<Job>>(
                   valueListenable: Boxes.getJobs().listenable(),
                   builder: (context, box, _) {
