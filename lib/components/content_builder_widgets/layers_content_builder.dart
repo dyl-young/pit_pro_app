@@ -15,60 +15,62 @@ Widget layerListViewBuilder(BuildContext context, List<Layer> layers) {
             child: Text('No Layers Found',
                 style: TextStyle(color: Colors.grey, fontSize: 20))));
   } else {
-    return ListView(
-      children: [
-        ...layers.map(
-          (e) => Padding(
-            padding: const EdgeInsets.all(4.0),
-            child:  Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-                color: Color.fromARGB(255, 219, 219, 219),
-              ),
-              child: Theme(
-                data: Theme.of(context)
-                    .copyWith(dividerColor: Colors.transparent),
-                child: ExpansionTile(
-
-                  //*leading icon
-                  leading: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Icon(Icons.layers_rounded, size: 30)
-
-                  ),
-
-                  //*date
-                  title: Text(
-                    DateFormat.yMd().format(e.createdDate),
-                    style: const TextStyle(color: Colors.grey, fontSize: 13),
-                  ),
-
-                  //*Hole number heaidng
-                  subtitle: Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Layer: ${layers.lastIndexOf(e) + 1}',
-                          style: const TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
-                        ),
-                        Text('layer Depth: ${e.depth} m')
-                      ],
+    return Scrollbar(
+      child: ListView(
+        children: [
+          ...layers.map(
+            (e) => Padding(
+              padding: const EdgeInsets.fromLTRB(10,4,10,4),
+              child:  Container(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  color: Color.fromARGB(255, 219, 219, 219),
+                ),
+                child: Theme(
+                  data: Theme.of(context)
+                      .copyWith(dividerColor: Colors.transparent),
+                  child: ExpansionTile(
+      
+                    //*leading icon
+                    leading: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Icon(Icons.layers_rounded, size: 30)
+      
                     ),
+      
+                    //*date
+                    title: Text(
+                      DateFormat.yMd().format(e.createdDate),
+                      style: const TextStyle(color: Colors.grey, fontSize: 13),
+                    ),
+      
+                    //*Hole number heaidng
+                    subtitle: Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Layer: ${layers.lastIndexOf(e) + 1}',
+                            style: const TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                          Text('layer Depth: ${e.depth} m')
+                        ],
+                      ),
+                    ),
+      
+                    children: [
+                      buildLayerButtons(context, layers, e),
+                    ],
                   ),
-
-                  children: [
-                    buildLayerButtons(context, layers, e),
-                  ],
                 ),
               ),
+      
             ),
-
-          ),
-        )
-      ],
+          )
+        ],
+      ),
     );
   }
 }

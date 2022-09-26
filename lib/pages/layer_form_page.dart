@@ -36,7 +36,6 @@ class _LayerFormPageState extends State<LayerFormPage> {
   //*Note wt and pwt will be set in pdf gen
   //*Layer Attributes  (values to pass to addLayer on save)
 
-  //?implemented:
   //depth
   final _depthController = TextEditingController();
   //moisture

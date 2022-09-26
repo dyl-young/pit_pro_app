@@ -55,22 +55,24 @@ Widget buildJobContent(BuildContext context, User user, List<Job> jobs) {
         //!Grid view display of all Job detail cards
         //returns detail cards built with buildJobCard widget
         Expanded(
-          child: GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: currentWidth < 500
-                  ? 2
-                  : currentWidth < 650
-                      ? 3
-                      : 4,
-              crossAxisSpacing: 4,
-              mainAxisSpacing: 4,
-              childAspectRatio: 1 / 1.3,
+          child: Scrollbar(
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: currentWidth < 500
+                    ? 2
+                    : currentWidth < 650
+                        ? 3
+                        : 4,
+                crossAxisSpacing: 4,
+                mainAxisSpacing: 4,
+                childAspectRatio: 1 / 1.3,
+              ),
+              itemCount: jobs.length,
+              itemBuilder: (BuildContext context, int index) {
+                final job = jobs[index];
+                return buildJobCard(context, user, job);
+              },
             ),
-            itemCount: jobs.length,
-            itemBuilder: (BuildContext context, int index) {
-              final job = jobs[index];
-              return buildJobCard(context, user, job);
-            },
           ),
         ),
       ],

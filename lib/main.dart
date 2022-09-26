@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:pit_pro_app/models/job.dart'; 
+import 'package:pit_pro_app/models/job.dart';
 import 'package:pit_pro_app/models/layer.dart';
 import 'package:pit_pro_app/models/trial_pit.dart';
 import 'package:pit_pro_app/models/user.dart';
@@ -39,6 +39,11 @@ class MyApp extends StatelessWidget {
       debugShowMaterialGrid: false,
       title: 'Flutter Demo',
       theme: ThemeData(
+        scrollbarTheme: const ScrollbarThemeData().copyWith(
+            thickness: MaterialStateProperty.all(6),
+            radius: const Radius.circular(5),
+            crossAxisMargin: 2,
+            thumbColor: MaterialStateProperty.all(Colors.green)),
         primarySwatch: Colors.green,
       ),
       home: const HomePage(),

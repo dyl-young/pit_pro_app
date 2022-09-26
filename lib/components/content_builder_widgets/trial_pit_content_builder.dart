@@ -17,63 +17,65 @@ Widget trialPitListViewBuilder(BuildContext context, List<TrialPit> trialPits) {
             child: Text('No Activities Found',
                 style: TextStyle(color: Colors.grey, fontSize: 20))));
   } else {
-    return ListView(
-      children: [
-        ...trialPits.map(
-          (e) => Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-                color: Color.fromARGB(255, 219, 219, 219),
-              ),
-              child: Theme(
-                data: Theme.of(context)
-                    .copyWith(dividerColor: Colors.transparent),
-                child: ExpansionTile(
-                  // tilePadding: const EdgeInsets.all(1),
-
-                  //*leading icon
-                  leading: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    // child: Icon(Icons.calendar_view_day),
-                    child: Transform.rotate(angle: pi, child: const Icon(Icons.line_style_outlined, size: 30)),
-
-                  ),
-
-                  //*date
-                  title: Text(
-                    DateFormat.yMd().format(e.createdDate),
-                    style: const TextStyle(color: Colors.grey, fontSize: 13),
-                  ),
-
-                  //*Hole number heaidng
-                  subtitle: Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Hole No: ${e.pitNumber}',
-                          style: const TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
-                        ),
-                        Text('no of layers: ${e.layersList.length}')
-                      ],
+    return Scrollbar(
+      child: ListView(
+        children: [
+          ...trialPits.map(
+            (e) => Padding(
+              padding: const EdgeInsets.fromLTRB(10,4,10,4),
+              child: Container(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  color: Color.fromARGB(255, 219, 219, 219),
+                ),
+                child: Theme(
+                  data: Theme.of(context)
+                      .copyWith(dividerColor: Colors.transparent),
+                  child: ExpansionTile(
+                    // tilePadding: const EdgeInsets.all(1),
+    
+                    //*leading icon
+                    leading: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      // child: Icon(Icons.calendar_view_day),
+                      child: Transform.rotate(angle: pi, child: const Icon(Icons.line_style_outlined, size: 30)),
+    
                     ),
+    
+                    //*date
+                    title: Text(
+                      DateFormat.yMd().format(e.createdDate),
+                      style: const TextStyle(color: Colors.grey, fontSize: 13),
+                    ),
+    
+                    //*Hole number heaidng
+                    subtitle: Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Hole No: ${e.pitNumber}',
+                            style: const TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                          Text('no of layers: ${e.layersList.length}')
+                        ],
+                      ),
+                    ),
+                    //!Pit index in list of pits -> use this for the layers tile cards
+                    // title: Text('Trial Pit: ${trialPits.lastIndexOf(e) + 1}'),
+    
+                    children: [
+                      buildTrialPitButtons(context, trialPits, e),
+                    ],
                   ),
-                  //!Pit index in list of pits -> use this for the layers tile cards
-                  // title: Text('Trial Pit: ${trialPits.lastIndexOf(e) + 1}'),
-
-                  children: [
-                    buildTrialPitButtons(context, trialPits, e),
-                  ],
                 ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -96,9 +98,9 @@ Widget buildTrialPitButtons(
               builder: (context) => TrialPitDetailsPage(
                 trialPit: trialPit,
                 onClickedDone:
-                    (pitNumber, wt, coords, elevation, layersList) =>
-                        editTrialPit(trialPit, wt, pitNumber, coords,
-                            elevation, layersList),
+                    (pitNumber, coords, elevation, wt, layersList, contractor, machine, imagePath, notes) =>
+                        editTrialPit(trialPit, pitNumber, coords,
+                            elevation, wt, layersList, contractor, machine, imagePath, notes),
               ),
             ),
           ),

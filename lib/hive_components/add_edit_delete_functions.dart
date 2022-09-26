@@ -49,35 +49,53 @@ void deleteJob(Job job) {
 //*add Trial Pit
 Future addTrialPit(
     List<TrialPit> trialPits,
-    double wt,
-    // double pwt,
     String number,
     List<double> coords,
     double elevation,
-    List<Layer> layers) async {
+    double wt,
+    List<Layer> layers,
+    String contractor,
+    String machine,
+    String imagePath,
+    String notes) async {
   final box = Boxes.geTrialPits();
   final TrialPit trialPit = TrialPit()
     ..pitNumber = number
     ..createdDate = DateTime.now()
-    ..wtDepth = wt
-    // ..pwtDepth = pwt
     ..coordinates = coords
     ..elevation = elevation
-    ..layersList = layers;
-
+    ..wtDepth = wt
+    ..layersList = layers
+    ..contractor = contractor
+    ..machine = machine
+    ..imagePath = imagePath
+    ..notes = notes;
+    
   trialPits.add(trialPit);
   box.add(trialPit);
 }
 
 //*edit Trial Pit
-void editTrialPit(TrialPit trialPit, double wt, String number,
-    List<double> coords, double elevation, List<Layer> layers) {
+void editTrialPit(
+    TrialPit trialPit,
+    String number,
+    List<double> coords,
+    double elevation,
+    double wt,
+    List<Layer> layers,
+    String contractor,
+    String machine,
+    String imagePath,
+    String notes) {
   trialPit.pitNumber = number;
-  trialPit.wtDepth = wt;
-  // trialPit.pwtDepth = pwt;
   trialPit.coordinates = coords;
   trialPit.elevation = elevation;
+  trialPit.wtDepth = wt;
   trialPit.layersList = layers;
+  trialPit.contractor = contractor;
+  trialPit.machine = machine;
+  trialPit.imagePath = imagePath;
+  trialPit.notes = notes;
 
   trialPit.save();
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 //*rounded Textfield
 Widget customTextField(String text, TextEditingController controller) {
   return Padding(
-    padding: const EdgeInsets.all(8.0),
+    padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
     child: TextFormField(
       maxLines: 1,
       controller: controller,
@@ -21,10 +21,11 @@ Widget customTextField(String text, TextEditingController controller) {
 //! taller notes text field
 Widget customTextField2(String text, TextEditingController controller) {
   return SizedBox(
-    height: 200,
+    height: 125,
     child: Padding(
-      padding: const EdgeInsets.all(8.0),
+    padding: const EdgeInsets.fromLTRB(0, 8, 8, 0),
       child: TextFormField(
+        textInputAction: TextInputAction.newline,
         maxLines: 4,
         controller: controller,
         decoration: InputDecoration(
@@ -77,29 +78,32 @@ Widget customTextField4(String text, TextEditingController controller) {
   );
 }
 
+//! smaller for charcaters
 Widget customTextField5(String text, TextEditingController controller) {
-  return SizedBox(
-    width: 200,
-    child: TextFormField(
-      maxLines: 1,
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: text,
-        border: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(25))),
+  return Padding(
+    padding: const EdgeInsets.only(left: 2, right: 2),
+    child: SizedBox(
+      width: 200,
+      child: TextFormField(
+        maxLines: 1,
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: text,
+          border: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(25))),
+        ),
+        // keyboardType: TextInputType.number,
+        // validator: (title) =>
+        //     title != null && title.isEmpty ? 'Enter a $text' : null,
       ),
-      // keyboardType: TextInputType.number,
-      // validator: (title) =>
-      //     title != null && title.isEmpty ? 'Enter a $text' : null,
     ),
   );
 }
 
-
 //*Headings
 Widget sectionHeading(String heading) {
   return Padding(
-    padding: const EdgeInsets.all(8.0),
+    padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
     child: Text(
       heading,
       style: const TextStyle(
@@ -113,12 +117,15 @@ Widget sectionHeading(String heading) {
 
 //*smaller Headings
 Widget subSectionHeading(String heading) {
-  return Text(
-    heading,
-    style: const TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 14,
-      color: Colors.green,
+  return Padding(
+    padding: const EdgeInsets.fromLTRB(8, 6, 8, 0),
+    child: Text(
+      heading,
+      style: const TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 16,
+        color: Colors.green,
+      ),
     ),
   );
 }

@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
               ),
-
+        
               //!Job card view
               //*listenable Box List :
               //returns a list of detail cards built in test_pit_content builder
@@ -142,7 +142,7 @@ class _HomePageState extends State<HomePage> {
                     final jobs = box.values.toList().cast<Job>();
                     reversedJobs = jobs.reversed.toList();
                     List<Job> answerList;
-
+        
                     if (!searching) {
                       //not searching -> display full list
                       answerList = reversedJobs;
