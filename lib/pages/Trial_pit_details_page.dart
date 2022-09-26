@@ -35,14 +35,16 @@ class TrialPitDetailsPage extends StatefulWidget {
 }
 
 class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
-  //*attributes
+  //*local attributes
   final pitFormKey = GlobalKey<FormState>();
   final _pitNumController = TextEditingController();
   final _xCoordController = TextEditingController();
   final _yCoordController = TextEditingController();
   final _elevationController = TextEditingController();
   final _waterTableController = TextEditingController();
-  // final _perchedWaterTableController = TextEditingController();
+  final _contractorController = TextEditingController();
+  final _machineController = TextEditingController();
+  final _notesController = TextEditingController();
 
   late List<Layer> madeLayers = [];
 
@@ -53,9 +55,9 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
   void initState() {
     Boxes.geTrialPits();
     Boxes.getLayers();
+
     if (widget.trialPit != null) {
       final trialPit = widget.trialPit!;
-      // madeLayers = trialPit.layersList;
 
       //! Get relevant objects from the object box using the created date (kill me)
       for (var i = 0; i < Boxes.getLayers().values.toList().length; i++) {
@@ -68,13 +70,15 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
       }
 
       _pitNumController.text = trialPit.pitNumber;
-
       _waterTableController.text = trialPit.wtDepth.toString();
-      // _perchedWaterTableController.text = trialPit.pwtDepth.toString();
 
       _xCoordController.text = trialPit.coordinates[0].toString();
       _yCoordController.text = trialPit.coordinates[1].toString();
       _elevationController.text = trialPit.elevation.toString();
+
+      _contractorController.text = trialPit.contractor;
+      _machineController.text = trialPit.machine;
+      _notesController.text = trialPit.notes;
     }
     super.initState();
   }
@@ -87,7 +91,9 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
     _yCoordController.dispose();
     _elevationController.dispose();
     _waterTableController.dispose();
-    // _perchedWaterTableController.dispose();
+    _contractorController.dispose();
+    _machineController.dispose();
+    _notesController.dispose();
 
     super.dispose();
   }
@@ -97,6 +103,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
     //detrmine title
     final isEditing = widget.trialPit != null;
     final title = isEditing ? 'Edit Trial Pit' : 'Create Trial Pit';
+    //detrmine layout/orientation
     final currentWidth = MediaQuery.of(context).size.width;
 
     if (currentWidth < 650) {
@@ -234,6 +241,8 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
           ),
         ),
       );
+
+      //TODO: Change wide layout format to inclue new fields 
     } else {
       return WillPopScope(
         //disable back device button on this page
@@ -396,7 +405,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
   //!create/save button
   Widget buildSaveButton(BuildContext context, {required bool isEditing}) {
     final text = isEditing ? 'Save ' : 'Create TrialPit ';
-    
+
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: ElevatedButton(

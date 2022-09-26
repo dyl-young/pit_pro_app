@@ -1,13 +1,13 @@
 
 class Images {
-  Images._();
+  // Images._(); //?
 
   static const String logo = 'assets/su_logo.png';
 
   static const String gravel = 'assets/Gravel.png';  
-  static const String gravelly = 'assets/Gravelly.png'; //TODO: FIX
+  static const String gravelly = 'assets/Gravelly.png';
   static const String clay = 'assets/Clay.png';           
-  static const String clayey = 'assets/Clayey.png';       //TODO: FIX
+  static const String clayey = 'assets/Clayey.png';
   static const String silt = 'assets/Silt.png';           
   static const String silty = 'assets/Silty.png';     
   static const String sand = 'assets/Sand.png';
@@ -23,8 +23,3 @@ class Images {
 
   static const String defaultImage = 'assets/Default_Image.png';
 }
-
-// Future<MemoryImage> pics() async {
-// MemoryImage picture = MemoryImage((await rootBundle.load('assets/$Images.logo')).buffer.asUint8List());
-// return picture;
-// }

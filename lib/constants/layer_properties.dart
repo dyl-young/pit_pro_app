@@ -4,6 +4,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+// TODO: add additional options from SAICE Recomendations 
+
 class SoilMoisture {
   static const String DRY = 'Dry';
   static const String S_MOIST = 'Slightly Moist';

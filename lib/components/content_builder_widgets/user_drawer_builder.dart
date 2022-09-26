@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
 import 'package:pit_pro_app/hive_components/add_edit_delete_functions.dart';
 
 import '../../../models/user.dart';
@@ -13,9 +11,9 @@ Widget buildUserDrawer(
     BuildContext context, User user, Function getImageFromGallery) {
   ImageProvider displayImage;
 
-  // (user.institutionLogo != 'assets/su_logo.png')
-  displayImage = FileImage(File(user.institutionLogo));
-  // : displayImage = const AssetImage('assets/su_logo.png');
+  (user.institutionLogo != 'assets/su_logo.png')
+  ? displayImage = FileImage(File(user.institutionLogo))
+  : displayImage = const AssetImage('assets/su_logo.png');
 
   return ListView(
     children: [
@@ -125,23 +123,5 @@ Widget bottomSheet(BuildContext context, Function getImageFromGallery) {
         ),
       ],
     ),
-  );
-}
-
-void showSnackBarAsBottomSheet(BuildContext context, String message) {
-  showModalBottomSheet<void>(
-    context: context,
-    barrierColor: const Color.fromRGBO(0, 0, 0, 0),
-    builder: (BuildContext context) {
-      Future.delayed(const Duration(seconds: 30), () {
-        try {
-          Navigator.pop(context);
-        } on Exception {}
-      });
-      return Container(
-          color: Colors.grey,
-          padding: const EdgeInsets.all(12),
-          child: Wrap(children: [Text(message)]));
-    },
   );
 }

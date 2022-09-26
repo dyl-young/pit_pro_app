@@ -6,9 +6,6 @@ import 'package:pit_pro_app/constants/layer_properties.dart';
 import '../components/widgets/buttons.dart';
 import '../models/layer.dart';
 
-//TODO: FIX LAYER DELETE!!!!!!
-//TODO: FIX SAVE BUTON ON EDIT PAGE
-
 class LayerFormPage extends StatefulWidget {
   const LayerFormPage({Key? key, this.layer, required this.onClickedDone})
       : super(key: key);
@@ -40,7 +37,6 @@ class _LayerFormPageState extends State<LayerFormPage> {
   //*Layer Attributes  (values to pass to addLayer on save)
 
   //?implemented:
-  //TODO: check final vs late vs ? changes
   //depth
   final _depthController = TextEditingController();
   //moisture
@@ -99,12 +95,8 @@ class _LayerFormPageState extends State<LayerFormPage> {
   //*Initialise method
   @override
   void initState() {
-    print('1: $selectedColourPattern');
-
     if (widget.layer != null) {
       final layer = widget.layer;
-
-      print('2: $selectedColourPattern');
 
       //depth
       _depthController.text = layer!.depth.toString();
@@ -144,14 +136,12 @@ class _LayerFormPageState extends State<LayerFormPage> {
           secTypeMap[key] = true;
         }
       });
-      //TODO: testing
-      selectedSoilTypes.forEach((e) {
-        print('entered..................');
+      for (var e in selectedSoilTypes) {
         if (!secTypeMap.keys.contains(e) && !primTypeMap.keys.contains(e)) {
           visibleOtherST = true;
           _otherSoilTypeController.text += e;
         }
-      });
+      }
 
       //origin
       if (transpotOrigin.contains(layer.origin)) {
@@ -260,6 +250,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
                           if (title == null) {
                             return '*Soil Moisture Condition is required';
                           }
+                          return null;
                         },
                       ),
                     ),
@@ -267,7 +258,6 @@ class _LayerFormPageState extends State<LayerFormPage> {
                 ),
 
                 //! Colour: dropdown
-                //TODO: Implement secondary colour description
                 sectionHeading('Colour'),
                 Center(
                   child: Padding(
@@ -312,6 +302,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
                             if (title == null) {
                               return '*Soil Colour is required';
                             }
+                            return null;
                           }),
                     ),
                   ),
@@ -421,6 +412,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
                             if (title == null) {
                               return '*Consistency is required';
                             }
+                            return null;
                           },
                         ),
                       ),
@@ -462,6 +454,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
                             if (title == null) {
                               return '*Soil Structure is required';
                             }
+                            return null;
                           }),
                     ),
                   ),
@@ -561,6 +554,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
                             if (title == null) {
                               return '*Soil Origin is required';
                             }
+                            return null;
                           }),
                     ),
                   ),
@@ -601,6 +595,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
                                 if (title == null) {
                                   return '*Transported Soil is required';
                                 }
+                                return null;
                               }),
                         ),
                       ),
@@ -795,6 +790,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
                 if (title == null) {
                   return '$label is required';
                 }
+                return null;
               }),
         ),
       ),
@@ -841,6 +837,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
                 if (title == null) {
                   return '$label is required';
                 }
+                return null;
               }),
         ),
       ),

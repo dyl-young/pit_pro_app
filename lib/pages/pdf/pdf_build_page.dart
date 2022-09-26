@@ -22,7 +22,6 @@ Future<Uint8List> pdfBuildPage(User user, Job job) async {
 
   //User Logo:
   final MemoryImage imageLogo;
-  // final ioFile imageFile =
 
   (user.institutionLogo != 'assets/su_logo.png')
       ? imageLogo = MemoryImage(io.File(user.institutionLogo).readAsBytesSync())
@@ -58,8 +57,6 @@ Future<Uint8List> pdfBuildPage(User user, Job job) async {
   //markers
   final wt =
       MemoryImage((await rootBundle.load(Images.wt)).buffer.asUint8List());
-  // final pwt =
-  //     MemoryImage((await rootBundle.load(Images.pwt)).buffer.asUint8List());
   final pm =
       MemoryImage((await rootBundle.load(Images.pm)).buffer.asUint8List());
 
@@ -83,7 +80,6 @@ Future<Uint8List> pdfBuildPage(User user, Job job) async {
     'Boulders': boulders,
     'Scattered Boulders': scatteredBouldersoulders,
     'WT': wt,
-    // 'PWT': pwt,
     'PM': pm,
   };
 
@@ -105,7 +101,6 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
   double cumulativeDepth = 0;
 
   bool wtFound = false;
-  // bool pwtFound = false;
 
   if (trialPit.layersList.isNotEmpty) {
     return pdf.addPage(
@@ -115,40 +110,53 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
           children: [
             //!Header
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              //logo
+              //*logo
               Positioned.fill(
-                child: Image(symbols['Logo'] ?? defaultImage,
-                    height: 140, width: 120, fit: BoxFit.contain),
+                child: Image(
+                  symbols['Logo'] ?? defaultImage,
+                  height: 60,
+                  width: 120,
+                  fit: BoxFit.fitWidth,
+                ),
               ),
-              //titles
-              Column(children: [
+
+              //*titles
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text('Trial Pit Log', style: const TextStyle(fontSize: 20)),
                 Text(user.institutionName),
-                Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: Text('Trial Pit Log',
-                        style: const TextStyle(fontSize: 20))),
-                Text(job.jobTitle,
-                    style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(job.jobTitle),
+                // style: TextStyle(fontWeight: FontWeight.bold)),
               ]),
+
               //details
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                  Text('Hole No:  '),
-                  Text(trialPit.pitNumber,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 14))
-                ]),
-                Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                  Text('Job No:  '),
-                  Text(job.jobNumber,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 14))
-                ]),
+                Padding(
+                  padding: const EdgeInsets.only(left: 4, right: 4),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text('Hole No:  '),
+                        Text(trialPit.pitNumber,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 14))
+                      ]),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 4, right: 4),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text('Job No:  '),
+                        Text(job.jobNumber,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 14))
+                      ]),
+                ),
               ]),
             ]),
 
             //Spacer
-            // SizedBox(height: 5),
+            SizedBox(height: 5),
 
             //empty first row (0 m)
             Table(
@@ -172,25 +180,20 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
               //*Col widths
               tableWidth: TableWidth.max,
               columnWidths: {
-                // 0: const FlexColumnWidth(2),
-                // 1: const FlexColumnWidth(2),
-                // 2: const FlexColumnWidth(1.5),
-                // 3: const FlexColumnWidth(20),
                 0: const FixedColumnWidth(32),
-                1: const FixedColumnWidth(32.5),
+                1: const FixedColumnWidth(30),
                 2: const FixedColumnWidth(32),
                 3: const FixedColumnWidth(360),
               },
 
               //*Layer row
-              //TODO: Test all images
               children: List<TableRow>.generate(
                 layers.length,
                 (int i) {
                   double wtDepth = trialPit.wtDepth ?? 0;
-                  // double pwtDepth = trialPit.pwtDepth ?? 0;
                   double pmDepth = layers[i].pmDepth ?? 0;
                   double height = 512 * (layers[i].depth / totalDepth);
+                  double colHeight = roundDouble(height / 32, 0) * 32;
                   cumulativeDepth += layers[i].depth;
 
                   if (cumulativeDepth >= wtDepth &&
@@ -201,12 +204,6 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                   } else {
                     layers[i].wtDepth = 0;
                   }
-                  // if (cumulativeDepth >= pwtDepth &&
-                  //     pwtDepth != 0 &&
-                  //     pwtFound == false) {
-                  //   pwtFound = true;
-                  //   layers[i].pwtDepth = pwtDepth;
-                  // }
                   if (pmDepth != 0) {
                     pmDepth += (cumulativeDepth - layers[i].depth);
                   }
@@ -215,10 +212,10 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                     children: [
                       //! col 1: depth
                       SizedBox(
-                        height: height,
+                        height: colHeight,
                         child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            // mainAxisSize: MainAxisSize.max,
+                            // crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Text('${cumulativeDepth.toString()} m',
@@ -233,40 +230,39 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
 
                       //! col 3: marker
                       SizedBox(
-                        height: height,
+                        height: colHeight,
                         child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              // //* Pebble Marker
-                              (layers[i].pmDepth != 0)
-                                  ? Column(children: [
-                                      Text('${pmDepth.toString()} m',
-                                          style: const TextStyle(fontSize: 8)),
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            // //* Pebble Marker
+                            (layers[i].pmDepth != 0)
+                                ? Column(
+                                    children: [
+                                      Text(
+                                        '${pmDepth.toString()} m',
+                                        style: const TextStyle(fontSize: 8),
+                                      ),
                                       Image(symbols['PM'] ?? defaultImage,
                                           height: 20, width: 20)
-                                    ])
-                                  : SizedBox.shrink(),
+                                    ],
+                                  )
+                                : SizedBox.shrink(),
 
-                              //*Water table
-                              (layers[i].wtDepth != 0)
-                                  ? Column(children: [
-                                      Text('${layers[i].wtDepth.toString()} m',
-                                          style: const TextStyle(fontSize: 8)),
+                            //*Water table
+                            (layers[i].wtDepth != 0)
+                                ? Column(
+                                    children: [
+                                      Text(
+                                        '${layers[i].wtDepth.toString()} m',
+                                        style: const TextStyle(fontSize: 8),
+                                      ),
                                       Image(symbols['WT'] ?? defaultImage,
                                           height: 20, width: 20)
-                                    ])
-                                  : SizedBox.shrink(),
-
-                              // //*Perched Water table
-                              // (layers[i].pwtDepth != 0)
-                              //     ? Column(children: [
-                              //         Text('${layers[i].pwtDepth.toString()} m',
-                              //             style: const TextStyle(fontSize: 8)),
-                              //         Image(symbols['PWT'] ?? defaultImage,
-                              //             height: 20, width: 20)
-                              //       ])
-                              //     : SizedBox.shrink(),
-                            ]),
+                                    ],
+                                  )
+                                : SizedBox.shrink(),
+                          ],
+                        ),
                       ),
 
                       //! col 4: Details
@@ -291,7 +287,6 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                       ),
                     ],
                   );
-                  // return buildLayerInfo(trialPit.layersList[i], trialPit.totalDepth(), symbols, defaultImage);
                 },
               ),
             ),
@@ -312,7 +307,6 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                     Text(
                         '1) Water Table: ${trialPit.wtDepth != 0 ? 'at ${trialPit.wtDepth} m' : 'None'}'),
                     // Text(
-                    //     '2) Perched Water Table: ${trialPit.pwtDepth != 0 ? 'at ${trialPit.pwtDepth} m' : 'None'}'),
                     // Text('3) Pebble Marker: ${trialPit.wtDepth != 0 ? 'at ${trialPit.wtDepth} m' : 'None'}'),
                     //TODO: add pebble marker list to Trial Pit and display
                   ],
@@ -350,24 +344,15 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                       Text(
                           'Date Created : ${trialPit.createdDate.day}-${trialPit.createdDate.month}-${trialPit.createdDate.year}'),
                     ]),
-                // Column(
-                //   mainAxisAlignment: MainAxisAlignment.start,
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
-                //     //TODO: implement contractor and machine in Job
-                //     Text('Contractor: 123 Civils'),
-                //     Text('Machnine: big ol digger'),
-                //   ],
-                // ),
-                // Column(
-                //   mainAxisAlignment: MainAxisAlignment.start,
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
-                //     //TODO: Implememht inclinations and diameter in Trial pit
-                //     Text('Inclination: Vertical'),
-                //     Text('Hole Diam: 1 m'),
-                //   ],
-                // ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    //TODO: implement contractor and machine in Trial Pit or Job
+                    Text('Contractor: 123 Civils'),
+                    Text('Machnine: big ol digger'),
+                  ],
+                ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -435,11 +420,13 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
   }
 }
 
+//! Round off Doubles
 double roundDouble(double value, int places) {
   num mod = pow(10.0, places);
   return ((value * mod).round().toDouble() / mod);
 }
 
+//! Builds list of soil columns for stack to overlay
 List<Widget> symbolOverlayCol(Map<String, MemoryImage> symbols,
     MemoryImage defaultImage, Layer layer, double height) {
   List<String> soilTypes = layer.soilTypes;
@@ -452,72 +439,18 @@ List<Widget> symbolOverlayCol(Map<String, MemoryImage> symbols,
             children:
                 buildSoilSymbols(height, symbols[element] ?? defaultImage))));
   }
-
   return columns;
 }
 
+//! Builds image list of soil symbols for Column
 List<Widget> buildSoilSymbols(double height, ImageProvider image) {
-  // var temp = height % 65;
-  var count = (height) / 32;
+  // var temp = height % 32;
+  int count = ((height) / 32).round();
   List<Widget> imageList = [];
   for (var i = 0; i < (count); i++) {
-    imageList.add(SizedBox(
-        height: 32, width: 34, child: Image(image, fit: BoxFit.contain)));
+    imageList
+        .add(SizedBox(height: 32, child: Image(image, fit: BoxFit.contain)));
     //?try boxfit.contains
   }
   return imageList;
-}
-
-// bool checkWT(double cumulativeDepth, double wtDepth){
-//     bool found;
-
-//     cumulativeDepth > wtDepth ? found = true : found = false;
-
-//     return found;
-// }
-// checkPWT(),
-// checkPM()
-
-TableRow buildLayerInfo(Layer layer, double totalDepth,
-    Map<String, MemoryImage> symbols, MemoryImage defaultImage) {
-  double height =
-      1000 * (layer.depth / totalDepth) + 30 * (layer.depth / totalDepth);
-  // double height = 565 * (layer.depth / totalDepth);
-  print(height);
-
-  return TableRow(
-    children: [
-      //!col 1: Height marker
-      SizedBox(
-        height: height,
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Text('${layer.depth} m'),
-          ],
-        ),
-      ),
-
-      //! col 2: Symbols
-      Column(
-        children: buildSoilSymbols(height, symbols['Sand'] ?? defaultImage),
-      ),
-
-      //TODO: fix the implemntation of the maker
-      //! col 3: marker symbols.
-      // SizedBox(height: h / 2, child: Image(pwtSymbol)),
-
-      //! col 4: layer details
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-              'Layer details: ${layer.moisture}, ${layer.colour}, ${layer.consistency}, ${layer.soilToString()}, ${layer.structure}'),
-          Text('Notes: ${layer.notes}')
-        ],
-      ),
-    ],
-  );
 }

@@ -20,11 +20,13 @@ class TrialPit extends HiveObject {
   @HiveField(6)
   late List<Layer> layersList;
   @HiveField(7)
-  late String contractor;
+  late String contractor = ' ';
   @HiveField(8)
-  late String machine;
-  
-  
+  late String machine = ' ';
+  @HiveField(9)
+  late String imagePath = ' ';
+  @HiveField(10)
+  late String notes = ' ';
 
   double totalDepth() => layersList.fold(
       0, (previousValue, Layer layer) => previousValue + layer.depth);
