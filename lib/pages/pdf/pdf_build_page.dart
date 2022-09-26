@@ -1,3 +1,4 @@
+import 'dart:io' as io;
 import 'dart:math';
 import 'dart:typed_data';
 
@@ -15,15 +16,18 @@ Future<Uint8List> pdfBuildPage(User user, Job job) async {
   List<TrialPit> trialPits = job.trialPitList;
 
   //*To implement if auge/boreholes added
-  // List<TrialPit> borholes = job.boreholeList;
-  // List<TrialPit> augerPits = job.augerPitList;
 
   //create document
   final pdf = Document();
 
   //User Logo:
-  final imageLogo = MemoryImage(
-      (await rootBundle.load(user.institutionLogo)).buffer.asUint8List());
+  final MemoryImage imageLogo;
+  // final ioFile imageFile =
+
+  (user.institutionLogo != 'assets/su_logo.png')
+      ? imageLogo = MemoryImage(io.File(user.institutionLogo).readAsBytesSync())
+      : imageLogo = MemoryImage(
+          (await rootBundle.load('assets/su_logo.png')).buffer.asUint8List());
 
   //soil symbols:
   final gravel =
@@ -54,8 +58,8 @@ Future<Uint8List> pdfBuildPage(User user, Job job) async {
   //markers
   final wt =
       MemoryImage((await rootBundle.load(Images.wt)).buffer.asUint8List());
-  final pwt =
-      MemoryImage((await rootBundle.load(Images.pwt)).buffer.asUint8List());
+  // final pwt =
+  //     MemoryImage((await rootBundle.load(Images.pwt)).buffer.asUint8List());
   final pm =
       MemoryImage((await rootBundle.load(Images.pm)).buffer.asUint8List());
 
@@ -79,7 +83,7 @@ Future<Uint8List> pdfBuildPage(User user, Job job) async {
     'Boulders': boulders,
     'Scattered Boulders': scatteredBouldersoulders,
     'WT': wt,
-    'PWT': pwt,
+    // 'PWT': pwt,
     'PM': pm,
   };
 
@@ -101,28 +105,28 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
   double cumulativeDepth = 0;
 
   bool wtFound = false;
-  bool pwtFound = false;
+  // bool pwtFound = false;
 
   if (trialPit.layersList.isNotEmpty) {
     return pdf.addPage(
       Page(build: (context) {
         return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             //!Header
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               //logo
               Positioned.fill(
                 child: Image(symbols['Logo'] ?? defaultImage,
-                    height: 140, width: 140),
+                    height: 140, width: 120, fit: BoxFit.contain),
               ),
               //titles
               Column(children: [
                 Text(user.institutionName),
                 Padding(
                     padding: const EdgeInsets.all(4),
-                    child: Text('Trial Pit Log',style: const TextStyle(fontSize: 20))
-                    ),
+                    child: Text('Trial Pit Log',
+                        style: const TextStyle(fontSize: 20))),
                 Text(job.jobTitle,
                     style: TextStyle(fontWeight: FontWeight.bold)),
               ]),
@@ -143,7 +147,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
               ]),
             ]),
 
-            //!Spacer
+            //Spacer
             // SizedBox(height: 5),
 
             //empty first row (0 m)
@@ -184,7 +188,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                 layers.length,
                 (int i) {
                   double wtDepth = trialPit.wtDepth ?? 0;
-                  double pwtDepth = trialPit.pwtDepth ?? 0;
+                  // double pwtDepth = trialPit.pwtDepth ?? 0;
                   double pmDepth = layers[i].pmDepth ?? 0;
                   double height = 512 * (layers[i].depth / totalDepth);
                   cumulativeDepth += layers[i].depth;
@@ -194,13 +198,15 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                       wtFound == false) {
                     wtFound = true;
                     layers[i].wtDepth = wtDepth;
+                  } else {
+                    layers[i].wtDepth = 0;
                   }
-                  if (cumulativeDepth >= pwtDepth &&
-                      pwtDepth != 0 &&
-                      pwtFound == false) {
-                    pwtFound = true;
-                    layers[i].pwtDepth = pwtDepth;
-                  }
+                  // if (cumulativeDepth >= pwtDepth &&
+                  //     pwtDepth != 0 &&
+                  //     pwtFound == false) {
+                  //   pwtFound = true;
+                  //   layers[i].pwtDepth = pwtDepth;
+                  // }
                   if (pmDepth != 0) {
                     pmDepth += (cumulativeDepth - layers[i].depth);
                   }
@@ -231,7 +237,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              //* Pebble Marker
+                              // //* Pebble Marker
                               (layers[i].pmDepth != 0)
                                   ? Column(children: [
                                       Text('${pmDepth.toString()} m',
@@ -240,6 +246,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                                           height: 20, width: 20)
                                     ])
                                   : SizedBox.shrink(),
+
                               //*Water table
                               (layers[i].wtDepth != 0)
                                   ? Column(children: [
@@ -249,31 +256,38 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                                           height: 20, width: 20)
                                     ])
                                   : SizedBox.shrink(),
-                              //*Perched Water table
-                              (layers[i].pwtDepth != 0)
-                                  ? Column(children: [
-                                      Text('${layers[i].pwtDepth.toString()} m',
-                                          style: const TextStyle(fontSize: 8)),
-                                      Image(symbols['PWT'] ?? defaultImage,
-                                          height: 20, width: 20)
-                                    ])
-                                  : SizedBox.shrink(),
+
+                              // //*Perched Water table
+                              // (layers[i].pwtDepth != 0)
+                              //     ? Column(children: [
+                              //         Text('${layers[i].pwtDepth.toString()} m',
+                              //             style: const TextStyle(fontSize: 8)),
+                              //         Image(symbols['PWT'] ?? defaultImage,
+                              //             height: 20, width: 20)
+                              //       ])
+                              //     : SizedBox.shrink(),
                             ]),
                       ),
 
                       //! col 4: Details
                       // Text('3'),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Layer details:',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                          Text(
-                              '${layers[i].moisture}, ${layers[i].colourPattern}${layers[i].colour}, ${layers[i].consistency}, ${layers[i].soilToString()}, ${layers[i].structure}, ${layers[i].originType}: ${layers[i].origin}'),
-                          Text('Notes:',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                          Text('${layers[i].notes}')
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.only(left: 4, right: 4),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Layer ${i + 1} details:',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 4),
+                              child: Text(
+                                  '${layers[i].moisture}, ${layers[i].colourPattern}${layers[i].colour}, ${layers[i].consistency}, ${layers[i].soilToString()}, ${layers[i].structure}, ${layers[i].originType}: ${layers[i].origin}'),
+                            ),
+                            Text('Notes:',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            Text('${layers[i].notes}')
+                          ],
+                        ),
                       ),
                     ],
                   );
@@ -285,7 +299,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
             //!Spacer
             SizedBox(height: 5),
 
-            //!Notes  //? 4 lines 33 characters.
+            //!Notes
             Row(mainAxisAlignment: MainAxisAlignment.start, children: [
               SizedBox(
                 width: 200,
@@ -297,8 +311,8 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                         style: TextStyle(fontWeight: FontWeight.bold)),
                     Text(
                         '1) Water Table: ${trialPit.wtDepth != 0 ? 'at ${trialPit.wtDepth} m' : 'None'}'),
-                    Text(
-                        '2) Perched Water Table: ${trialPit.pwtDepth != 0 ? 'at ${trialPit.pwtDepth} m' : 'None'}'),
+                    // Text(
+                    //     '2) Perched Water Table: ${trialPit.pwtDepth != 0 ? 'at ${trialPit.pwtDepth} m' : 'None'}'),
                     // Text('3) Pebble Marker: ${trialPit.wtDepth != 0 ? 'at ${trialPit.wtDepth} m' : 'None'}'),
                     //TODO: add pebble marker list to Trial Pit and display
                   ],
@@ -332,7 +346,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('User: ${user.userName}'),
+                      Text('Logger: ${user.userName}'),
                       Text(
                           'Date Created : ${trialPit.createdDate.day}-${trialPit.createdDate.month}-${trialPit.createdDate.year}'),
                     ]),

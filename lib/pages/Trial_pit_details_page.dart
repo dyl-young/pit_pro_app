@@ -24,7 +24,7 @@ class TrialPitDetailsPage extends StatefulWidget {
   final Function(
     String pitNumber,
     double wt,
-    double pwt,
+    // double pwt,
     List<double> coords,
     double elevation,
     List<Layer> layersList,
@@ -42,7 +42,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
   final _yCoordController = TextEditingController();
   final _elevationController = TextEditingController();
   final _waterTableController = TextEditingController();
-  final _perchedWaterTableController = TextEditingController();
+  // final _perchedWaterTableController = TextEditingController();
 
   late List<Layer> madeLayers = [];
 
@@ -70,7 +70,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
       _pitNumController.text = trialPit.pitNumber;
 
       _waterTableController.text = trialPit.wtDepth.toString();
-      _perchedWaterTableController.text = trialPit.pwtDepth.toString();
+      // _perchedWaterTableController.text = trialPit.pwtDepth.toString();
 
       _xCoordController.text = trialPit.coordinates[0].toString();
       _yCoordController.text = trialPit.coordinates[1].toString();
@@ -87,7 +87,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
     _yCoordController.dispose();
     _elevationController.dispose();
     _waterTableController.dispose();
-    _perchedWaterTableController.dispose();
+    // _perchedWaterTableController.dispose();
 
     super.dispose();
   }
@@ -138,11 +138,13 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
                 //Trial Pit Details
                 //*trial pit details heading
                 sectionHeading('Trial Pit Details'),
+
                 //*Trial Pit Number
                 customTextField('*Hole Number', _pitNumController),
 
                 //*Water table
                 customTextField3('Water table (m)', _waterTableController),
+
                 //*location sub heading adn autofill button
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -151,6 +153,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
                       padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                       child: subSectionHeading('Location details:'),
                     ),
+
                     //*autofil location details
                     Padding(
                       padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
@@ -198,6 +201,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
 
                 //* layers heading
                 sectionHeading('Layers'),
+
                 //* add layer button
                 Center(child: addLayerPittButton(context, madeLayers, 'Layer')),
 
@@ -287,17 +291,18 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
                             ),
                           ],
                         ),
-                            //*Water table
-                            SizedBox(
-                              width: 350,
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 8, bottom: 8),
-                                child: customTextField3('Water table (m)', _waterTableController),
-                              ),
-                            ),
+                        //*Water table
+                        SizedBox(
+                          width: 350,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 8, bottom: 8),
+                            child: customTextField3(
+                                'Water table (m)', _waterTableController),
+                          ),
+                        ),
                       ],
                     ),
-          
+
                     Row(
                       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -306,18 +311,18 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
                           padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                           child: subSectionHeading('Location details:'),
                         ),
-                        //*autofil button for location details 
+                        //*autofil button for location details
                         Padding(
                           padding: const EdgeInsets.fromLTRB(100, 0, 8, 0),
                           child: TextButton(
                               onPressed: () {
-                                getLocation(_xCoordController, _yCoordController,
-                                    _elevationController);
+                                getLocation(_xCoordController,
+                                    _yCoordController, _elevationController);
                                 final snackBar = SnackBar(
                                   backgroundColor: Colors.grey.shade400,
                                   // width: 100,
-                                  content:
-                                      const Text('Retriving location details...'),
+                                  content: const Text(
+                                      'Retriving location details...'),
                                   duration: const Duration(seconds: 5),
                                 );
                                 ScaffoldMessenger.of(context)
@@ -332,28 +337,30 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
                       children: [
                         //*coordinates
                         Expanded(
-                            child:
-                                customTextField3('Longitude', _xCoordController)),
+                            child: customTextField3(
+                                'Longitude', _xCoordController)),
                         Expanded(
-                            child:
-                                customTextField3('Latitude', _yCoordController)),
+                            child: customTextField3(
+                                'Latitude', _yCoordController)),
                         //*elevation
                         Expanded(
                             child: customTextField3(
                                 'Elevation', _elevationController)),
                       ],
                     ),
-          
+
                     // const SizedBox(height: 8),
                     //TODO: Implement select/capture image of trial pits
-          
+
                     //* layers heading
                     sectionHeading('Layers'),
                     //* add layer button
-                    Center(child: addLayerPittButton(context, madeLayers, 'Layer')),
-          
+                    Center(
+                        child:
+                            addLayerPittButton(context, madeLayers, 'Layer')),
+
                     const SizedBox(height: 8),
-          
+
                     Expanded(
                       child: ValueListenableBuilder<Box<Layer>>(
                         valueListenable: Boxes.getLayers().listenable(),
@@ -389,7 +396,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
   //!create/save button
   Widget buildSaveButton(BuildContext context, {required bool isEditing}) {
     final text = isEditing ? 'Save ' : 'Create TrialPit ';
-
+    
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: ElevatedButton(
@@ -406,13 +413,13 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
           if (isValid) {
             final num = _pitNumController.text;
             final wt = double.tryParse(_waterTableController.text) ?? 0;
-            final pwt = double.tryParse(_perchedWaterTableController.text) ?? 0;
+            // final pwt = double.tryParse(_perchedWaterTableController.text) ?? 0;
             final xCoord = double.tryParse(_xCoordController.text) ?? 0;
             final yCoord = double.tryParse(_yCoordController.text) ?? 0;
             final elevation = double.tryParse(_elevationController.text) ?? 0;
 
             widget.onClickedDone(
-                num, wt, pwt, [xCoord, yCoord], elevation, madeLayers);
+                num, wt, [xCoord, yCoord], elevation, madeLayers);
 
             Navigator.of(context).pop();
           }

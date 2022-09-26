@@ -50,7 +50,7 @@ void deleteJob(Job job) {
 Future addTrialPit(
     List<TrialPit> trialPits,
     double wt,
-    double pwt,
+    // double pwt,
     String number,
     List<double> coords,
     double elevation,
@@ -60,7 +60,7 @@ Future addTrialPit(
     ..pitNumber = number
     ..createdDate = DateTime.now()
     ..wtDepth = wt
-    ..pwtDepth = pwt
+    // ..pwtDepth = pwt
     ..coordinates = coords
     ..elevation = elevation
     ..layersList = layers;
@@ -70,11 +70,11 @@ Future addTrialPit(
 }
 
 //*edit Trial Pit
-void editTrialPit(TrialPit trialPit, double wt, double pwt, String number,
+void editTrialPit(TrialPit trialPit, double wt, String number,
     List<double> coords, double elevation, List<Layer> layers) {
   trialPit.pitNumber = number;
   trialPit.wtDepth = wt;
-  trialPit.pwtDepth = pwt;
+  // trialPit.pwtDepth = pwt;
   trialPit.coordinates = coords;
   trialPit.elevation = elevation;
   trialPit.layersList = layers;

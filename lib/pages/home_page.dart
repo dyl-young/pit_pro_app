@@ -1,5 +1,12 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+
 import 'package:pit_pro_app/constants/images.dart';
 import 'package:pit_pro_app/pages/job_details_page.dart';
 
@@ -27,6 +34,7 @@ class _HomePageState extends State<HomePage> {
   late List<Job> foundList;
   static bool searching = false;
   final _searchController = TextEditingController();
+  String? imagePath;
 
   //Initialise App User
   late final User user;
@@ -84,7 +92,7 @@ class _HomePageState extends State<HomePage> {
         //!User Drawer
         drawer: Drawer(
           backgroundColor: Colors.green,
-          child: buildUserDrawer(context, user),
+          child: buildUserDrawer(context, user, getImageFromGallery),
         ),
 
         body: SingleChildScrollView(
@@ -121,7 +129,9 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
                       Icon(Icons.work_rounded),
-                      Text(' Created Jobs', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))
+                      Text(' Created Jobs',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16))
                     ]),
               ),
               SizedBox(
@@ -210,4 +220,24 @@ class _HomePageState extends State<HomePage> {
       foundList = results;
     });
   }
+
+  //! Get user company image and save to app directory
+  void getImageFromGallery() async {
+    XFile? pickedFile;
+    final File newFile;
+    final Directory dir = await getApplicationDocumentsDirectory();
+    pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      newFile = await File(pickedFile.path)
+          .copy('${dir.path}/companyLogo${extension(pickedFile.path)}');
+
+      setState(() {
+        imagePath = newFile.path;
+        user.institutionLogo = imagePath!;
+        user.save();
+      });
+    }
+  }
 }
+

@@ -96,8 +96,8 @@ Widget buildTrialPitButtons(
               builder: (context) => TrialPitDetailsPage(
                 trialPit: trialPit,
                 onClickedDone:
-                    (pitNumber, wt, pwt, coords, elevation, layersList) =>
-                        editTrialPit(trialPit, wt, pwt, pitNumber, coords,
+                    (pitNumber, wt, coords, elevation, layersList) =>
+                        editTrialPit(trialPit, wt, pitNumber, coords,
                             elevation, layersList),
               ),
             ),

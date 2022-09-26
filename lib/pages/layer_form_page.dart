@@ -115,7 +115,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
       // selectedColourPattern != null
       //     ? selectedColourPattern = layer.colourPattern
       //     : selectedColourPattern = '';
-      if (layer.colourPattern != null && layer.colourPattern != '') {
+      if (layer.colourPattern != null && layer.colourPattern != ' ' && layer.colourPattern != '') {
         selectedColourPattern = layer.colourPattern;
       }
 

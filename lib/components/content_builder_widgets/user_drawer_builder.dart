@@ -1,11 +1,22 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
 import 'package:pit_pro_app/hive_components/add_edit_delete_functions.dart';
 
 import '../../../models/user.dart';
 import '../../pages/user_info_edit_page.dart';
 import '../widgets/info_textbox_widget.dart';
 
-Widget buildUserDrawer(BuildContext context, User user) {
+Widget buildUserDrawer(
+    BuildContext context, User user, Function getImageFromGallery) {
+  ImageProvider displayImage;
+
+  // (user.institutionLogo != 'assets/su_logo.png')
+  displayImage = FileImage(File(user.institutionLogo));
+  // : displayImage = const AssetImage('assets/su_logo.png');
+
   return ListView(
     children: [
       Padding(
@@ -22,7 +33,7 @@ Widget buildUserDrawer(BuildContext context, User user) {
           child: Ink.image(
             width: 100,
             height: 150,
-            image: const AssetImage('assets/su_logo.png'),
+            image: displayImage,
             fit: BoxFit.contain,
             child: Stack(
               clipBehavior: Clip.none,
@@ -32,7 +43,8 @@ Widget buildUserDrawer(BuildContext context, User user) {
                   onTap: () {
                     showModalBottomSheet(
                       context: context,
-                      builder: ((builder) => bottomSheet()),
+                      builder: ((builder) =>
+                          bottomSheet(context, getImageFromGallery)),
                     );
                   },
                 ),
@@ -87,7 +99,7 @@ Widget buildUserDrawer(BuildContext context, User user) {
 }
 
 //pick image bottom sheet with gallery button
-Widget bottomSheet() {
+Widget bottomSheet(BuildContext context, Function getImageFromGallery) {
   return Container(
     height: 70,
     // width: 100,
@@ -102,7 +114,9 @@ Widget bottomSheet() {
         Center(
           child: TextButton(
             onPressed: () {
-              pickImage();
+              getImageFromGallery();
+              Navigator.of(context).pop();  //dismiss bottom sheet 
+              Navigator.of(context).pop();  //and nav drawer to give image a chance to load
             },
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -114,5 +128,20 @@ Widget bottomSheet() {
   );
 }
 
-//TODO: Implement pick image function
-Future pickImage() async {}
+void showSnackBarAsBottomSheet(BuildContext context, String message) {
+  showModalBottomSheet<void>(
+    context: context,
+    barrierColor: const Color.fromRGBO(0, 0, 0, 0),
+    builder: (BuildContext context) {
+      Future.delayed(const Duration(seconds: 30), () {
+        try {
+          Navigator.pop(context);
+        } on Exception {}
+      });
+      return Container(
+          color: Colors.grey,
+          padding: const EdgeInsets.all(12),
+          child: Wrap(children: [Text(message)]));
+    },
+  );
+}

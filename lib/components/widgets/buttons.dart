@@ -62,8 +62,8 @@ Widget addTrialPittButton(
               MaterialPageRoute(
                 builder: (context) => TrialPitDetailsPage(
                   onClickedDone:
-                      (pitNumber, wt, pwt, coords, elevation, layersList) =>
-                          addTrialPit(trialPits, wt, pwt, pitNumber, coords,
+                      (pitNumber, wt, coords, elevation, layersList) =>
+                          addTrialPit(trialPits, wt, pitNumber, coords,
                               elevation, layersList),
                 ),
               ),

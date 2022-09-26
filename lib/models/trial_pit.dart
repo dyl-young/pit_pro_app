@@ -19,6 +19,12 @@ class TrialPit extends HiveObject {
   late double? pwtDepth = 0;
   @HiveField(6)
   late List<Layer> layersList;
+  @HiveField(7)
+  late String contractor;
+  @HiveField(8)
+  late String machine;
+  
+  
 
   double totalDepth() => layersList.fold(
       0, (previousValue, Layer layer) => previousValue + layer.depth);
