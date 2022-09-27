@@ -1,9 +1,11 @@
+//packages
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:pit_pro_app/pages/job_details_page.dart';
 
+//local imports
 import '../../../models/job.dart';
 import '../../models/user.dart';
+import '../../pages/job_details_page.dart';
 import '../../pages/pdf/pfd_view_page.dart';
 import '../widgets/confirm_alert_dialog.dart';
 import '../../hive_components/add_edit_delete_functions.dart';

@@ -1,6 +1,8 @@
+//packages
 import 'package:flutter/material.dart';
-import 'package:pit_pro_app/components/widgets/custom_text_field.dart';
 
+//local imports
+import '../components/widgets/custom_text_field.dart';
 import '../models/user.dart';
 
 class UserInfoEditPage extends StatefulWidget {

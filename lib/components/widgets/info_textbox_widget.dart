@@ -1,5 +1,5 @@
+//packages
 import'package:flutter/material.dart';
-
 
 //Build info text boxes
 Widget infoTextBox(String title, String info) {

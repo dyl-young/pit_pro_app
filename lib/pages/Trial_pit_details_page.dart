@@ -1,12 +1,12 @@
-//packages
 import 'dart:math';
 
+//packages
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:location/location.dart';
-import 'package:pit_pro_app/components/widgets/info_textbox_widget.dart';
 
 //local imports
+import '../components/widgets/info_textbox_widget.dart';
 import '../components/content_builder_widgets/layers_content_builder.dart';
 import '../components/widgets/buttons.dart';
 import '../components/widgets/custom_text_field.dart';

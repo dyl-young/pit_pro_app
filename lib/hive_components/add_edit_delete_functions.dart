@@ -1,8 +1,9 @@
+//local imports
+import 'boxes.dart';
 import '../models/layer.dart';
 import '../models/user.dart';
-import 'boxes.dart';
-import '../../models/job.dart';
-import '../../models/trial_pit.dart';
+import '../models/job.dart';
+import '../models/trial_pit.dart';
 
 //! User functions
 //*edit user
@@ -70,7 +71,7 @@ Future addTrialPit(
     ..machine = machine
     ..imagePath = imagePath
     ..notes = notes;
-    
+
   trialPits.add(trialPit);
   box.add(trialPit);
 }

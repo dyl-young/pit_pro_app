@@ -1,3 +1,4 @@
+//packages
 import 'package:hive/hive.dart';
 
 part 'user.g.dart';

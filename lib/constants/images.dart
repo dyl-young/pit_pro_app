@@ -1,7 +1,5 @@
 
 class Images {
-  // Images._(); //?
-
   static const String logo = 'assets/app_logo.png';
 
   static const String gravel = 'assets/Gravel.png';  

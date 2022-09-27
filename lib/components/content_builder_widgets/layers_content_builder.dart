@@ -1,7 +1,9 @@
+//packages
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:pit_pro_app/hive_components/add_edit_delete_functions.dart';
 
+//local imports
+import '../../hive_components/add_edit_delete_functions.dart';
 import '../../models/layer.dart';
 import '../../pages/layer_form_page.dart';
 import '../widgets/confirm_alert_dialog.dart';

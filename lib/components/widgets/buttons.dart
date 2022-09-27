@@ -1,14 +1,16 @@
 import 'dart:math';
 
+//packages
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:pit_pro_app/components/widgets/confirm_alert_dialog.dart';
-import 'package:pit_pro_app/pages/layer_form_page.dart';
 
+//local imports
 import '../../hive_components/add_edit_delete_functions.dart';
 import '../../models/layer.dart';
 import '../../models/trial_pit.dart';
+import '../../pages/layer_form_page.dart';
 import '../../pages/trial_pit_details_page.dart';
+import 'confirm_alert_dialog.dart';
 
 //! Cancel button
 Widget cancelButton(

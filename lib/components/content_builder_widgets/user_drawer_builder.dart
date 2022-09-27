@@ -1,7 +1,9 @@
 import 'dart:io';
 
+//packages
 import 'package:flutter/material.dart';
 
+//local imports
 import '../../../models/user.dart';
 import '../../hive_components/add_edit_delete_functions.dart';
 import '../../pages/user_info_edit_page.dart';

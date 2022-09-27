@@ -2,10 +2,12 @@ import 'dart:io' as io;
 import 'dart:math';
 import 'dart:typed_data';
 
+//packages
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
+//local imports
 import '../../constants/images.dart';
 import '../../models/job.dart';
 import '../../models/layer.dart';
@@ -23,10 +25,10 @@ Future<Uint8List> pdfBuildPage(User user, Job job) async {
   //User Logo:
   final MemoryImage imageLogo;
 
-  (user.institutionLogo != 'assets/su_logo.png')
+  (user.institutionLogo != 'assets/app_logo.png')
       ? imageLogo = MemoryImage(io.File(user.institutionLogo).readAsBytesSync())
       : imageLogo = MemoryImage(
-          (await rootBundle.load('assets/su_logo.png')).buffer.asUint8List());
+          (await rootBundle.load('assets/app_logo.png')).buffer.asUint8List());
 
   //soil symbols:
   final gravel =

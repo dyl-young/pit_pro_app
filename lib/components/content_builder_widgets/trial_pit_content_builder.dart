@@ -1,8 +1,10 @@
 import 'dart:math';
 
+//packages
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+//local imports
 import '../../hive_components/add_edit_delete_functions.dart';
 import '../../models/trial_pit.dart';
 import '../../pages/trial_pit_details_page.dart';

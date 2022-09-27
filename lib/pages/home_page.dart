@@ -1,20 +1,21 @@
 import 'dart:io';
 
+//packages
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'package:pit_pro_app/constants/images.dart';
-import 'package:pit_pro_app/pages/job_details_page.dart';
-
+//local imports
 import '../components/content_builder_widgets/user_drawer_builder.dart';
+import '../constants/images.dart';
 import '../hive_components/add_edit_delete_functions.dart';
 import '../hive_components/boxes.dart';
 import '../components/content_builder_widgets/job_content_builder.dart';
 import '../models/job.dart';
 import '../models/user.dart';
+import 'job_details_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

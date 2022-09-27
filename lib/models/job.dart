@@ -1,4 +1,7 @@
+//packages
 import 'package:hive/hive.dart';
+
+//local imports
 import 'trial_pit.dart';
 
 part 'job.g.dart';

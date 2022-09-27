@@ -1,8 +1,10 @@
+//packages
 import 'package:hive/hive.dart';
-import 'package:pit_pro_app/models/layer.dart';
-import 'package:pit_pro_app/models/trial_pit.dart';
 
+//local imports
 import '../models/job.dart';
+import '../models/layer.dart';
+import '../models/trial_pit.dart';
 import '../models/user.dart';
 
 class Boxes {

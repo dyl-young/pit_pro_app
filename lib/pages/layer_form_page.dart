@@ -1,9 +1,11 @@
+//packages
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:pit_pro_app/components/widgets/custom_text_field.dart';
-import 'package:pit_pro_app/constants/layer_properties.dart';
 
+//local imports
 import '../components/widgets/buttons.dart';
+import '../components/widgets/custom_text_field.dart';
+import '../constants/layer_properties.dart';
 import '../models/layer.dart';
 
 class LayerFormPage extends StatefulWidget {
