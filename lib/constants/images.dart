@@ -2,7 +2,7 @@
 class Images {
   // Images._(); //?
 
-  static const String logo = 'assets/su_logo.png';
+  static const String logo = 'assets/app_logo.png';
 
   static const String gravel = 'assets/Gravel.png';  
   static const String gravelly = 'assets/Gravelly.png';

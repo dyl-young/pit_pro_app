@@ -5,8 +5,8 @@ import 'dart:typed_data';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
-import 'package:pit_pro_app/constants/images.dart';
 
+import '../../constants/images.dart';
 import '../../models/job.dart';
 import '../../models/layer.dart';
 import '../../models/trial_pit.dart';
@@ -124,13 +124,10 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         //*logo
-                        Positioned.fill(
-                          child: Image(
-                            symbols['Logo'] ?? defaultImage,
-                            height: 60,
-                            width: 120,
-                            fit: BoxFit.fitWidth,
-                          ),
+                        Image(
+                          symbols['Logo'] ?? defaultImage,
+                          height: 60,
+                          width: 120,
                         ),
 
                         //*titles
@@ -402,10 +399,8 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
             //!Header
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               //logo
-              Positioned.fill(
-                child: Image(symbols['Logo'] ?? defaultImage,
-                    height: 140, width: 140),
-              ),
+              Image(symbols['Logo'] ?? defaultImage,
+                  height: 60, width: 120),
               //titles
               Column(children: [
                 Padding(

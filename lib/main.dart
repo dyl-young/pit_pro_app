@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: true,
       showPerformanceOverlay: false,
-      debugShowMaterialGrid: false,
+      debugShowMaterialGrid:  false,
       title: 'Flutter Demo',
       theme: ThemeData(
         scrollbarTheme: const ScrollbarThemeData().copyWith(

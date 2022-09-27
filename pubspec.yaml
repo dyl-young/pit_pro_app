@@ -40,26 +40,22 @@ dependencies:
   pdf:
   printing:
 
+  #save file to local app storage
+  path: ^1.8.1
+
   #Date/time format
   intl: ^0.17.0
 
   #Select image from native gallery
   image_picker: ^0.8.5+3
 
-  #save file to local app storage
-  shared_preferences: ^2.0.15
-
   #location
   location: ^4.4.0
-
-  
-
-
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  path: ^1.8.1
+  flutter_pdfview: ^1.2.3
 
 dev_dependencies:
   flutter_test:

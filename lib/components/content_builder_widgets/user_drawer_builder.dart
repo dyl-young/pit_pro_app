@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:pit_pro_app/hive_components/add_edit_delete_functions.dart';
 
 import '../../../models/user.dart';
+import '../../hive_components/add_edit_delete_functions.dart';
 import '../../pages/user_info_edit_page.dart';
 import '../widgets/info_textbox_widget.dart';
 
@@ -11,9 +11,9 @@ Widget buildUserDrawer(
     BuildContext context, User user, Function getImageFromGallery) {
   ImageProvider displayImage;
 
-  (user.institutionLogo != 'assets/su_logo.png')
+  (user.institutionLogo != 'assets/app_logo.png')
   ? displayImage = FileImage(File(user.institutionLogo))
-  : displayImage = const AssetImage('assets/su_logo.png');
+  : displayImage = const AssetImage('assets/app_logo.png');
 
   return ListView(
     children: [

@@ -151,9 +151,11 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
               //* trial Pit Number
               customTextField('*Hole Number', _pitNumController),
 
+              const SizedBox(height: 16),
+
               Padding(
                 padding:
-                    const EdgeInsets.only(left: 6, right: 6, bottom: 0, top: 8),
+                    const EdgeInsets.only(left: 6, right: 6, bottom: 0),
                 child: Row(
                   children: [
                     //* water table
@@ -184,7 +186,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
               ),
 
               Padding(
-                padding: const EdgeInsets.only(left: 6, right: 6, top: 6),
+                padding: const EdgeInsets.only(left: 6, right: 6, top: 8),
                 child: Row(
                   children: [
                     //* x coordinate
@@ -256,8 +258,6 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
         ),
       ),
     );
-
-    //TODO: Change wide layout format to inclue new fields
   }
 
   //!create/save button
