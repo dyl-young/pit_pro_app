@@ -67,7 +67,7 @@ Future<Uint8List> pdfBuildPage(User user, Job job) async {
       (await rootBundle.load(Images.defaultImage)).buffer.asUint8List());
 
   //Map of symbols
-  Map<String, MemoryImage> symbols = {
+  Map<String, MemoryImage> images = {
     'Logo': imageLogo,
     'Gravel': gravel,
     'Gravelly': gravelly,
@@ -88,20 +88,28 @@ Future<Uint8List> pdfBuildPage(User user, Job job) async {
   //images
   if (trialPits != []) {
     for (var element in trialPits) {
-      buildTrialPitPage(pdf, user, job, element, symbols, defaultImage);
-      addtrialPitImage(element);
+      buildTrialPitPage(pdf, user, job, element, images, defaultImage);
+      if (element.imagePath != '') {
+        addtrialPitImage(pdf, element.imagePath!);
+      }
     }
   }
 
   return pdf.save();
 }
 
-
-void addtrialPitImage(TrialPit element) {
+void addtrialPitImage(Document pdf, String path) async {
+  return pdf.addPage(
+    Page(
+      build: (context) {
+        return Image(MemoryImage(io.File(path).readAsBytesSync()));
+      },
+    ),
+  );
 }
 
 void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
-    Map<String, MemoryImage> symbols, MemoryImage defaultImage) async {
+    Map<String, MemoryImage> images, MemoryImage defaultImage) async {
   //*variables
   List<Layer> layers = trialPit.layersList;
   double totalDepth = trialPit.totalDepth();
@@ -127,7 +135,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                       children: [
                         //*logo
                         Image(
-                          symbols['Logo'] ?? defaultImage,
+                          images['Logo'] ?? defaultImage,
                           height: 60,
                           width: 120,
                         ),
@@ -247,7 +255,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                             //! col 2: symbols
                             Stack(
                                 children: symbolOverlayCol(
-                                    symbols, defaultImage, layers[i], height)),
+                                    images, defaultImage, layers[i], height)),
 
                             //! col 3: marker
                             SizedBox(
@@ -265,7 +273,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                                               style:
                                                   const TextStyle(fontSize: 8),
                                             ),
-                                            Image(symbols['PM'] ?? defaultImage,
+                                            Image(images['PM'] ?? defaultImage,
                                                 height: 20, width: 20)
                                           ],
                                         )
@@ -280,7 +288,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                                               style:
                                                   const TextStyle(fontSize: 8),
                                             ),
-                                            Image(symbols['WT'] ?? defaultImage,
+                                            Image(images['WT'] ?? defaultImage,
                                                 height: 20, width: 20)
                                           ],
                                         )
@@ -345,7 +353,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                       height: 80,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [Text(trialPit.notes, maxLines: 5)],
+                        children: [Text('${trialPit.notes}', maxLines: 5)],
                       ),
                     ),
                   ]),
@@ -401,8 +409,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
             //!Header
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               //logo
-              Image(symbols['Logo'] ?? defaultImage,
-                  height: 60, width: 120),
+              Image(images['Logo'] ?? defaultImage, height: 60, width: 120),
               //titles
               Column(children: [
                 Padding(
@@ -423,7 +430,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                 ]),
                 Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                   Text('Job No:  '),
-                  Text(job.jobNumber, style: TextStyle(fontSize: 14))
+                  Text(job.jobNumber, style: const TextStyle(fontSize: 14))
                 ]),
               ]),
             ]),

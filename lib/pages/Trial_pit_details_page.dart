@@ -1,9 +1,13 @@
+import 'dart:io';
 import 'dart:math';
 
 //packages
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 
 //local imports
 import '../components/widgets/info_textbox_widget.dart';
@@ -48,7 +52,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
   final _contractorController = TextEditingController();
   final _machineController = TextEditingController();
   final _notesController = TextEditingController();
-  late final String _imagePath = ' ';
+  final _imagePathController = TextEditingController();
 
   late List<Layer> madeLayers = [];
 
@@ -80,9 +84,10 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
       _yCoordController.text = trialPit.coordinates[1].toString();
       _elevationController.text = trialPit.elevation.toString();
 
-      _contractorController.text = trialPit.contractor;
-      _machineController.text = trialPit.machine;
-      _notesController.text = trialPit.notes;
+      _contractorController.text = trialPit.contractor!;
+      _machineController.text = trialPit.machine!;
+      _notesController.text = trialPit.notes!;
+      _imagePathController.text = trialPit.imagePath!;
     }
     super.initState();
   }
@@ -98,6 +103,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
     _contractorController.dispose();
     _machineController.dispose();
     _notesController.dispose();
+    _imagePathController.dispose();
 
     super.dispose();
   }
@@ -114,7 +120,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
 
       child: Scaffold(
         //prevent keybaord overflow
-        resizeToAvoidBottomInset: false,
+        // resizeToAvoidBottomInset: false,
         //! appbar
         appBar: AppBar(
           title: Row(
@@ -140,108 +146,113 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
         ),
 
         //! Trial Pit widgets:
-        body: Form(
-          key: pitFormKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              //* trial pit details heading
-              sectionHeading('Trial Pit Details'),
-
-              //* trial Pit Number
-              customTextField('*Hole Number', _pitNumController),
-
-              const SizedBox(height: 16),
-
-              Padding(
-                padding:
-                    const EdgeInsets.only(left: 6, right: 6, bottom: 0),
-                child: Row(
-                  children: [
-                    //* water table
-                    Expanded(
-                        child: customTextField3(
-                            'Water table (m) ', _waterTableController)),
-                    //* contractor
-                    Expanded(
-                        child: customTextField5(
-                            'Contractor', _contractorController)),
-                    //* machine
-                    Expanded(
-                        child:
-                            customTextField5('Machinery', _machineController)),
-                  ],
-                ),
-              ),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        body: Scrollbar(
+          child: SingleChildScrollView(
+            child: Form(
+              key: pitFormKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  //* location details heading
+                  //* trial pit details heading
+                  sectionHeading('Trial Pit Details'),
+
+                  //* trial Pit Number
+                  customTextField('*Hole Number', _pitNumController),
+
+                  const SizedBox(height: 16),
+
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 6, right: 6, bottom: 0),
+                    child: Row(
+                      children: [
+                        //* water table
+                        Expanded(
+                            child: customTextField3(
+                                'Water table (m) ', _waterTableController)),
+                        //* contractor
+                        Expanded(
+                            child: customTextField5(
+                                'Contractor', _contractorController)),
+                        //* machine
+                        Expanded(
+                            child: customTextField5(
+                                'Machinery', _machineController)),
+                      ],
+                    ),
+                  ),
+
                   subSectionHeading('Location details:'),
 
+                  Padding(
+                    padding: const EdgeInsets.only(left: 6, right: 6, top: 8),
+                    child: Row(
+                      children: [
+                        //* x coordinate
+                        Expanded(
+                            child: customTextField3(
+                                'Longitude', _xCoordController)),
+                        //* y coordinate
+                        Expanded(
+                            child: customTextField3(
+                                'Latitude', _yCoordController)),
+                        //* elevation
+                        Expanded(
+                            child: customTextField3(
+                                'Elevation (m)', _elevationController)),
+                      ],
+                    ),
+                  ),
+
                   //* autofil location details
-                  autoFillButton(),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [autoFillButton()]),
+
+                  //* Trial Pit image
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4.0),
+                    child: subSectionHeading('Add image:'),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        infoTextBox('', _imagePathController.text != '' ? p.basename(_imagePathController.text): ''),
+                        imageButton(),
+                      ],
+                    ),
+                  ),
+
+                  //* notes section
+                  subSectionHeading('Notes:'),
+                  customTextField2('Notes', _notesController),
+
+                  //* layers heading
+                  subSectionHeading('Layers:'),
+
+                  //* add layer button
+                  Center(
+                      child: addLayerPittButton(context, madeLayers, 'Layer')),
+
+                  const SizedBox(height: 8),
+
+                  SizedBox(
+                    height: 390,
+                    child: Container(
+                      decoration: BoxDecoration(border: Border.all(width: 1)),
+                      child: ValueListenableBuilder<Box<Layer>>(
+                        valueListenable: Boxes.getLayers().listenable(),
+                        builder: (context, box, _) {
+                          return layerListViewBuilder(context, madeLayers);
+                        },
+                      ),
+                    ),
+                  ),
                 ],
               ),
-
-              Padding(
-                padding: const EdgeInsets.only(left: 6, right: 6, top: 8),
-                child: Row(
-                  children: [
-                    //* x coordinate
-                    Expanded(
-                        child:
-                            customTextField3('Longitude', _xCoordController)),
-                    //* y coordinate
-                    Expanded(
-                        child: customTextField3('Latitude', _yCoordController)),
-                    //* elevation
-                    Expanded(
-                        child: customTextField3(
-                            'Elevation (m)', _elevationController)),
-                  ],
-                ),
-              ),
-
-              //* Trial Pit image
-              Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    subSectionHeading('Add image:'),
-                    imageButton(),
-                  ],
-                ),
-              ),
-              infoTextBox('', _imagePath != ' ' ? _imagePath : ''),
-
-              //* notes section
-              subSectionHeading('Notes:'),
-
-              customTextField2('Notes', _notesController),
-
-              // const SizedBox(height: 8),
-              //TODO: Implement select/capture image of trial pits
-
-              //* layers heading
-              subSectionHeading('Layers:'),
-
-              //* add layer button
-              Center(child: addLayerPittButton(context, madeLayers, 'Layer')),
-
-              const SizedBox(height: 8),
-
-              Expanded(
-                child: ValueListenableBuilder<Box<Layer>>(
-                  valueListenable: Boxes.getLayers().listenable(),
-                  builder: (context, box, _) {
-                    return layerListViewBuilder(context, madeLayers);
-                  },
-                ),
-              ),
-            ],
+            ),
           ),
         ),
 
@@ -286,7 +297,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
             final contractor = _contractorController.text;
             final machine = _machineController.text;
             final notes = _notesController.text;
-            final imagePath = _imagePath; //TODO: checkimage path
+            final imagePath = _imagePathController.text;
 
             widget.onClickedDone(
               num,
@@ -325,6 +336,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
     }
   }
 
+  //! autofill location
   Widget autoFillButton() {
     return SizedBox(
       height: 28,
@@ -347,15 +359,94 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
     );
   }
 
+  //! image button
   Widget imageButton() {
     return SizedBox(
-      height: 28,
-      child: TextButton(
-          onPressed: () {},
-          child: Row(children: const [
-            Icon(Icons.image, size: 18),
-            Text('Select Image', style: TextStyle(fontSize: 14))
-          ])),
+      height: 32,
+      child: CircleAvatar(
+        child: TextButton(
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                builder: ((builder) => bottomSheet(context, getImage)),
+              );
+            },
+            child: 
+              const Icon(Icons.camera_alt, size: 18, color: Colors.white),
+            ),
+      ),
+    );
+  }
+
+  //! Get file from gallery/camera and save to app dir
+  void getImage(ImageSource source) async {
+    XFile? pickedFile;
+    final File newFile;
+    final Directory dir = await getApplicationDocumentsDirectory();
+    pickedFile = await ImagePicker().pickImage(source: source);
+
+    if (pickedFile != null) {
+      _imagePathController.text != ''
+          ? deleteFile(File(_imagePathController.text))
+          : null;
+      newFile = await File(pickedFile.path)
+          .copy('${dir.path}/${p.basename(pickedFile.path)}');
+
+      setState(() {
+        _imagePathController.text = newFile.path;
+      });
+    }
+  }
+
+  //! Delete file from app dir 
+  Future<int> deleteFile(File file) async {
+    try {
+      await file.delete();
+    } catch (e) {
+      return 0;
+    }
+    return 1;
+  }
+
+  //! Bottom Image Sheet
+  Widget bottomSheet(BuildContext context, Function getImage) {
+    return Container(
+      height: 70,
+      margin: const EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 20,
+      ),
+      child: Column(
+        children: [
+          const Text('Add a Trial Pit Image'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              TextButton(
+                onPressed: () {
+                  getImage(ImageSource.camera);
+                  Navigator.of(context).pop(); //dismiss bottom sheet
+                },
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [Icon(Icons.camera),Text('Camera')]),
+              ),
+              TextButton(
+                onPressed: () {
+                  getImage(ImageSource.gallery);
+                  Navigator.of(context).pop(); //dismiss bottom sheet
+                },
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.image_outlined),
+                      Text('Gallery')
+                    ]),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

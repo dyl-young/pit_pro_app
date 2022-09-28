@@ -23,13 +23,17 @@ class TrialPitAdapter extends TypeAdapter<TrialPit> {
       ..elevation = fields[3] as double?
       ..wtDepth = fields[4] as double?
       ..pwtDepth = fields[5] as double?
-      ..layersList = (fields[6] as List).cast<Layer>();
+      ..layersList = (fields[6] as List).cast<Layer>()
+      ..contractor = fields[7] as String?
+      ..machine = fields[8] as String?
+      ..imagePath = fields[9] as String?
+      ..notes = fields[10] as String?;
   }
 
   @override
   void write(BinaryWriter writer, TrialPit obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.pitNumber)
       ..writeByte(1)
@@ -43,7 +47,15 @@ class TrialPitAdapter extends TypeAdapter<TrialPit> {
       ..writeByte(5)
       ..write(obj.pwtDepth)
       ..writeByte(6)
-      ..write(obj.layersList);
+      ..write(obj.layersList)
+      ..writeByte(7)
+      ..write(obj.contractor)
+      ..writeByte(8)
+      ..write(obj.machine)
+      ..writeByte(9)
+      ..write(obj.imagePath)
+      ..writeByte(10)
+      ..write(obj.notes);
   }
 
   @override

@@ -29,9 +29,9 @@ class _PdfViewPageState extends State<PdfViewPage> {
           loadingWidget: const CircularProgressIndicator(
               color: Colors.green,
               backgroundColor: Colors.white,
-              strokeWidth: 10),
+              strokeWidth: 6),
           pdfFileName:
-              'TrialPitLog${widget.job.jobNumber}.pdf', //TODO: Check if job number is adequate as pdf file name
+              'TrialPitLog${widget.job.jobNumber}.pdf',
           canDebug: true,
           canChangeOrientation: false,
           canChangePageFormat: false,

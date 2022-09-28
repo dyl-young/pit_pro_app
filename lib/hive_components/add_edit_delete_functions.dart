@@ -1,4 +1,6 @@
 //local imports
+import 'dart:io';
+
 import 'boxes.dart';
 import '../models/layer.dart';
 import '../models/user.dart';
@@ -107,6 +109,10 @@ void deleteTrialPit(TrialPit trialPit) {
     deleteLayer(e);
   }
 
+  if (trialPit.imagePath != '') {
+    deleteFile(File(trialPit.imagePath!));
+  }
+
   trialPit.delete();
 }
 
@@ -183,4 +189,14 @@ void editLayer(
 //*delete layer
 void deleteLayer(Layer layer) {
   layer.delete();
+}
+
+//! Delete file from app dir
+Future<int> deleteFile(File file) async {
+  try {
+    await file.delete();
+  } catch (e) {
+    return 0;
+  }
+  return 1;
 }

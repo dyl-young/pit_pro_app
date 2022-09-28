@@ -21,8 +21,6 @@ Widget buildUserDrawer(
     children: [
       Padding(
         //*Logo Card
-        //!cant acess logo from user class?
-        //!cant save user seleccted logo to assets
         padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
         //white background card
         child: Material(
@@ -120,7 +118,7 @@ Widget bottomSheet(BuildContext context, Function getImageFromGallery) {
             },
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [Text('Gallery'), Icon(Icons.image_outlined)]),
+                children: const [Icon(Icons.image_outlined), Text('Gallery')]),
           ),
         ),
       ],

@@ -119,7 +119,7 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
               ),
-        
+
               //!Job card view
               //*listenable Box List :
               //returns a list of detail cards built in test_pit_content builder
@@ -143,7 +143,7 @@ class _HomePageState extends State<HomePage> {
                     final jobs = box.values.toList().cast<Job>();
                     reversedJobs = jobs.reversed.toList();
                     List<Job> answerList;
-        
+
                     if (!searching) {
                       //not searching -> display full list
                       answerList = reversedJobs;
@@ -229,15 +229,26 @@ class _HomePageState extends State<HomePage> {
     pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
+      // deleteFile(File('/data/user/0/com.example.pit_pro_app/app_flutter/companyLogo.jpg'));
+      if (user.institutionLogo != 'assets/app_logo.png') {
+        deleteFile(File(user.institutionLogo));
+      }
       newFile = await File(pickedFile.path)
           .copy('${dir.path}/companyLogo${extension(pickedFile.path)}');
 
       setState(() {
-        imagePath = newFile.path;
-        user.institutionLogo = imagePath!;
+        user.institutionLogo = newFile.path;
         user.save();
       });
     }
   }
-}
 
+  Future<int> deleteFile(File file) async {
+    try {
+      await file.delete();
+    } catch (e) {
+      return 0;
+    }
+    return 1;
+  }
+}
