@@ -1,11 +1,11 @@
 //packages
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+// import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 
 //local imports
 import '../../../models/job.dart';
-import '../../hive_components/boxes.dart';
+// import '../../hive_components/boxes.dart';
 import '../../models/user.dart';
 import '../../pages/job_details_page.dart';
 import '../../pages/pdf/pfd_view_page.dart';
@@ -13,11 +13,11 @@ import '../widgets/confirm_alert_dialog.dart';
 import '../../hive_components/add_edit_delete_functions.dart';
 
 Widget buildJobContent(BuildContext context, User user, List<Job> jobs) {
-  final Box box1 = Boxes.getJobs();
-  final Box box2 = Boxes.geTrialPits();
-  final Box box3 = Boxes.getLayers();
+  // final Box box1 = Boxes.getJobs();
+  // final Box box2 = Boxes.geTrialPits();
+  // final Box box3 = Boxes.getLayers();
   final currentWidth = MediaQuery.of(context).size.width;
-  final currentHeight = MediaQuery.of(context).size.height;
+  // final currentHeight = MediaQuery.of(context).size.height;
 
   if (jobs.isEmpty) {
     return const Padding(
@@ -33,27 +33,27 @@ Widget buildJobContent(BuildContext context, User user, List<Job> jobs) {
 
         //!Temp widgets for dev purposes
         //-------------------------------------------------------------
-        Text('Screen width: $currentWidth',
-            style: const TextStyle(color: Colors.red)),
-        Text('Screen height: $currentHeight\n',
-            style: const TextStyle(color: Colors.red)),
-        Text("Number of Jobs in box: ${box1.length}",
-            style: const TextStyle(color: Colors.red)),
-        Text("Number of Trial Pits in box: ${box2.length}",
-            style: const TextStyle(color: Colors.red)),
-        Text("Number of Layers in box: ${box3.length}",
-            style: const TextStyle(color: Colors.red)),
-        TextButton(
-          style: ElevatedButton.styleFrom(
-            side: const BorderSide(width: 2.0, color: Colors.red),
-          ),
-          onPressed: () {
-            box1.clear();
-            box2.clear();
-            box3.clear();
-          },
-          child: const Text('Delete All', style: TextStyle(color: Colors.red)),
-        ),
+        // Text('Screen width: $currentWidth',
+        //     style: const TextStyle(color: Colors.red)),
+        // Text('Screen height: $currentHeight\n',
+        //     style: const TextStyle(color: Colors.red)),
+        // Text("Number of Jobs in box: ${box1.length}",
+        //     style: const TextStyle(color: Colors.red)),
+        // Text("Number of Trial Pits in box: ${box2.length}",
+        //     style: const TextStyle(color: Colors.red)),
+        // Text("Number of Layers in box: ${box3.length}",
+        //     style: const TextStyle(color: Colors.red)),
+        // TextButton(
+        //   style: ElevatedButton.styleFrom(
+        //     side: const BorderSide(width: 2.0, color: Colors.red),
+        //   ),
+        //   onPressed: () {
+        //     box1.clear();
+        //     box2.clear();
+        //     box3.clear();
+        //   },
+        //   child: const Text('Delete All', style: TextStyle(color: Colors.red)),
+        // ),
         //-------------------------------------------------------------
 
         //!Grid view display of all Job detail cards

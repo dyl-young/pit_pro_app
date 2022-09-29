@@ -1,7 +1,7 @@
 //packages
 import 'package:flutter/material.dart';
 
-//*rounded Textfield
+//*!rounded Textfield
 Widget customTextField(String text, TextEditingController controller) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
@@ -79,7 +79,7 @@ Widget customTextField4(String text, TextEditingController controller) {
   );
 }
 
-//! smaller for charcaters
+//! smaller for charcaters not validated
 Widget customTextField5(String text, TextEditingController controller) {
   return Padding(
     padding: const EdgeInsets.only(left: 2, right: 2),
@@ -100,6 +100,26 @@ Widget customTextField5(String text, TextEditingController controller) {
     ),
   );
 }
+
+//*!rounded Textfield
+Widget customTextField6(String text, TextEditingController controller) {
+  return Padding(
+    padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+    child: SizedBox(
+      width: 300,
+      child: TextFormField(
+        maxLines: 1,
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: text,
+          border: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(25))),
+        ),
+      ),
+    ),
+  );
+}
+
 
 //*Headings
 Widget sectionHeading(String heading) {

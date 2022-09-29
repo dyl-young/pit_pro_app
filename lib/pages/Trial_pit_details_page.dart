@@ -182,7 +182,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
                     ),
                   ),
 
-                  subSectionHeading('Location details:'),
+                  subSectionHeading('Location Details:'),
 
                   Padding(
                     padding: const EdgeInsets.only(left: 6, right: 6, top: 8),
@@ -212,14 +212,14 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
                   //* Trial Pit image
                   Padding(
                     padding: const EdgeInsets.only(top: 4.0),
-                    child: subSectionHeading('Add image:'),
+                    child: subSectionHeading('Trial Pit Image:'),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 4),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        infoTextBox('', _imagePathController.text != '' ? p.basename(_imagePathController.text): ''),
+                        infoTextBox2('', _imagePathController.text != '' ? p.basename(_imagePathController.text): ''),
                         imageButton(),
                       ],
                     ),
@@ -378,7 +378,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
     );
   }
 
-  //! Get file from gallery/camera and save to app dir
+  //! Get file from gallery/camera and save to app
   void getImage(ImageSource source) async {
     XFile? pickedFile;
     final File newFile;

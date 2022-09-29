@@ -93,8 +93,8 @@ Widget buildLayerButtons(BuildContext context, List<Layer> layers, Layer layer) 
             MaterialPageRoute(
               builder: (context) => LayerFormPage(
                 layer: layer,
-                onClickedDone: (depth, moisture, colour, colourPattern, consistency, structure, soilTypes, origin, originType, pm, notes) 
-                => editLayer(layer, depth, moisture, colour, colourPattern, consistency, structure, soilTypes, origin, originType, pm, notes),
+                onClickedDone: (depth, moisture, colour, otherColour, colourPattern, consistency, structure, soilTypes, origin, originType, pm, notes) 
+                => editLayer(layer, depth, moisture, colour, otherColour, colourPattern, consistency, structure, soilTypes, origin, originType, pm, notes),
               ),
             ),
           ),

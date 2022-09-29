@@ -90,7 +90,7 @@ Future<Uint8List> pdfBuildPage(User user, Job job) async {
     for (var element in trialPits) {
       buildTrialPitPage(pdf, user, job, element, images, defaultImage);
       if (element.imagePath != '') {
-        addtrialPitImage(pdf, element.imagePath!);
+        addtrialPitImage(pdf, element.imagePath!, element, job);
       }
     }
   }
@@ -98,14 +98,43 @@ Future<Uint8List> pdfBuildPage(User user, Job job) async {
   return pdf.save();
 }
 
-void addtrialPitImage(Document pdf, String path) async {
+void addtrialPitImage(
+    Document pdf, String path, TrialPit trialPit, Job job) async {
   return pdf.addPage(
     Page(
       build: (context) {
-        return Image(MemoryImage(io.File(path).readAsBytesSync()));
+        return Expanded(
+          child: Column(children: [
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              SizedBox(width: 120),
+              Text('Trial Pit Image', style: const TextStyle(fontSize: 20)),
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text('Hole No: ${trialPit.pitNumber}',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                Text('Job No:  ${job.jobNumber}',
+                    style: const TextStyle(fontSize: 14)),
+              ]),
+            ]),
+            SizedBox(height: 5),
+            Image(MemoryImage(io.File(path).readAsBytesSync()))
+          ]),
+        );
       },
     ),
   );
+}
+
+String pmOutput(Map<int, double> pmLayers) {
+  String result = '';
+
+  pmLayers.isNotEmpty
+  ? pmLayers.forEach((key, value) {
+    result += ' in layer $key at $value m,';
+  })
+  :result = ': none';
+
+  return result;
 }
 
 void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
@@ -114,6 +143,8 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
   List<Layer> layers = trialPit.layersList;
   double totalDepth = trialPit.totalDepth();
   double cumulativeDepth = 0;
+
+  Map<int, double> pmLayers = {};
 
   bool wtFound = false;
 
@@ -158,27 +189,16 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                               Padding(
                                 padding:
                                     const EdgeInsets.only(left: 4, right: 4),
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text('Hole No:  '),
-                                      Text(trialPit.pitNumber,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 14))
-                                    ]),
+                                child: Text('Hole No: ${trialPit.pitNumber}',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14)),
                               ),
                               Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 4, right: 4),
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text('Job No:  '),
-                                      Text(job.jobNumber,
-                                          style: const TextStyle(fontSize: 14))
-                                    ]),
-                              ),
+                                  padding:
+                                      const EdgeInsets.only(left: 4, right: 4),
+                                  child: Text('Job No:  ${job.jobNumber}',
+                                      style: const TextStyle(fontSize: 14))),
                             ]),
                       ]),
 
@@ -224,6 +244,12 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                         double height = 500 * (layers[i].depth / totalDepth);
                         double colHeight = roundDouble(height / 32, 0) * 32;
                         cumulativeDepth += layers[i].depth;
+                        var a;
+
+                        String otherColour;
+                        layers[i].otherColour != ''
+                            ? otherColour = ', ${layers[i].otherColour}, '
+                            : otherColour = ', ';
 
                         if (cumulativeDepth >= wtDepth &&
                             wtDepth != 0 &&
@@ -235,6 +261,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                         }
                         if (pmDepth != 0) {
                           pmDepth += (cumulativeDepth - layers[i].depth);
+                          pmLayers.putIfAbsent(i + 1, () => pmDepth);
                         }
 
                         return TableRow(
@@ -310,7 +337,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                                   Padding(
                                     padding: const EdgeInsets.only(bottom: 4),
                                     child: Text(
-                                        '${layers[i].moisture}, ${layers[i].colourPattern}${layers[i].colour}, ${layers[i].consistency}, ${layers[i].soilToString()}, ${layers[i].structure}, ${layers[i].originType}: ${layers[i].origin}'),
+                                        '${layers[i].moisture}, ${layers[i].colourPattern}${layers[i].colour}$otherColour${layers[i].consistency}, ${layers[i].soilToString()}, ${layers[i].structure}, ${layers[i].originType}: ${layers[i].origin}'),
                                   ),
                                   Text('Notes:',
                                       style: TextStyle(
@@ -337,14 +364,12 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Notes Area:',
+                          Text('Trial Pit Notes:',
                               style: TextStyle(fontWeight: FontWeight.bold)),
                           Text(
                               '1) Water Table: ${trialPit.wtDepth != 0 ? 'at ${trialPit.wtDepth} m' : 'None'}'),
-                          Text('2) Pebble marker/disturbed soil'),
-                          Text('3) maybe refusal?'),
-
-                          //TODO: add pebble marker list to Trial Pit and display
+                          Text('2) Pebble markers${pmOutput(pmLayers)}'),
+                          // Text('3) maybe refusal?'),
                         ],
                       ),
                     ),

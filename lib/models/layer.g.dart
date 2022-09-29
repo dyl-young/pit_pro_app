@@ -30,13 +30,14 @@ class LayerAdapter extends TypeAdapter<Layer> {
       ..notes = fields[10] as String?
       ..createdDate = fields[11] as DateTime
       ..originType = fields[12] as String?
-      ..colourPattern = fields[13] as String?;
+      ..colourPattern = fields[13] as String?
+      ..otherColour = fields[14] as String?;
   }
 
   @override
   void write(BinaryWriter writer, Layer obj) {
     writer
-      ..writeByte(14)
+      ..writeByte(15)
       ..writeByte(0)
       ..write(obj.depth)
       ..writeByte(1)
@@ -64,7 +65,9 @@ class LayerAdapter extends TypeAdapter<Layer> {
       ..writeByte(12)
       ..write(obj.originType)
       ..writeByte(13)
-      ..write(obj.colourPattern);
+      ..write(obj.colourPattern)
+      ..writeByte(14)
+      ..write(obj.otherColour);
   }
 
   @override

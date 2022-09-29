@@ -33,6 +33,8 @@ class Layer extends HiveObject {
   late String? originType;
   @HiveField(13)
   late String? colourPattern;
+  @HiveField(14)
+  late String? otherColour;
 
   String soilToString() {
     List<String> revSoilTypes = soilTypes.reversed.toList();

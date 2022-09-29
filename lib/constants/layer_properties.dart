@@ -5,8 +5,6 @@ import 'dart:ui';
 //packages
 import 'package:flutter/material.dart';
 
-// TODO: add additional options from SAICE Recomendations 
-
 class SoilMoisture {
   static const String DRY = 'Dry';
   static const String S_MOIST = 'Slightly Moist';
@@ -26,8 +24,17 @@ class SoilColour {
   static const String L_BROWN = 'Light Brown';
   static const String D_RED_BROWN = 'Dark Red-Brown';
   static const String L_RED_BROWN = 'Light Red-Brown';
+
+  static const String D_RED = 'Dark Red';
+  static const String L_RED = 'Light Red';
+  static const String D_RED_ORANGE = 'Dark Red-Orange';
+  static const String L_RED_ORANGE = 'Light Red-Orange';
+  static const String D_YELLOW_ORANGE = 'Dark Yellow-Orange';
+  static const String L_YELLOW_ORANGE = 'Light Yellow-Orange';
+
   static const String D_YELLOW_BROWN = 'Dark Yellow-Brown';
   static const String L_YELLOW_BROWN = 'Light Yellow-Brown';
+  static const String D_YELLOW = 'Dark Yellow';
   static const String L_YELLOW = 'Light Yellow';
   static const String D_ORANGE_BROWN = 'Dark Orange-Brown';
   static const String L_ORANGE_BROWN = 'Light Orange-Brown';
@@ -52,8 +59,17 @@ class SoilColour {
   static const Color L_BROWN_Value = Color.fromARGB(255, 177, 135, 121);
   static const Color D_RED_BROWN_Value = Color.fromARGB(255, 153, 62, 43);
   static const Color L_RED_BROWN_Value = Color.fromARGB(255, 220, 139, 112);
+
+  static const Color D_RED_Value = Color.fromARGB(255, 152, 69, 64);
+  static const Color L_RED_Value = Color.fromARGB(255, 209, 126, 114);
+  static const Color D_RED_ORANGE_Value = Color.fromARGB(255, 147, 78, 36);
+  static const Color L_RED_ORANGE_Value = Color.fromARGB(255, 204, 126, 88);
+  static const Color D_YELLOW_ORANGE_Value = Color.fromARGB(255, 165, 104, 36);
+  static const Color L_YELLOW_ORANGE_Value = Color.fromARGB(255, 226, 160, 89);
+
   static const Color D_YELLOW_BROWN_Value = Color.fromARGB(255, 82, 49, 33);
   static const Color L_YELLOW_BROWN_Value = Color.fromARGB(255, 154, 123, 94);
+  static const Color D_YELLOW_Value = Color.fromARGB(255, 182, 136, 46);
   static const Color L_YELLOW_Value = Color.fromARGB(255, 229, 212, 156);
   static const Color D_ORANGE_BROWN_Value = Color.fromARGB(255, 197, 99, 86);
   static const Color L_ORANGE_BROWN_Value = Color.fromARGB(255, 224, 149, 118);
@@ -87,6 +103,13 @@ class SoilColour {
       L_BROWN,
       D_RED_BROWN,
       L_RED_BROWN,
+      D_RED,
+      L_RED,
+      D_RED_ORANGE,
+      L_RED_ORANGE,
+      D_YELLOW_ORANGE,
+      L_YELLOW_ORANGE,
+      D_YELLOW,
       L_YELLOW,
       D_YELLOW_BROWN,
       L_YELLOW_BROWN,
@@ -127,8 +150,15 @@ class SoilColour {
     L_BROWN: L_BROWN_Value,
     D_RED_BROWN: D_RED_BROWN_Value,
     L_RED_BROWN: L_RED_BROWN_Value,
+    D_RED: D_RED_Value,
+    L_RED: L_RED_Value,
+    D_RED_ORANGE: D_RED_ORANGE_Value,
+    L_RED_ORANGE: L_RED_ORANGE_Value,
+    D_YELLOW_ORANGE: D_YELLOW_ORANGE_Value,
+    L_YELLOW_ORANGE: L_YELLOW_ORANGE_Value,
     D_YELLOW_BROWN: D_YELLOW_BROWN_Value,
     L_YELLOW_BROWN: L_YELLOW_BROWN_Value,
+    D_YELLOW: D_YELLOW_Value,
     L_YELLOW: L_YELLOW_Value,
     D_ORANGE_BROWN: D_ORANGE_BROWN_Value,
     L_ORANGE_BROWN: L_ORANGE_BROWN_Value,
@@ -223,25 +253,31 @@ class SoilTypes {
 class SoilStructure {
   static const String INTACT = 'Intact';
   static const String FISSURED = 'Fissured';
-  static const String SLICKEN_SIDED =
-      'Slicked-sided'; //[Secondary Soil] with boulders
-
+  static const String SLICKENSIDED = 'Slickensided';
   static const String SHATTERED = 'Shattered';
   static const String M_SHATTERED = 'Micro-shattered';
   static const String LAMINATED = 'Laminated';
   static const String FOLIATED = 'Foliated';
   static const String STRATIFIED = 'Stratified';
+  static const String PINHOLED = 'Pinholed';
+  static const String HONEYCOMBED = 'Honeycombed';
+  static const String MATRIX_SUPPORTED = 'Matrix-Supported';
+  static const String CLAST_SUPPORTED = 'Clast-Supported';
 
   List<String> getSoilStructure() {
     return [
       INTACT,
       FISSURED,
-      SLICKEN_SIDED,
+      SLICKENSIDED,
       SHATTERED,
       M_SHATTERED,
       LAMINATED,
       FOLIATED,
-      STRATIFIED
+      STRATIFIED,
+      PINHOLED,
+      HONEYCOMBED,
+      MATRIX_SUPPORTED,
+      CLAST_SUPPORTED
     ];
   }
 }
@@ -249,12 +285,12 @@ class SoilStructure {
 class TransportedSoilOrigin {
   static const String TALUS = 'Talus';
   static const String HILLWASH = 'Hillwash';
-  static const String ALLUVIUM = 'Alluvium'; //[Secondary Soil] with boulders
-
+  static const String ALLUVIUM = 'Alluvium';
   static const String LACUSTRINE = 'Lacustrine Depoists';
   static const String ESTUARINE = 'Estuarine Deposits';
   static const String LITTORAL = 'Littoral Deposits';
   static const String AEOLIAN = 'Aeolian Deosits';
+  static const String MIXED = 'Sandy soils of mixed origin';
 
   List<String> getTransportedSoil() {
     return [
@@ -264,7 +300,8 @@ class TransportedSoilOrigin {
       LACUSTRINE,
       ESTUARINE,
       LITTORAL,
-      AEOLIAN
+      AEOLIAN,
+      MIXED
     ];
   }
 }

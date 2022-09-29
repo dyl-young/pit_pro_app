@@ -17,81 +17,98 @@ Widget buildUserDrawer(
   ? displayImage = FileImage(File(user.institutionLogo))
   : displayImage = const AssetImage('assets/app_logo.png');
 
-  return ListView(
+  final currentHeight = MediaQuery.of(context).size.height;
+
+
+
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      Padding(
-        //*Logo Card
-        padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
-        //white background card
-        child: Material(
-          borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(25),
-              bottomRight: Radius.circular(25)),
-          //add image
-          child: Ink.image(
-            width: 100,
-            height: 150,
-            image: displayImage,
-            fit: BoxFit.contain,
-            child: Stack(
-              clipBehavior: Clip.none,
+      SizedBox(
+        height: currentHeight-50,
+        child: ListView(
               children: [
-                //make image tappable
-                InkWell(
-                  onTap: () {
-                    showModalBottomSheet(
+                Padding(
+                  //*Logo Card
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
+                  //white background card
+                  child: Material(
+                    borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(25),
+                        bottomRight: Radius.circular(25)),
+                    //add image
+                    child: Ink.image(
+                      width: 100,
+                      height: 150,
+                      image: displayImage,
+                      fit: BoxFit.contain,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          //make image tappable
+                          InkWell(
+                            onTap: () {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: ((builder) =>
+                                    bottomSheet(context, getImageFromGallery)),
+                              );
+                            },
+                          ),
+                          //stack edit icon on image
+                          const Positioned(
+                            bottom: 8,
+                            right: 8,
+                            child: CircleAvatar(
+                                backgroundColor: Colors.green,
+                                maxRadius: 12,
+                                child: Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                  size: 15,
+                                )),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+                //*user name box
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: infoTextBox('User:         ', user.userName, const Icon(Icons.person)),
+                ),
+
+                //*user company box
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: infoTextBox('Company:', user.institutionName, const Icon(Icons.business_center)),
+                ),
+
+                //*User info edit button
+                Padding(
+                  padding: const EdgeInsets.only(left: 110, right: 110),
+                  child: ElevatedButton(
+                    onPressed: () => showDialog(
                       context: context,
-                      builder: ((builder) =>
-                          bottomSheet(context, getImageFromGallery)),
-                    );
-                  },
+                      builder: (context) => UserInfoEditPage(
+                        user: user,
+                        onClickedDone: ((name, company) => editUser(user, name, company)),
+                      ),
+                    ),
+                    child: const Icon(Icons.edit, color: Colors.white),
+                    // color: Colors.red,
+                  ),
                 ),
-                //stack edit icon on image
-                const Positioned(
-                  bottom: 8,
-                  right: 8,
-                  child: CircleAvatar(
-                      backgroundColor: Colors.green,
-                      maxRadius: 12,
-                      child: Icon(
-                        Icons.edit,
-                        color: Colors.white,
-                        size: 15,
-                      )),
-                ),
+
               ],
             ),
-          ),
-        ),
       ),
-
-      //*user name box
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: infoTextBox('User:         ', user.userName),
-      ),
-
-      //*user company box
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: infoTextBox('Company:', user.institutionName),
-      ),
-
-      //*User info edit button
-      Padding(
-        padding: const EdgeInsets.only(left: 110, right: 110),
-        child: ElevatedButton(
-          onPressed: () => showDialog(
-            context: context,
-            builder: (context) => UserInfoEditPage(
-              user: user,
-              onClickedDone: ((name, company) => editUser(user, name, company)),
-            ),
-          ),
-          child: const Icon(Icons.edit, color: Colors.white),
-          // color: Colors.red,
-        ),
-      ),
+      const Padding(
+        padding: EdgeInsets.all(4.0),
+        child: Text('Created By\nDylan Young'),
+      )
     ],
   );
 }

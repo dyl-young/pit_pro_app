@@ -17,14 +17,13 @@ class LayerFormPage extends StatefulWidget {
       double depth,
       String moisture,
       String colour,
+      String otherColour,
       String colourPattern,
       String consistency,
       String structure,
       List<String> soilTypes,
       String origin,
       String originType,
-      // double wt,
-      // double pwt,
       double pm,
       String notes) onClickedDone;
 
@@ -44,6 +43,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
   String? selectedMoisture;
   //colour
   String? selectedColour;
+  final _otherColourController = TextEditingController();
   String? selectedColourPattern;
   //consistency
   String? selectedConsistency;
@@ -105,10 +105,10 @@ class _LayerFormPageState extends State<LayerFormPage> {
       selectedMoisture = layer.moisture;
       //colour
       selectedColour = layer.colour;
-      // selectedColourPattern != null
-      //     ? selectedColourPattern = layer.colourPattern
-      //     : selectedColourPattern = '';
-      if (layer.colourPattern != null && layer.colourPattern != ' ' && layer.colourPattern != '') {
+      _otherColourController.text = layer.otherColour!;
+      if (layer.colourPattern != null &&
+          layer.colourPattern != ' ' &&
+          layer.colourPattern != '') {
         selectedColourPattern = layer.colourPattern;
       }
 
@@ -171,6 +171,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
   @override
   void dispose() {
     _depthController.dispose();
+    _otherColourController.dispose();
     _otherSoilTypeController.dispose();
     _residualController.dispose();
     _notesController.dispose();
@@ -266,58 +267,60 @@ class _LayerFormPageState extends State<LayerFormPage> {
                     child: SizedBox(
                       width: 300,
                       child: DropdownButtonFormField<String>(
-                          // dropdownColor: Colors.green.shade100,
-                          value: selectedColour, //_moistureController.text,
-                          decoration: const InputDecoration(
-                            labelText: '*Soil Colour',
-                            border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(25)),
-                            ),
+                        // dropdownColor: Colors.green.shade100,
+                        value: selectedColour, //_moistureController.text,
+                        decoration: const InputDecoration(
+                          labelText: '*Soil Colour',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(25)),
                           ),
-                          dropdownColor: Colors.green.shade50,
-                          items: colour
-                              .map((item) => DropdownMenuItem<String>(
-                                    value: item,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Text(item),
-                                        SizedBox(
-                                            height: 30,
-                                            width: 50,
-                                            child: Container(
-                                                color: colourValues[item])),
-                                      ],
-                                    ),
-                                  ))
-                              .toList(),
-                          onChanged: (item) => setState(
-                                () {
-                                  selectedColour = item;
-                                },
-                              ),
-                          validator: (title) {
-                            if (title == null) {
-                              return '*Soil Colour is required';
-                            }
-                            return null;
-                          }),
+                        ),
+                        dropdownColor: Colors.green.shade50,
+                        items: colour
+                            .map((item) => DropdownMenuItem<String>(
+                                  value: item,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Text(item),
+                                      SizedBox(
+                                          height: 30,
+                                          width: 50,
+                                          child: Container(
+                                              color: colourValues[item])),
+                                    ],
+                                  ),
+                                ))
+                            .toList(),
+                        onChanged: (item) => setState(
+                          () {
+                            selectedColour = item;
+                          },
+                        ),
+                        validator: (title) {
+                          if (title == null) {
+                            return '*Soil Colour is required';
+                          }
+                          return null;
+                        },
+                      ),
                     ),
                   ),
                 ),
 
+                //! Other Colour: Textbox
+                Center(child: customTextField6('Other Soil Colour', _otherColourController)),
+
+                //! Colour Pattern: dropdown
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: SizedBox(
                       width: 300,
                       child: DropdownButtonFormField<String>(
-                        // dropdownColor: Colors.green.shade100,
-                        value:
-                            selectedColourPattern, //_moistureController.text,
+                        value: selectedColourPattern,
                         decoration: const InputDecoration(
                           labelText: 'Colour Pattern',
                           border: OutlineInputBorder(
@@ -328,8 +331,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
                         items: colourPattern
                             .map((item) => DropdownMenuItem<String>(
                                   value: item,
-                                  child: Text(
-                                      item), //style: const TextStyle(color: Colors.green)),
+                                  child: Text(item),
                                 ))
                             .toList(),
                         onChanged: (item) => setState(
@@ -337,17 +339,10 @@ class _LayerFormPageState extends State<LayerFormPage> {
                             selectedColourPattern = item;
                           },
                         ),
-                        // validator: (title) {
-                        //   if (title == null) {
-                        //     return '*Soil Colour is required';
-                        //   }
-                        // },
                       ),
                     ),
                   ),
                 ),
-
-                // customDropDownMenu(selectedColourPattern, colourPattern, 'Colour Pattern'),
 
                 //! Consistency: multilevel dropdown
                 //* multilevel drop-down menu
@@ -712,6 +707,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
             final depth = double.tryParse(_depthController.text) ?? 0;
             final moisture = selectedMoisture ?? '';
             final colour = selectedColour ?? '';
+            final otherColour = _otherColourController.text;
             final colourPattern = selectedColourPattern ?? '';
             final consistency = selectedConsistency ?? '';
             final structure = selectedStructure ?? '';
@@ -727,20 +723,22 @@ class _LayerFormPageState extends State<LayerFormPage> {
               print('1 $depth');
               print('2 $moisture');
               print('3 $colour');
-              print('3 $colourPattern');
-              print('4 $consistency');
-              print('5 $structure');
-              print('6 ${selectedSoilTypes.toString()}');
-              print('7 $originType');
-              print('8 $origin');
-              print('9 $pm');
-              print('10 $notes');
+              print('4 $otherColour');
+              print('5 $colourPattern');
+              print('6 $consistency');
+              print('7 $structure');
+              print('8 ${selectedSoilTypes.toString()}');
+              print('9 $originType');
+              print('10 $origin');
+              print('11 $pm');
+              print('12 $notes');
             }
-            
+
             widget.onClickedDone(
                 depth,
                 moisture,
                 colour,
+                otherColour,
                 colourPattern,
                 consistency,
                 structure,
