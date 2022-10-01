@@ -129,10 +129,10 @@ String pmOutput(Map<int, double> pmLayers) {
   String result = '';
 
   pmLayers.isNotEmpty
-  ? pmLayers.forEach((key, value) {
-    result += ' in layer $key at $value m,';
-  })
-  :result = ': none';
+      ? pmLayers.forEach((key, value) {
+          result += ' in layer $key at ${roundDouble(value,2)} m,';
+        })
+      : result = ': none';
 
   return result;
 }
@@ -274,7 +274,8 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                                   // crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Text('${cumulativeDepth.toString()} m',
+                                    Text(
+                                        '${(roundDouble(cumulativeDepth, 2)).toString()} m',
                                         style: const TextStyle(fontSize: 10)),
                                   ]),
                             ),
@@ -296,7 +297,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                                       ? Column(
                                           children: [
                                             Text(
-                                              '${pmDepth.toString()} m',
+                                              '${roundDouble(pmDepth, 2).toString()} m',
                                               style:
                                                   const TextStyle(fontSize: 8),
                                             ),
@@ -311,7 +312,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                                       ? Column(
                                           children: [
                                             Text(
-                                              '${layers[i].wtDepth.toString()} m',
+                                              '${roundDouble(layers[i].wtDepth!,2).toString()} m',
                                               style:
                                                   const TextStyle(fontSize: 8),
                                             ),
@@ -367,7 +368,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                           Text('Trial Pit Notes:',
                               style: TextStyle(fontWeight: FontWeight.bold)),
                           Text(
-                              '1) Water Table: ${trialPit.wtDepth != 0 ? 'at ${trialPit.wtDepth} m' : 'None'}'),
+                              '1) Water Table: ${trialPit.wtDepth != 0 ? 'at ${roundDouble(trialPit.wtDepth!, 2)} m' : 'None'}'),
                           Text('2) Pebble markers${pmOutput(pmLayers)}'),
                           // Text('3) maybe refusal?'),
                         ],
