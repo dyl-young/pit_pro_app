@@ -89,9 +89,9 @@ class SoilColour {
   static const Color L_OLIVE_Value = Color.fromARGB(255, 91, 92, 61);
 
   //*patterns
-  static const String SPECKLED = 'Speckeled ';
+  static const String SPECKLED = 'Speckled ';
   static const String MOTTLED = 'Mottled ';
-  static const String BLOTCHED = 'Bloctched ';
+  static const String BLOTCHED = 'Blotched ';
   static const String BANDED = 'Banded ';
   static const String STREAKED = 'Streaked ';
   static const String STAINED = 'Stained ';
@@ -253,7 +253,7 @@ class SoilTypes {
 class SoilStructure {
   static const String INTACT = 'Intact';
   static const String FISSURED = 'Fissured';
-  static const String SLICKENSIDED = 'Slickensided';
+  static const String SLICKENSIDED = 'Slicken-sided';
   static const String SHATTERED = 'Shattered';
   static const String M_SHATTERED = 'Micro-shattered';
   static const String LAMINATED = 'Laminated';

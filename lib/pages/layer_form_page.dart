@@ -215,226 +215,29 @@ class _LayerFormPageState extends State<LayerFormPage> {
         //! Layer form widegts
         body: Form(
           key: layerFormKey,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                //! Moisture: drop down
-                sectionHeading('Moisture Content'),
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      width: 300,
-                      child: DropdownButtonFormField<String>(
-                        // dropdownColor: Colors.green.shade100,
-                        value: selectedMoisture, //_moistureController.text,
-                        decoration: const InputDecoration(
-                          labelText: '*Soil Moisture Condition',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(25)),
-                          ),
-                        ),
-                        dropdownColor: Colors.green.shade50,
-                        items: moisture
-                            .map((item) => DropdownMenuItem<String>(
-                                  value: item,
-                                  child: Text(
-                                      item), //style: const TextStyle(color: Colors.green)),
-                                ))
-                            .toList(),
-                        onChanged: (item) => setState(
-                          () {
-                            selectedMoisture = item;
-                          },
-                        ),
-                        validator: (title) {
-                          if (title == null) {
-                            return '*Soil Moisture Condition is required';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-
-                //! Colour: dropdown
-                sectionHeading('Colour'),
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      width: 300,
-                      child: DropdownButtonFormField<String>(
-                        // dropdownColor: Colors.green.shade100,
-                        value: selectedColour, //_moistureController.text,
-                        decoration: const InputDecoration(
-                          labelText: '*Soil Colour',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(25)),
-                          ),
-                        ),
-                        dropdownColor: Colors.green.shade50,
-                        items: colour
-                            .map((item) => DropdownMenuItem<String>(
-                                  value: item,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Text(item),
-                                      SizedBox(
-                                          height: 30,
-                                          width: 50,
-                                          child: Container(
-                                              color: colourValues[item])),
-                                    ],
-                                  ),
-                                ))
-                            .toList(),
-                        onChanged: (item) => setState(
-                          () {
-                            selectedColour = item;
-                          },
-                        ),
-                        validator: (title) {
-                          if (title == null) {
-                            return '*Soil Colour is required';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-
-                //! Other Colour: Textbox
-                Center(child: customTextField6('Other Soil Colour', _otherColourController)),
-
-                //! Colour Pattern: dropdown
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      width: 300,
-                      child: DropdownButtonFormField<String>(
-                        value: selectedColourPattern,
-                        decoration: const InputDecoration(
-                          labelText: 'Colour Pattern',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(25)),
-                          ),
-                        ),
-                        dropdownColor: Colors.green.shade50,
-                        items: colourPattern
-                            .map((item) => DropdownMenuItem<String>(
-                                  value: item,
-                                  child: Text(item),
-                                ))
-                            .toList(),
-                        onChanged: (item) => setState(
-                          () {
-                            selectedColourPattern = item;
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-
-                //! Consistency: multilevel dropdown
-                //* multilevel drop-down menu
-                sectionHeading('Consistency'),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      SizedBox(
-                        width: 180,
+          child: Scrollbar(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //! Moisture: drop down
+                  sectionHeading('Moisture Content'),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        width: 300,
                         child: DropdownButtonFormField<String>(
-                          // hint: const Text('Select'),
-                          dropdownColor: Colors.green.shade50,
-                          decoration: const InputDecoration(
-                            labelText: 'Select',
-                            border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(25)),
-                            ),
-                          ),
-                          value: selectedConsistencyType,
-                          items: consistencyType
-                              .map((item) => DropdownMenuItem<String>(
-                                  value: item, child: Text(item)))
-                              .toList(),
-                          onChanged: (item) => setState(() {
-                            switch (item) {
-                              case 'Cohesive':
-                                consistency = cohesiveConsistency;
-                                break;
-                              case 'Granular':
-                                consistency = granularConsistency;
-                                break;
-                              default:
-                            }
-                            selectedConsistencyType = item;
-                            selectedConsistency = null;
-                          }),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 180,
-                        child: DropdownButtonFormField<String>(
-                          value: selectedConsistency,
-                          dropdownColor: Colors.green.shade50,
-                          decoration: const InputDecoration(
-                            labelText: '*Soil Consistency',
-                            border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(25)),
-                            ),
-                          ),
-                          // hint: const Text('Soil Consistency'),
-                          items: consistency
-                              .map((item) => DropdownMenuItem(
-                                  value: item, child: Text(item)))
-                              .toList(),
-                          onChanged: (item) => setState(() {
-                            selectedConsistency = item;
-                          }),
-                          validator: (title) {
-                            if (title == null) {
-                              return '*Consistency is required';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                //! Structure: dropdown
-                sectionHeading('Structure'),
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      width: 300,
-                      child: DropdownButtonFormField<String>(
                           // dropdownColor: Colors.green.shade100,
-                          value: selectedStructure, //_moistureController.text,
+                          value: selectedMoisture, //_moistureController.text,
                           decoration: const InputDecoration(
-                            labelText: '*Soil Structure',
+                            labelText: '*Soil Moisture Condition',
                             border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(25)),
+                              borderRadius: BorderRadius.all(Radius.circular(25)),
                             ),
                           ),
                           dropdownColor: Colors.green.shade50,
-                          items: structure
+                          items: moisture
                               .map((item) => DropdownMenuItem<String>(
                                     value: item,
                                     child: Text(
@@ -442,226 +245,428 @@ class _LayerFormPageState extends State<LayerFormPage> {
                                   ))
                               .toList(),
                           onChanged: (item) => setState(
-                                () {
-                                  selectedStructure = item;
-                                },
-                              ),
+                            () {
+                              selectedMoisture = item;
+                            },
+                          ),
                           validator: (title) {
                             if (title == null) {
-                              return '*Soil Structure is required';
+                              return '*Soil Moisture Condition is required';
                             }
                             return null;
-                          }),
-                    ),
-                  ),
-                ),
-
-                //! Soil Types: check box/radio button group
-                sectionHeading('Soil Types'),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    checkBoxGroup(primSoilTypes, primTypeMap),
-                    checkBoxGroup(secSoilTypes, secTypeMap),
-                  ],
-                ),
-                //*other soil types
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 26.25),
-                      child: SizedBox(
-                        width: 165,
-                        child: CheckboxListTile(
-                          // controlAffinity: ListTileControlAffinity.leading,
-                          title: const Text('Other'),
-                          value: visibleOtherST,
-                          onChanged: ((val) {
-                            setState(
-                              () {
-                                visibleOtherST = val!;
-                              },
-                            );
-                          }),
-                        ),
-                      ),
-                    ),
-                    Visibility(
-                      visible: visibleOtherST,
-                      child: SizedBox(
-                        width: 200,
-                        child: TextFormField(
-                          maxLines: 1,
-                          controller: _otherSoilTypeController,
-                          decoration: const InputDecoration(
-                            labelText: 'Other type',
-                            border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(25))),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-
-                //! Origin: drop down -> dropdown or -> textField
-                sectionHeading('Origin'),
-                Center(
-                  child: Padding(
-                    //*Primary drop down
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      width: 300,
-                      child: DropdownButtonFormField<String>(
-                          value: selectedOriginType,
-                          decoration: const InputDecoration(
-                            labelText: '*Soil Origin',
-                            border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(25)),
-                            ),
-                          ),
-                          dropdownColor: Colors.green.shade50,
-                          items: originType
-                              .map((item) => DropdownMenuItem<String>(
-                                    value: item,
-                                    child: Text(
-                                        item), //style: const TextStyle(color: Colors.green)),
-                                  ))
-                              .toList(),
-                          onChanged: (item) {
-                            if (item == 'Transported Soil') {
-                              visibleTransported = true;
-                              _residualController.text = '';
-                            } else {
-                              visibleTransported = false;
-                              selecetedTransport = null;
-                            }
-                            setState(
-                              () {
-                                mustIgnore = false;
-                                selectedOriginType = item;
-                              },
-                            );
                           },
-                          validator: (title) {
-                            if (title == null) {
-                              return '*Soil Origin is required';
-                            }
-                            return null;
-                          }),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-
-                //*Transported drop down
-                Visibility(
-                  visible: visibleTransported,
-                  child: Center(
+          
+                  //! Colour: dropdown
+                  sectionHeading('Colour'),
+                  Center(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SizedBox(
                         width: 300,
-                        child: IgnorePointer(
-                          ignoring: mustIgnore,
-                          child: DropdownButtonFormField<String>(
-                              value: selecetedTransport,
-                              decoration: const InputDecoration(
-                                labelText: '*Transported Soil',
-                                border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(25)),
-                                ),
-                              ),
-                              dropdownColor: Colors.green.shade50,
-                              items: transpotOrigin
-                                  .map((item) => DropdownMenuItem<String>(
-                                        value: item,
-                                        child: Text(item),
-                                      ))
-                                  .toList(),
-                              onChanged: (item) => setState(
-                                    () {
-                                      selecetedTransport = item;
-                                    },
-                                  ),
-                              validator: (title) {
-                                if (title == null) {
-                                  return '*Transported Soil is required';
-                                }
-                                return null;
-                              }),
+                        child: DropdownButtonFormField<String>(
+                          // dropdownColor: Colors.green.shade100,
+                          value: selectedColour, //_moistureController.text,
+                          decoration: const InputDecoration(
+                            labelText: '*Soil Colour',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(25)),
+                            ),
+                          ),
+                          dropdownColor: Colors.green.shade50,
+                          items: colour
+                              .map((item) => DropdownMenuItem<String>(
+                                    value: item,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Text(item),
+                                        SizedBox(
+                                            height: 30,
+                                            width: 50,
+                                            child: Container(
+                                                color: colourValues[item])),
+                                      ],
+                                    ),
+                                  ))
+                              .toList(),
+                          onChanged: (item) => setState(
+                            () {
+                              selectedColour = item;
+                            },
+                          ),
+                          validator: (title) {
+                            if (title == null) {
+                              return '*Soil Colour is required';
+                            }
+                            return null;
+                          },
                         ),
                       ),
                     ),
                   ),
-                ),
-
-                //*Residual text field
-                Visibility(
-                  visible: !visibleTransported,
-                  child: SizedBox(
+          
+                  //! Other Colour: Textbox
+                  Center(child: customTextField6('Other Soil Colour', _otherColourController)),
+          
+                  //! Colour Pattern: dropdown
+                  Center(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        maxLines: 4,
-                        controller: _residualController,
-                        decoration: const InputDecoration(
-                          labelText: 'Residual Soil',
-                          border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(25))),
+                      child: SizedBox(
+                        width: 300,
+                        child: DropdownButtonFormField<String>(
+                          value: selectedColourPattern,
+                          decoration: const InputDecoration(
+                            labelText: 'Colour Pattern',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(25)),
+                            ),
+                          ),
+                          dropdownColor: Colors.green.shade50,
+                          items: colourPattern
+                              .map((item) => DropdownMenuItem<String>(
+                                    value: item,
+                                    child: Text(item),
+                                  ))
+                              .toList(),
+                          onChanged: (item) => setState(
+                            () {
+                              selectedColourPattern = item;
+                            },
+                          ),
                         ),
-                        // validator: (title) =>
-                        //     title != null && title.isEmpty ? 'Enter $text' : null,
                       ),
                     ),
                   ),
-                ),
-
-                //! Depth: numeric textfield
-                sectionHeading('Layer Depth'),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: customTextField4('Depth (m)', _depthController),
-                ),
-
-                //! Pebble Marker: numeric textfield
-                sectionHeading('Pebble Marker'),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 70,
-                      width: 100,
-                      child: SwitchListTile(
-                        value: visiblePM,
-                        controlAffinity: ListTileControlAffinity.leading,
-                        onChanged: (val) => setState(() {
-                          visiblePM = val;
-                          if (visiblePM == false) {
-                            _pmController.text = '0.0';
-                          }
-                        }),
+          
+                  //! Consistency: multilevel dropdown
+                  //* multilevel drop-down menu
+                  sectionHeading('Consistency'),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        SizedBox(
+                          width: 180,
+                          child: DropdownButtonFormField<String>(
+                            // hint: const Text('Select'),
+                            dropdownColor: Colors.green.shade50,
+                            decoration: const InputDecoration(
+                              labelText: 'Select',
+                              border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(25)),
+                              ),
+                            ),
+                            value: selectedConsistencyType,
+                            items: consistencyType
+                                .map((item) => DropdownMenuItem<String>(
+                                    value: item, child: Text(item)))
+                                .toList(),
+                            onChanged: (item) => setState(() {
+                              switch (item) {
+                                case 'Cohesive':
+                                  consistency = cohesiveConsistency;
+                                  break;
+                                case 'Granular':
+                                  consistency = granularConsistency;
+                                  break;
+                                default:
+                              }
+                              selectedConsistencyType = item;
+                              selectedConsistency = null;
+                            }),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 180,
+                          child: DropdownButtonFormField<String>(
+                            value: selectedConsistency,
+                            dropdownColor: Colors.green.shade50,
+                            decoration: const InputDecoration(
+                              labelText: '*Soil Consistency',
+                              border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(25)),
+                              ),
+                            ),
+                            // hint: const Text('Soil Consistency'),
+                            items: consistency
+                                .map((item) => DropdownMenuItem(
+                                    value: item, child: Text(item)))
+                                .toList(),
+                            onChanged: (item) => setState(() {
+                              selectedConsistency = item;
+                            }),
+                            validator: (title) {
+                              if (title == null) {
+                                return '*Consistency is required';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+          
+                  //! Structure: dropdown
+                  sectionHeading('Structure'),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        width: 300,
+                        child: DropdownButtonFormField<String>(
+                            // dropdownColor: Colors.green.shade100,
+                            value: selectedStructure, //_moistureController.text,
+                            decoration: const InputDecoration(
+                              labelText: '*Soil Structure',
+                              border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(25)),
+                              ),
+                            ),
+                            dropdownColor: Colors.green.shade50,
+                            items: structure
+                                .map((item) => DropdownMenuItem<String>(
+                                      value: item,
+                                      child: Text(
+                                          item), //style: const TextStyle(color: Colors.green)),
+                                    ))
+                                .toList(),
+                            onChanged: (item) => setState(
+                                  () {
+                                    selectedStructure = item;
+                                  },
+                                ),
+                            validator: (title) {
+                              if (title == null) {
+                                return '*Soil Structure is required';
+                              }
+                              return null;
+                            }),
                       ),
                     ),
-                    SizedBox(
-                      width: 300,
-                      child: Visibility(
-                        visible: visiblePM,
-                        child: customTextField4(
-                            'Pebble Marker (m)', _pmController),
+                  ),
+          
+                  //! Soil Types: check box/radio button group
+                  sectionHeading('Soil Types'),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      checkBoxGroup(primSoilTypes, primTypeMap),
+                      checkBoxGroup(secSoilTypes, secTypeMap),
+                    ],
+                  ),
+                  //*other soil types
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 26.25),
+                        child: SizedBox(
+                          width: 165,
+                          child: CheckboxListTile(
+                            // controlAffinity: ListTileControlAffinity.leading,
+                            title: const Text('Other'),
+                            value: visibleOtherST,
+                            onChanged: ((val) {
+                              setState(
+                                () {
+                                  visibleOtherST = val!;
+                                },
+                              );
+                            }),
+                          ),
+                        ),
+                      ),
+                      Visibility(
+                        visible: visibleOtherST,
+                        child: SizedBox(
+                          width: 200,
+                          child: TextFormField(
+                            maxLines: 1,
+                            controller: _otherSoilTypeController,
+                            decoration: const InputDecoration(
+                              labelText: 'Other type',
+                              border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(25))),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+          
+                  //! Origin: drop down -> dropdown or -> textField
+                  sectionHeading('Origin'),
+                  Center(
+                    child: Padding(
+                      //*Primary drop down
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        width: 300,
+                        child: DropdownButtonFormField<String>(
+                            value: selectedOriginType,
+                            decoration: const InputDecoration(
+                              labelText: '*Soil Origin',
+                              border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(25)),
+                              ),
+                            ),
+                            dropdownColor: Colors.green.shade50,
+                            items: originType
+                                .map((item) => DropdownMenuItem<String>(
+                                      value: item,
+                                      child: Text(
+                                          item), //style: const TextStyle(color: Colors.green)),
+                                    ))
+                                .toList(),
+                            onChanged: (item) {
+                              if (item == 'Transported Soil') {
+                                visibleTransported = true;
+                                _residualController.text = '';
+                              } else {
+                                visibleTransported = false;
+                                selecetedTransport = null;
+                              }
+                              setState(
+                                () {
+                                  mustIgnore = false;
+                                  selectedOriginType = item;
+                                },
+                              );
+                            },
+                            validator: (title) {
+                              if (title == null) {
+                                return '*Soil Origin is required';
+                              }
+                              return null;
+                            }),
                       ),
                     ),
-                  ],
-                ),
-
-                //! Notes: text field
-                sectionHeading('Additional Notes'),
-                customTextField2('Notes', _notesController),
-              ],
+                  ),
+          
+                  //*Transported drop down
+                  Visibility(
+                    visible: visibleTransported,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          width: 300,
+                          child: IgnorePointer(
+                            ignoring: mustIgnore,
+                            child: DropdownButtonFormField<String>(
+                                value: selecetedTransport,
+                                decoration: const InputDecoration(
+                                  labelText: '*Transported Soil',
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(25)),
+                                  ),
+                                ),
+                                dropdownColor: Colors.green.shade50,
+                                items: transpotOrigin
+                                    .map((item) => DropdownMenuItem<String>(
+                                          value: item,
+                                          child: Text(item),
+                                        ))
+                                    .toList(),
+                                onChanged: (item) => setState(
+                                      () {
+                                        selecetedTransport = item;
+                                      },
+                                    ),
+                                validator: (title) {
+                                  if (title == null) {
+                                    return '*Transported Soil is required';
+                                  }
+                                  return null;
+                                }),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+          
+                  //*Residual text field
+                  Visibility(
+                    visible: !visibleTransported,
+                    child: SizedBox(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          maxLines: 4,
+                          controller: _residualController,
+                          decoration: const InputDecoration(
+                            labelText: 'Residual Soil',
+                            border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(25))),
+                          ),
+                          // validator: (title) =>
+                          //     title != null && title.isEmpty ? 'Enter $text' : null,
+                        ),
+                      ),
+                    ),
+                  ),
+          
+                  //! Depth: numeric textfield
+                  sectionHeading('Layer Depth'),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: customTextField4('Depth (m)', _depthController),
+                  ),
+          
+                  //! Pebble Marker: numeric textfield
+                  sectionHeading('Pebble Marker'),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 70,
+                        width: 100,
+                        child: SwitchListTile(
+                          value: visiblePM,
+                          controlAffinity: ListTileControlAffinity.leading,
+                          onChanged: (val) => setState(() {
+                            visiblePM = val;
+                            if (visiblePM == false) {
+                              _pmController.text = '0.0';
+                            }
+                          }),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: SizedBox(
+                          width: 300,
+                          child: Visibility(
+                            visible: visiblePM,
+                            child: customTextField4(
+                                'Pebble Marker (m)', _pmController),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+          
+                  //! Notes: text field
+                  sectionHeading('Additional Notes'),
+                  customTextField2('Notes', _notesController),
+                ],
+              ),
             ),
           ),
         ),
