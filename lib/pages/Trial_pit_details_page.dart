@@ -10,6 +10,7 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
 //local imports
+import '../components/widgets/confirm_alert_dialog.dart';
 import '../components/widgets/info_textbox_widget.dart';
 import '../components/content_builder_widgets/layers_content_builder.dart';
 import '../components/widgets/buttons.dart';
@@ -114,6 +115,10 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    String displayPath = _imagePathController.text != ''
+        ? p.basename(_imagePathController.text)
+        : '';
+
     //detrmine title
     final isEditing = widget.trialPit != null;
     final title = isEditing ? 'Edit Trial Pit' : 'Create Trial Pit';
@@ -220,11 +225,43 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        infoTextBox2(
-                            '',
-                            _imagePathController.text != ''
-                                ? p.basename(_imagePathController.text)
-                                : ''),
+                        InkWell(
+                            child: infoTextBox2('', displayPath),
+                            onTap: () {
+                              _imagePathController.text != ''
+                                  ? showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                          title: const Text('Trial Pit Image'),
+                                          shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20)),
+                                          ),
+                                          actions: [
+                                            IconButton(
+                                                onPressed: () {
+                                                  confirmImageDelete(context, _imagePathController.text, deleteFile);
+                                                  Navigator.pop(context);
+                                                  setState(() {
+                                                    _imagePathController.text ='';
+                                                  });
+                                                },
+                                                icon: const Icon(Icons.delete))
+                                          ],
+                                          content: Image.file(
+                                              File(_imagePathController.text))),
+                                    )
+                                  : showDialog(
+                                      context: context,
+                                      builder: (context) => const AlertDialog(
+                                            title: Center(
+                                                child: Text(
+                                              'No Image',
+                                              style:
+                                                  TextStyle(color: Colors.grey),
+                                            )),
+                                          ));
+                            }),
                         imageButton(),
                       ],
                     ),
@@ -236,12 +273,6 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
 
                   //* layers heading
                   subSectionHeading('Layers:'),
-
-                  //* add layer button
-                  // Center(
-                  //     child: addLayerPittButton(context, madeLayers, 'Layer')),
-
-                  // const SizedBox(height: 8),
 
                   //*Layer info tiles ListView
                   SizedBox(
@@ -438,6 +469,9 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
   //! Get file from gallery/camera and save to app
   void getImage(ImageSource source) async {
     XFile? pickedFile;
+    final int dateID = DateTime.now().millisecondsSinceEpoch;
+    // final String date = '${currentDate.year}${currentDate.month}${currentDate.day}${currentDate.hour}${currentDate.minute}${currentDate.microsecond}';
+
     final File newFile;
     final Directory dir = await getApplicationDocumentsDirectory();
     pickedFile = await ImagePicker().pickImage(source: source);
@@ -446,8 +480,8 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
       _imagePathController.text != ''
           ? deleteFile(File(_imagePathController.text))
           : null;
-      newFile = await File(pickedFile.path)
-          .copy('${dir.path}/${p.basename(pickedFile.path)}');
+      newFile = await File(pickedFile.path).copy(
+          '${dir.path}/${source.toString()}$dateID${p.extension(pickedFile.path)}');
 
       setState(() {
         _imagePathController.text = newFile.path;

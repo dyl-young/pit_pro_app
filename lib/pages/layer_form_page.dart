@@ -156,9 +156,9 @@ class _LayerFormPageState extends State<LayerFormPage> {
       }
       mustIgnore = false;
       //pm
-      if (layer.pmDepth != 0) {
+      if (layer.smplDepth != 0) {
         visiblePM = true;
-        _pmController.text = layer.pmDepth.toString();
+        _pmController.text = layer.smplDepth.toString();
       } else {
         _pmController.text = '0.0';
       }

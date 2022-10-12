@@ -148,7 +148,7 @@ Future addLayer(
     ..originType = originType
     // ..wtDepth = wt
     // ..pwtDepth = pwt
-    ..pmDepth = pm
+    ..smplDepth = pm
     ..notes = notes
     ..createdDate = DateTime.now();
   layers.add(layer);
@@ -184,7 +184,7 @@ void editLayer(
   layer.origin = origin;
   // layer.wtDepth = wt;
   // layer.pwtDepth = pwt;
-  layer.pmDepth = pm;
+  layer.smplDepth = pm;
   layer.notes = notes;
 
   layer.save();

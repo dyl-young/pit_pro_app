@@ -6,7 +6,6 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 //local imports
 import '../components/content_builder_widgets/user_drawer_builder.dart';

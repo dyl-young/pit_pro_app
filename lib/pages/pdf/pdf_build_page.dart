@@ -240,7 +240,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                       (int i) {
                         //*row heights:
                         double wtDepth = trialPit.wtDepth ?? 0;
-                        double pmDepth = layers[i].pmDepth ?? 0;
+                        double pmDepth = layers[i].smplDepth ?? 0;
                         double height = 500 * (layers[i].depth / totalDepth);
                         double colHeight = roundDouble(height / 32, 0) * 32;
                         cumulativeDepth += layers[i].depth;
@@ -292,7 +292,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                                     MainAxisAlignment.spaceAround,
                                 children: [
                                   // //* Pebble Marker
-                                  (layers[i].pmDepth != 0)
+                                  (layers[i].smplDepth != 0)
                                       ? Column(
                                           children: [
                                             Text(

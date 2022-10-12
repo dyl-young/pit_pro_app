@@ -121,7 +121,7 @@ Widget buildTrialPitButtons(
           onPressed: () => showDialog(
             context: context,
             builder: (context) =>
-                confirmDelete(context, trialPits, trialPit, deleteTrialPit),
+                confirmObjectDelete(context, trialPits, trialPit, deleteTrialPit),
           ),
         ),
       )

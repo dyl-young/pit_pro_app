@@ -110,7 +110,7 @@ Widget buildLayerButtons(BuildContext context, List<Layer> layers, Layer layer) 
           onPressed: () => showDialog(
             context: context,
             builder: (context) =>
-                confirmDelete(context, layers, layer, deleteLayer),
+                confirmObjectDelete(context, layers, layer, deleteLayer),
           ),
         ),
       )
