@@ -13,11 +13,15 @@ import '../widgets/confirm_alert_dialog.dart';
 //!list view builder
 Widget trialPitListViewBuilder(BuildContext context, List<TrialPit> trialPits) {
   if (trialPits.isEmpty) {
-    return const SizedBox(
-        height: 200,
-        child: Center(
-            child: Text('No Activities Found',
-                style: TextStyle(color: Colors.grey, fontSize: 20))));
+    return  Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: const [
+        Center(child: SizedBox(height: 100)),
+        Text('No Trial Pits Found',
+            style: TextStyle(color: Colors.grey, fontSize: 20)),
+      ],
+    );
   } else {
     return Scrollbar(
       child: ListView(

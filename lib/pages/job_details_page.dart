@@ -1,3 +1,5 @@
+import 'dart:math';
+
 //packages
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -6,9 +8,11 @@ import 'package:hive_flutter/adapters.dart';
 import '../components/widgets/buttons.dart';
 import '../components/content_builder_widgets/trial_pit_content_builder.dart';
 import '../components/widgets/custom_text_field.dart';
+import '../hive_components/add_edit_delete_functions.dart';
 import '../hive_components/boxes.dart';
 import '../models/job.dart';
 import '../models/trial_pit.dart';
+import 'trial_pit_details_page.dart';
 
 class JobDeatilsPage extends StatefulWidget {
   const JobDeatilsPage({Key? key, this.job, required this.onClickedDone})
@@ -37,7 +41,7 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
     if (widget.job != null) {
       final job = widget.job!;
 
-      //! Get relevant objects from the object box using the created date (kill me)
+      //! Get relevant objects from the Hive object box using the created date (kill me)
       for (var i = 0; i < Boxes.geTrialPits().values.toList().length; i++) {
         for (var j = 0; j < job.trialPitList.length; j++) {
           Boxes.geTrialPits().values.toList()[i].createdDate ==
@@ -64,232 +68,150 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
 
   @override
   Widget build(BuildContext context) {
-    //detrmine title
+    //* title
     final isEditing = widget.job != null;
     final title = isEditing ? 'Edit Job' : 'Create Job';
-    final currentWidth = MediaQuery.of(context).size.width;
-
-    if (currentWidth < 650) {
-      return WillPopScope(
-        //disable back device button on this page
-        onWillPop: () async => false,
-        child: Scaffold(
-          //avoid pixel overflow due to keyboard
-          resizeToAvoidBottomInset: false,
-          //! appbar
-          appBar: AppBar(
-            title: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                const Icon(Icons.work_rounded),
-                Text(' $title'),
-              ],
-            ),
-            centerTitle: true,
-            //*disable automatic back button
-            automaticallyImplyLeading: false,
-
-            //*Cancel button
-            actions: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: cancelButton(context, madeTrialPits, !isEditing),
-              ),
+    
+    return WillPopScope(
+      //disable back device button on this page
+      onWillPop: () async => false,
+      child: Scaffold(
+        //avoid pixel overflow due to keyboard
+        resizeToAvoidBottomInset: false,
+        //! appbar
+        appBar: AppBar(
+          title: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              const Icon(Icons.work_rounded),
+              Text(' $title'),
             ],
           ),
+          centerTitle: true,
+          //*disable automatic back button
+          automaticallyImplyLeading: false,
 
-          //! Job widgets:
-          body: Form(
-            key: jobFormKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 8), //?difference
-
-                //Job Details:
-                //*Heading
-                sectionHeading('Job Details'),
-
-                //*job title
-                customTextField('*Job Title', _jobTitleController),
-
-                //*job number
-                customTextField('*Job Number', _jobNumController),
-
-                const SizedBox(height: 8),
-
-                //*Trial Pits Heading
-                sectionHeading('Job Activities'),
-
-                const SizedBox(height: 8),
-
-                //*Add Trial Pit button
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    //*Borehole button
-                    addBoreholeButtons('Borehole'),
-
-                    //*Trial Pit button
-                    addTrialPittButton(context, madeTrialPits, 'Trial Pit'),
-
-                    //*Auger button
-                    addAugerButtons('Auger'),
-                  ],
-                ),
-
-                const SizedBox(height: 8),
-
-                //*Trial Pit info tiles ListView
-                Expanded(
-                  child: ValueListenableBuilder<Box<TrialPit>>(
-                    valueListenable: Boxes.geTrialPits().listenable(),
-                    builder: (context, box, _) {
-                      return trialPitListViewBuilder(context, madeTrialPits);
-                    },
-                  ),
-                ),
-                // buildTrialPitContent(madeTrialPits),
-              ],
+          //*Cancel button
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: cancelButton(context, madeTrialPits, !isEditing),
             ),
-          ),
-
-          //!bottom nav bar
-          bottomNavigationBar: BottomAppBar(
-            color: Colors.green,
-            shape: const CircularNotchedRectangle(), //shape of notch
-            notchMargin: isEditing ? 5 : 0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                //save button
-                buildSaveButton(context, isEditing: isEditing),
-              ],
-            ),
-          ),
+          ],
         ),
-      );
-    } else {
-       return WillPopScope(
-        //disable back device button on this page
-        onWillPop: () async => false,
-        child: Scaffold(
-          //avoid pixel overflow due to keyboard
-          resizeToAvoidBottomInset: false,
-          //! appbar
-          appBar: AppBar(
-            title: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                const Icon(Icons.work_rounded),
-                Text(' $title'),
-              ],
-            ),
-            centerTitle: true,
-            //*disable automatic back button
-            automaticallyImplyLeading: false,
 
-            //*Cancel button
-            actions: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: cancelButton(context, madeTrialPits, !isEditing),
+        //! Job widgets:
+        body: Form(
+          key: jobFormKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 8), //?difference
+
+              //Job Details:
+              //*Heading
+              sectionHeading('Job Details'),
+
+              //*job title
+              customTextField('*Job Title', _jobTitleController),
+
+              //*job number
+              customTextField('*Job Number', _jobNumController),
+
+              const SizedBox(height: 8),
+
+              //*Trial Pits Heading
+              sectionHeading('Trial Pits'),
+
+              const SizedBox(height: 8),
+
+              //*Trial Pit info tiles ListView
+              Expanded(
+                child: ValueListenableBuilder<Box<TrialPit>>(
+                  valueListenable: Boxes.geTrialPits().listenable(),
+                  builder: (context, box, _) {
+                    return trialPitListViewBuilder(context, madeTrialPits);
+                  },
+                ),
               ),
+              // buildTrialPitContent(madeTrialPits),
             ],
           ),
+        ),
 
-          //! Job widgets:
-          body: SingleChildScrollView(
-            child: SizedBox(
-              height: 500,
-              child: Form(
-                key: jobFormKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 8), //?difference
-          
-                    //Job Details:
-                    //*Heading
-                    sectionHeading('Job Details'),
-          
-                    //*job title
-                    customTextField('*Job Title', _jobTitleController),
-          
-                    //*job number
-                    customTextField('*Job Number', _jobNumController),
-          
-                    const SizedBox(height: 8),
-          
-                    //*Trial Pits Heading
-                    sectionHeading('Job Activities'),
-          
-                    const SizedBox(height: 8),
-          
-                    //*Add Trial Pit button
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        //*Borehole button
-                        addBoreholeButtons('Borehole'),
-          
-                        //*Trial Pit button
-                        addTrialPittButton(context, madeTrialPits, 'Trial Pit'),
-          
-                        //*Auger button
-                        addAugerButtons('Auger'),
-                      ],
-                    ),
-          
-                    const SizedBox(height: 8),
-          
-                    //*Trial Pit info tiles ListView
-                    Expanded(
-                      child: ValueListenableBuilder<Box<TrialPit>>(
-                        valueListenable: Boxes.geTrialPits().listenable(),
-                        builder: (context, box, _) {
-                          return trialPitListViewBuilder(context, madeTrialPits);
-                        },
-                      ),
-                    ),
-                    // buildTrialPitContent(madeTrialPits),
-                  ],
+        //!floating Action Button
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TrialPitDetailsPage(
+                onClickedDone: (
+                  pitNumber,
+                  coords,
+                  elevation,
+                  wt,
+                  layersList,
+                  contractor,
+                  machine,
+                  imagePath,
+                  notes,
+                ) =>
+                    addTrialPit(
+                  madeTrialPits,
+                  pitNumber,
+                  coords,
+                  elevation,
+                  wt,
+                  layersList,
+                  contractor,
+                  machine,
+                  imagePath,
+                  notes,
                 ),
               ),
             ),
           ),
+          label: const Text('Trial Pit'),
+          icon: const Icon(Icons.add),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
 
-          //!bottom nav bar
-          bottomNavigationBar: BottomAppBar(
-            color: Colors.green,
-            shape: const CircularNotchedRectangle(), //shape of notch
-            notchMargin: isEditing ? 5 : 0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                //save button
-                buildSaveButton(context, isEditing: isEditing),
-              ],
+        //!bottom nav bar
+        bottomNavigationBar: BottomAppBar(
+          color: Colors.green,
+          shape: const AutomaticNotchedShape(
+            RoundedRectangleBorder(),
+            StadiumBorder(
+              side: BorderSide(),
             ),
           ),
+          notchMargin: 5,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              //save button
+              buildSaveButton(context, isEditing: isEditing),
+              const SizedBox(width: 20)
+            ],
+          ),
         ),
-      );
-    }
+      ),
+    );
   }
 
   //!create/save button
   Widget buildSaveButton(BuildContext context, {required bool isEditing}) {
-    final text = isEditing ? 'Save ' : 'Create Job ';
+    final text = isEditing ? ' Save ' : ' Create';
 
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(4.0),
       child: ElevatedButton(
+        style: ButtonStyle(elevation: MaterialStateProperty.all(8)),
         child: Row(
           children: [
-            Text(text, style: const TextStyle(fontSize: 16)),
             const Icon(Icons.save_alt_rounded, size: 20),
+            Text(text, style: const TextStyle(fontSize: 16)),
           ],
         ), //con
 

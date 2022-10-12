@@ -11,11 +11,12 @@ import '../widgets/confirm_alert_dialog.dart';
 //!list view builder
 Widget layerListViewBuilder(BuildContext context, List<Layer> layers) {
   if (layers.isEmpty) {
-    return const SizedBox(
-        height: 250,
-        child: Center(
-            child: Text('No Layers Found',
-                style: TextStyle(color: Colors.grey, fontSize: 20))));
+    return const Center(
+      child: SizedBox(
+          height: 250,
+          child: Text('No Layers Found',
+              style: TextStyle(color: Colors.grey, fontSize: 20))),
+    );
   } else {
     return Scrollbar(
       child: ListView(

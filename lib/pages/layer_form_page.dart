@@ -651,7 +651,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: SizedBox(
-                          width: 300,
+                          width: 200,
                           child: Visibility(
                             visible: visiblePM,
                             child: customTextField4(
@@ -665,6 +665,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
                   //! Notes: text field
                   sectionHeading('Additional Notes'),
                   customTextField2('Notes', _notesController),
+                  const SizedBox(height: 8)
                 ],
               ),
             ),
@@ -690,15 +691,16 @@ class _LayerFormPageState extends State<LayerFormPage> {
 
   //!create/save button
   Widget buildSaveButton(BuildContext context, {required bool isEditing}) {
-    final text = isEditing ? 'Save ' : 'Create Layer ';
+    final text = isEditing ? ' Save' : ' Create';
 
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(4.0),
       child: ElevatedButton(
+        style: ButtonStyle(elevation: MaterialStateProperty.all(8)),
         child: Row(
           children: [
-            Text(text, style: const TextStyle(fontSize: 16)),
             const Icon(Icons.save_alt_rounded, size: 20),
+            Text(text, style: const TextStyle(fontSize: 16)),
           ],
         ),
         onPressed: () async {

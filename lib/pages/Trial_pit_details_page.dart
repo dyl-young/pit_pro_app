@@ -14,10 +14,14 @@ import '../components/widgets/info_textbox_widget.dart';
 import '../components/content_builder_widgets/layers_content_builder.dart';
 import '../components/widgets/buttons.dart';
 import '../components/widgets/custom_text_field.dart';
+import '../hive_components/add_edit_delete_functions.dart';
 import '../location_services.dart';
 import '../hive_components/boxes.dart';
 import '../models/layer.dart';
 import '../models/trial_pit.dart';
+import 'layer_form_page.dart';
+
+//TODO: add image window
 
 class TrialPitDetailsPage extends StatefulWidget {
   const TrialPitDetailsPage(
@@ -210,16 +214,17 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
                       children: [autoFillButton()]),
 
                   //* Trial Pit image
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4.0),
-                    child: subSectionHeading('Trial Pit Image:'),
-                  ),
+                  subSectionHeading('Trial Pit Image:'),
                   Padding(
                     padding: const EdgeInsets.only(top: 4),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        infoTextBox2('', _imagePathController.text != '' ? p.basename(_imagePathController.text): ''),
+                        infoTextBox2(
+                            '',
+                            _imagePathController.text != ''
+                                ? p.basename(_imagePathController.text)
+                                : ''),
                         imageButton(),
                       ],
                     ),
@@ -233,21 +238,19 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
                   subSectionHeading('Layers:'),
 
                   //* add layer button
-                  Center(
-                      child: addLayerPittButton(context, madeLayers, 'Layer')),
+                  // Center(
+                  //     child: addLayerPittButton(context, madeLayers, 'Layer')),
 
-                  const SizedBox(height: 8),
+                  // const SizedBox(height: 8),
 
+                  //*Layer info tiles ListView
                   SizedBox(
-                    height: 390,
-                    child: Container(
-                      decoration: BoxDecoration(border: Border.all(width: 1)),
-                      child: ValueListenableBuilder<Box<Layer>>(
-                        valueListenable: Boxes.getLayers().listenable(),
-                        builder: (context, box, _) {
-                          return layerListViewBuilder(context, madeLayers);
-                        },
-                      ),
+                    height: 400,
+                    child: ValueListenableBuilder<Box<Layer>>(
+                      valueListenable: Boxes.getLayers().listenable(),
+                      builder: (context, box, _) {
+                        return layerListViewBuilder(context, madeLayers);
+                      },
                     ),
                   ),
                 ],
@@ -255,10 +258,64 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
             ),
           ),
         ),
+        //! Floating Action Button
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => LayerFormPage(
+                onClickedDone: (
+                  depth,
+                  moisture,
+                  colour,
+                  otherColour,
+                  colourPattern,
+                  consistency,
+                  structure,
+                  soilTypes,
+                  origin,
+                  originType,
+                  // wt,
+                  // pwt,
+                  pm,
+                  notes,
+                ) =>
+                    addLayer(
+                  madeLayers,
+                  depth,
+                  moisture,
+                  colour,
+                  otherColour,
+                  colourPattern,
+                  consistency,
+                  structure,
+                  soilTypes,
+                  origin,
+                  originType,
+                  // wt,
+                  // pwt,
+                  pm,
+                  notes,
+                ),
+              ),
+            ),
+          ),
+          label: const Text(' Layer '),
+          icon: const Icon(Icons.add),
+        ),
+        resizeToAvoidBottomInset: false,
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
 
         //!bottom nav bar
         bottomNavigationBar: BottomAppBar(
           color: Colors.green,
+          shape: const AutomaticNotchedShape(
+            RoundedRectangleBorder(),
+            StadiumBorder(
+              side: BorderSide(),
+            ),
+          ), //shape of notch
+          notchMargin: 5,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -273,15 +330,16 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
 
   //!create/save button
   Widget buildSaveButton(BuildContext context, {required bool isEditing}) {
-    final text = isEditing ? 'Save ' : 'Create TrialPit ';
+    final text = isEditing ? ' Save ' : ' Create';
 
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: ElevatedButton(
+        style: ButtonStyle(elevation: MaterialStateProperty.all(8)),
         child: Row(
           children: [
-            Text(text, style: const TextStyle(fontSize: 16)),
             const Icon(Icons.save_alt_rounded, size: 20),
+            Text(text, style: const TextStyle(fontSize: 16)),
           ],
         ), //con
 
@@ -339,7 +397,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
   //! autofill location
   Widget autoFillButton() {
     return SizedBox(
-      height: 28,
+      height: 40,
       child: TextButton(
           onPressed: () {
             getLocation(
@@ -365,15 +423,14 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
       height: 32,
       child: CircleAvatar(
         child: TextButton(
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                builder: ((builder) => bottomSheet(context, getImage)),
-              );
-            },
-            child: 
-              const Icon(Icons.camera_alt, size: 18, color: Colors.white),
-            ),
+          onPressed: () {
+            showModalBottomSheet(
+              context: context,
+              builder: ((builder) => bottomSheet(context, getImage)),
+            );
+          },
+          child: const Icon(Icons.camera_alt, size: 18, color: Colors.white),
+        ),
       ),
     );
   }
@@ -398,7 +455,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
     }
   }
 
-  //! Delete file from app dir 
+  //! Delete file from app dir
   Future<int> deleteFile(File file) async {
     try {
       await file.delete();
@@ -429,7 +486,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
                 },
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [Icon(Icons.camera),Text('Camera')]),
+                    children: const [Icon(Icons.camera), Text('Camera')]),
               ),
               TextButton(
                 onPressed: () {

@@ -244,7 +244,6 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                         double height = 500 * (layers[i].depth / totalDepth);
                         double colHeight = roundDouble(height / 32, 0) * 32;
                         cumulativeDepth += layers[i].depth;
-                        var a;
 
                         String otherColour;
                         layers[i].otherColour != ''

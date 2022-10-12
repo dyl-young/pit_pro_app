@@ -14,96 +14,99 @@ Widget buildUserDrawer(
   ImageProvider displayImage;
 
   (user.institutionLogo != 'assets/app_logo.png')
-  ? displayImage = FileImage(File(user.institutionLogo))
-  : displayImage = const AssetImage('assets/app_logo.png');
+      ? displayImage = FileImage(File(user.institutionLogo))
+      : displayImage = const AssetImage('assets/app_logo.png');
 
   final currentHeight = MediaQuery.of(context).size.height;
-
-
 
   return Column(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       SizedBox(
-        height: currentHeight-50,
+        height: currentHeight - 50,
         child: ListView(
-              children: [
-                Padding(
-                  //*Logo Card
-                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
-                  //white background card
-                  child: Material(
-                    borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(25),
-                        bottomRight: Radius.circular(25)),
-                    //add image
-                    child: Ink.image(
-                      width: 100,
-                      height: 150,
-                      image: displayImage,
-                      fit: BoxFit.contain,
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          //make image tappable
-                          InkWell(
-                            onTap: () {
-                              showModalBottomSheet(
-                                context: context,
-                                builder: ((builder) =>
-                                    bottomSheet(context, getImageFromGallery)),
-                              );
-                            },
+          children: [
+            Padding(
+              //*Logo Card
+              padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
+              //white background card
+              child: Material(
+                borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(25),
+                    bottomRight: Radius.circular(25)),
+                //add image
+                child: Ink.image(
+                  width: 100,
+                  height: 150,
+                  image: displayImage,
+                  fit: BoxFit.contain,
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      //make image tappable
+                      const Positioned(
+                        bottom: 8,
+                        right: 8,
+                        child: CircleAvatar(
+                          backgroundColor: Colors.green,
+                          maxRadius: 12,
+                          child: Icon(
+                            Icons.edit,
+                            color: Colors.white,
+                            size: 15,
                           ),
-                          //stack edit icon on image
-                          const Positioned(
-                            bottom: 8,
-                            right: 8,
-                            child: CircleAvatar(
-                                backgroundColor: Colors.green,
-                                maxRadius: 12,
-                                child: Icon(
-                                  Icons.edit,
-                                  color: Colors.white,
-                                  size: 15,
-                                )),
-                          ),
-                        ],
+
+                        ),
                       ),
-                    ),
+                      InkWell(
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: ((builder) =>
+                                bottomSheet(context, getImageFromGallery)),
+                          );
+                        },
+                      ),
+                      //stack edit icon on image
+                    ],
                   ),
                 ),
-
-                //*user name box
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: infoTextBox('User:         ', user.userName, const Icon(Icons.person)),
-                ),
-
-                //*user company box
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: infoTextBox('Company:', user.institutionName, const Icon(Icons.business_center)),
-                ),
-
-                //*User info edit button
-                Padding(
-                  padding: const EdgeInsets.only(left: 110, right: 110),
-                  child: ElevatedButton(
-                    onPressed: () => showDialog(
-                      context: context,
-                      builder: (context) => UserInfoEditPage(
-                        user: user,
-                        onClickedDone: ((name, company) => editUser(user, name, company)),
-                      ),
-                    ),
-                    child: const Icon(Icons.edit, color: Colors.white),
-                    // color: Colors.red,
-                  ),
-                ),
-
-              ],
+              ),
             ),
+
+            //*user name box
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: infoTextBox(
+                  'User:         ', user.userName, const Icon(Icons.person)),
+            ),
+
+            //*user company box
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: infoTextBox('Company:', user.institutionName,
+                  const Icon(Icons.business_center)),
+            ),
+
+            //*User info edit button
+            Padding(
+              padding: const EdgeInsets.only(left: 110, right: 110),
+              child: ElevatedButton(
+                style:  ButtonStyle(elevation: MaterialStateProperty.all(8)),
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (context) => UserInfoEditPage(
+                    user: user,
+                    onClickedDone: ((name, company) =>
+                        editUser(user, name, company)),
+                  ),
+                ),
+                child: const Icon(Icons.edit, color: Colors.white),
+                // color: Colors.red,
+              ),
+            ),
+          ],
+        ),
       ),
       const Padding(
         padding: EdgeInsets.all(4.0),
@@ -130,8 +133,9 @@ Widget bottomSheet(BuildContext context, Function getImageFromGallery) {
           child: TextButton(
             onPressed: () {
               getImageFromGallery();
-              Navigator.of(context).pop();  //dismiss bottom sheet 
-              Navigator.of(context).pop();  //and nav drawer to give image a chance to load
+              Navigator.of(context).pop(); //dismiss bottom sheet
+              Navigator.of(context)
+                  .pop(); //and nav drawer to give image a chance to load
             },
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,

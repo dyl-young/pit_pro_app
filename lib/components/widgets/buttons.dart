@@ -17,7 +17,7 @@ Widget cancelButton(
     BuildContext context, List<HiveObject> objList, bool isNotEditing) {
   if (isNotEditing) {
     return ElevatedButton(
-      style: ElevatedButton.styleFrom(),
+      style:  ButtonStyle(elevation: MaterialStateProperty.all(8)),
       child: Row(
         children: const [
           Text('Cancel '),
@@ -29,10 +29,6 @@ Widget cancelButton(
         context: context,
         builder: (context) => confirmCancel(context, objList),
       ),
-      // onPressed: () {
-      //   print('testing 1');
-      //   confirmCancel(context, objList);
-      // },
     );
   } else {
     //no cancel option when editing created jobs
@@ -98,7 +94,7 @@ Widget addBoreholeButtons(String title) {
     width: 117,
     height: 40,
     child: ElevatedButton(
-      style: ElevatedButton.styleFrom(primary: Colors.grey),
+      style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -122,7 +118,7 @@ Widget addAugerButtons(String title) {
     width: 117,
     height: 40,
     child: ElevatedButton(
-      style: ElevatedButton.styleFrom(primary: Colors.grey),
+      style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,

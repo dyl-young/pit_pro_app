@@ -6,6 +6,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 //local imports
 import '../components/content_builder_widgets/user_drawer_builder.dart';
@@ -163,9 +164,9 @@ class _HomePageState extends State<HomePage> {
         ),
 
         //!floating action button: navigates to Trial Pit page
-        floatingActionButton: FloatingActionButton(
-          tooltip: 'Create a new Job',
-          child: const Icon(Icons.add, size: 30),
+        floatingActionButton: FloatingActionButton.extended(
+          label: const Text('   Job   '),
+          icon: const Icon(Icons.add, size: 30),
           onPressed: () => Navigator.push(
             context,
             MaterialPageRoute(
@@ -175,18 +176,24 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
+        
 
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
 
         //*bottom bar: no function
         bottomNavigationBar: BottomAppBar(
           //bottom navigation bar on scaffold
-          color: Colors.green,
-          shape: const CircularNotchedRectangle(), //shape of notch
+          color: Colors.green.shade500,
+          shape: const AutomaticNotchedShape(
+            RoundedRectangleBorder(),
+            StadiumBorder(
+              side: BorderSide(),
+            ),
+          ),
           notchMargin: 5,
           child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            // mainAxisSize: MainAxisSize.max,
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: const [SizedBox(height: 34)],
           ),
         ),
@@ -229,7 +236,6 @@ class _HomePageState extends State<HomePage> {
     pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
-      // deleteFile(File('/data/user/0/com.example.pit_pro_app/app_flutter/companyLogo.jpg'));
       if (user.institutionLogo != 'assets/app_logo.png') {
         deleteFile(File(user.institutionLogo));
       }
