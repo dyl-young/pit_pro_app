@@ -125,12 +125,14 @@ void addtrialPitImage(
   );
 }
 
-String pmOutput(Map<int, double> pmLayers) {
+String smplOutput(Map<int, double> pmLayers) {
   String result = '';
+  int index = 1;
 
   pmLayers.isNotEmpty
       ? pmLayers.forEach((key, value) {
-          result += ' in layer $key at ${roundDouble(value,2)} m,';
+          result += 'sample $index at ${roundDouble(value, 2)} m,';
+          index++;
         })
       : result = ': none';
 
@@ -144,7 +146,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
   double totalDepth = trialPit.totalDepth();
   double cumulativeDepth = 0;
 
-  Map<int, double> pmLayers = {};
+  Map<int, double> smplLayers = {};
 
   bool wtFound = false;
 
@@ -240,7 +242,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                       (int i) {
                         //*row heights:
                         double wtDepth = trialPit.wtDepth ?? 0;
-                        double pmDepth = layers[i].smplDepth ?? 0;
+                        double smplDepth = layers[i].smplDepth ?? 0;
                         double height = 500 * (layers[i].depth / totalDepth);
                         double colHeight = roundDouble(height / 32, 0) * 32;
                         cumulativeDepth += layers[i].depth;
@@ -258,9 +260,9 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                         } else {
                           layers[i].wtDepth = 0;
                         }
-                        if (pmDepth != 0) {
-                          pmDepth += (cumulativeDepth - layers[i].depth);
-                          pmLayers.putIfAbsent(i + 1, () => pmDepth);
+                        if (smplDepth != 0) {
+                          smplDepth += (cumulativeDepth - layers[i].depth);
+                          smplLayers.putIfAbsent(i + 1, () => smplDepth);
                         }
 
                         return TableRow(
@@ -296,7 +298,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                                       ? Column(
                                           children: [
                                             Text(
-                                              '${roundDouble(pmDepth, 2).toString()} m',
+                                              '${roundDouble(smplDepth, 2).toString()} m',
                                               style:
                                                   const TextStyle(fontSize: 8),
                                             ),
@@ -311,7 +313,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                                       ? Column(
                                           children: [
                                             Text(
-                                              '${roundDouble(layers[i].wtDepth!,2).toString()} m',
+                                              '${roundDouble(layers[i].wtDepth!, 2).toString()} m',
                                               style:
                                                   const TextStyle(fontSize: 8),
                                             ),
@@ -368,7 +370,9 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                               style: TextStyle(fontWeight: FontWeight.bold)),
                           Text(
                               '1) Water Table: ${trialPit.wtDepth != 0 ? 'at ${roundDouble(trialPit.wtDepth!, 2)} m' : 'None'}'),
-                          Text('2) Pebble markers${pmOutput(pmLayers)}'),
+                          Text(
+                              '2) Pebble marker: ${trialPit.pmDepth != 0 ? 'at ${roundDouble(trialPit.pmDepth!, 2)} m' : 'None'}'),
+                          Text('3) samples${smplOutput(smplLayers)}'),
                           // Text('3) maybe refusal?'),
                         ],
                       ),
@@ -431,7 +435,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            //!Header
+            //!Header 2
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               //logo
               Image(images['Logo'] ?? defaultImage, height: 60, width: 120),
@@ -467,10 +471,10 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                           fontSize: 20, color: PdfColors.grey))),
             ),
 
-            //!Spacer
+            //!Spacer 2
             SizedBox(height: 5),
 
-            //!footer
+            //!footer 2
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [

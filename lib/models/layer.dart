@@ -24,7 +24,7 @@ class Layer extends HiveObject {
   @HiveField(8)
   double? pwtDepth = 0;
   @HiveField(9)
-  late double? pmDepth;
+  late double? smplDepth;
   @HiveField(10)
   late String? notes;
   @HiveField(11)

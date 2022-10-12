@@ -56,6 +56,7 @@ Future addTrialPit(
     List<double> coords,
     double elevation,
     double wt,
+    double pm,
     List<Layer> layers,
     String contractor,
     String machine,
@@ -68,6 +69,7 @@ Future addTrialPit(
     ..coordinates = coords
     ..elevation = elevation
     ..wtDepth = wt
+    ..pmDepth = pm
     ..layersList = layers
     ..contractor = contractor
     ..machine = machine
@@ -85,6 +87,7 @@ void editTrialPit(
     List<double> coords,
     double elevation,
     double wt,
+    double pm,
     List<Layer> layers,
     String contractor,
     String machine,
@@ -94,6 +97,7 @@ void editTrialPit(
   trialPit.coordinates = coords;
   trialPit.elevation = elevation;
   trialPit.wtDepth = wt;
+  trialPit.pmDepth = pm;
   trialPit.layersList = layers;
   trialPit.contractor = contractor;
   trialPit.machine = machine;

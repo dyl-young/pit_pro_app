@@ -26,7 +26,7 @@ class LayerAdapter extends TypeAdapter<Layer> {
       ..origin = fields[6] as String
       ..wtDepth = fields[7] as double?
       ..pwtDepth = fields[8] as double?
-      ..pmDepth = fields[9] as double?
+      ..smplDepth = fields[9] as double?
       ..notes = fields[10] as String?
       ..createdDate = fields[11] as DateTime
       ..originType = fields[12] as String?
@@ -57,7 +57,7 @@ class LayerAdapter extends TypeAdapter<Layer> {
       ..writeByte(8)
       ..write(obj.pwtDepth)
       ..writeByte(9)
-      ..write(obj.pmDepth)
+      ..write(obj.smplDepth)
       ..writeByte(10)
       ..write(obj.notes)
       ..writeByte(11)

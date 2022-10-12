@@ -19,7 +19,7 @@ class TrialPit extends HiveObject {
   @HiveField(4)
   late double? wtDepth = 0;
   @HiveField(5)
-  late double? pwtDepth = 0;
+  late double? pmDepth = 0;
   @HiveField(6)
   late List<Layer> layersList;
   @HiveField(7)

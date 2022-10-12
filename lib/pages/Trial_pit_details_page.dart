@@ -22,8 +22,6 @@ import '../models/layer.dart';
 import '../models/trial_pit.dart';
 import 'layer_form_page.dart';
 
-//TODO: add image window
-
 class TrialPitDetailsPage extends StatefulWidget {
   const TrialPitDetailsPage(
       {Key? key, this.trialPit, required this.onClickedDone})
@@ -36,6 +34,7 @@ class TrialPitDetailsPage extends StatefulWidget {
       List<double> coords,
       double elevation,
       double wt,
+      double pm,
       List<Layer> layersList,
       String contractor,
       String machine,
@@ -54,6 +53,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
   final _yCoordController = TextEditingController();
   final _elevationController = TextEditingController();
   final _waterTableController = TextEditingController();
+  final _pebbleMarkerController = TextEditingController();
   final _contractorController = TextEditingController();
   final _machineController = TextEditingController();
   final _notesController = TextEditingController();
@@ -84,6 +84,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
 
       _pitNumController.text = trialPit.pitNumber;
       _waterTableController.text = trialPit.wtDepth.toString();
+      _pebbleMarkerController.text = trialPit.pmDepth.toString();
 
       _xCoordController.text = trialPit.coordinates[0].toString();
       _yCoordController.text = trialPit.coordinates[1].toString();
@@ -105,6 +106,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
     _yCoordController.dispose();
     _elevationController.dispose();
     _waterTableController.dispose();
+    _pebbleMarkerController.dispose();
     _contractorController.dispose();
     _machineController.dispose();
     _notesController.dispose();
@@ -179,6 +181,21 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
                         Expanded(
                             child: customTextField3(
                                 'Water table (m) ', _waterTableController)),
+                        //* pebble marker
+                        Expanded(
+                            child: customTextField3(
+                                'Pebble marker (m) ', _pebbleMarkerController)),
+                      ],
+                    ),
+                  ),
+
+                const SizedBox(height: 16),
+
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 6, right: 6, bottom: 0),
+                    child: Row(
+                      children: [
                         //* contractor
                         Expanded(
                             child: customTextField5(
@@ -240,10 +257,14 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
                                           actions: [
                                             IconButton(
                                                 onPressed: () {
-                                                  confirmImageDelete(context, _imagePathController.text, deleteFile);
+                                                  confirmImageDelete(
+                                                      context,
+                                                      _imagePathController.text,
+                                                      deleteFile);
                                                   Navigator.pop(context);
                                                   setState(() {
-                                                    _imagePathController.text ='';
+                                                    _imagePathController.text =
+                                                        '';
                                                   });
                                                 },
                                                 icon: const Icon(Icons.delete))
@@ -380,6 +401,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
           if (isValid) {
             final num = _pitNumController.text;
             final wt = double.tryParse(_waterTableController.text) ?? 0;
+            final pm = double.tryParse(_pebbleMarkerController.text) ?? 0;
             final xCoord = double.tryParse(_xCoordController.text) ?? 0;
             final yCoord = double.tryParse(_yCoordController.text) ?? 0;
             final elevation = double.tryParse(_elevationController.text) ?? 0;
@@ -393,6 +415,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
               [xCoord, yCoord],
               elevation,
               wt,
+              pm,
               madeLayers,
               contractor,
               machine,

@@ -24,7 +24,7 @@ class LayerFormPage extends StatefulWidget {
       List<String> soilTypes,
       String origin,
       String originType,
-      double pm,
+      double smpl,
       String notes) onClickedDone;
 
   @override
@@ -62,9 +62,9 @@ class _LayerFormPageState extends State<LayerFormPage> {
   final _residualController = TextEditingController();
   bool visibleTransported = true;
   bool mustIgnore = true;
-  //pm
-  final _pmController = TextEditingController();
-  bool visiblePM = false;
+  //smpl
+  final _smplController = TextEditingController();
+  bool visibleSMPL = false;
 
   //* Pedefined layer properties
   //?implemented
@@ -155,12 +155,12 @@ class _LayerFormPageState extends State<LayerFormPage> {
         visibleTransported = false;
       }
       mustIgnore = false;
-      //pm
+      //smpl
       if (layer.smplDepth != 0) {
-        visiblePM = true;
-        _pmController.text = layer.smplDepth.toString();
+        visibleSMPL = true;
+        _smplController.text = layer.smplDepth.toString();
       } else {
-        _pmController.text = '0.0';
+        _smplController.text = '0.0';
       }
     }
 
@@ -175,7 +175,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
     _otherSoilTypeController.dispose();
     _residualController.dispose();
     _notesController.dispose();
-    _pmController.dispose();
+    _smplController.dispose();
     super.dispose();
   }
 
@@ -629,8 +629,8 @@ class _LayerFormPageState extends State<LayerFormPage> {
                     child: customTextField4('Depth (m)', _depthController),
                   ),
           
-                  //! Pebble Marker: numeric textfield
-                  sectionHeading('Pebble Marker'),
+                  //! Samples taken: numeric textfield
+                  sectionHeading('Sample Taken'),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -638,12 +638,12 @@ class _LayerFormPageState extends State<LayerFormPage> {
                         height: 70,
                         width: 100,
                         child: SwitchListTile(
-                          value: visiblePM,
+                          value: visibleSMPL,
                           controlAffinity: ListTileControlAffinity.leading,
                           onChanged: (val) => setState(() {
-                            visiblePM = val;
-                            if (visiblePM == false) {
-                              _pmController.text = '0.0';
+                            visibleSMPL = val;
+                            if (visibleSMPL == false) {
+                              _smplController.text = '0.0';
                             }
                           }),
                         ),
@@ -653,9 +653,9 @@ class _LayerFormPageState extends State<LayerFormPage> {
                         child: SizedBox(
                           width: 200,
                           child: Visibility(
-                            visible: visiblePM,
+                            visible: visibleSMPL,
                             child: customTextField4(
-                                'Pebble Marker (m)', _pmController),
+                                'Sample depth (m)', _smplController),
                           ),
                         ),
                       ),
@@ -724,7 +724,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
                 : originItem = _residualController.text;
             final origin = originItem ?? ' ';
             final notes = _notesController.text;
-            final pm = double.tryParse(_pmController.text) ?? 0;
+            final smpl = double.tryParse(_smplController.text) ?? 0;
 
             if (kDebugMode) {
               print('1 $depth');
@@ -737,7 +737,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
               print('8 ${selectedSoilTypes.toString()}');
               print('9 $originType');
               print('10 $origin');
-              print('11 $pm');
+              print('11 $smpl');
               print('12 $notes');
             }
 
@@ -752,7 +752,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
                 selectedSoilTypes,
                 origin,
                 originType,
-                pm,
+                smpl,
                 notes);
 
             Navigator.of(context).pop();

@@ -22,7 +22,7 @@ class TrialPitAdapter extends TypeAdapter<TrialPit> {
       ..coordinates = (fields[2] as List).cast<double>()
       ..elevation = fields[3] as double?
       ..wtDepth = fields[4] as double?
-      ..pwtDepth = fields[5] as double?
+      ..pmDepth = fields[5] as double?
       ..layersList = (fields[6] as List).cast<Layer>()
       ..contractor = fields[7] as String?
       ..machine = fields[8] as String?
@@ -45,7 +45,7 @@ class TrialPitAdapter extends TypeAdapter<TrialPit> {
       ..writeByte(4)
       ..write(obj.wtDepth)
       ..writeByte(5)
-      ..write(obj.pwtDepth)
+      ..write(obj.pmDepth)
       ..writeByte(6)
       ..write(obj.layersList)
       ..writeByte(7)

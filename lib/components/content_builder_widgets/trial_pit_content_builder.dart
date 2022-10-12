@@ -104,9 +104,9 @@ Widget buildTrialPitButtons(
               builder: (context) => TrialPitDetailsPage(
                 trialPit: trialPit,
                 onClickedDone:
-                    (pitNumber, coords, elevation, wt, layersList, contractor, machine, imagePath, notes) =>
+                    (pitNumber, coords, elevation, wt, pm, layersList, contractor, machine, imagePath, notes) =>
                         editTrialPit(trialPit, pitNumber, coords,
-                            elevation, wt, layersList, contractor, machine, imagePath, notes),
+                            elevation, wt, pm, layersList, contractor, machine, imagePath, notes),
               ),
             ),
           ),
