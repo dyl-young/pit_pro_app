@@ -1,13 +1,14 @@
+//* libraries
 import 'dart:io' as io;
 import 'dart:math';
 import 'dart:typed_data';
 
-//packages
+//* packages
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
-//local imports
+//* local imports
 import '../../constants/images.dart';
 import '../../models/job.dart';
 import '../../models/layer.dart';
@@ -15,22 +16,19 @@ import '../../models/trial_pit.dart';
 import '../../models/user.dart';
 
 Future<Uint8List> pdfBuildPage(User user, Job job) async {
+  //* attributes
   List<TrialPit> trialPits = job.trialPitList;
 
-  //*To implement if auge/boreholes added
-
-  //create document
+  // create document
   final pdf = Document();
 
-  //User Logo:
+  // user Logo:
   final MemoryImage imageLogo;
-
   (user.institutionLogo != 'assets/app_logo.png')
-      ? imageLogo = MemoryImage(io.File(user.institutionLogo).readAsBytesSync())
-      : imageLogo = MemoryImage(
-          (await rootBundle.load('assets/app_logo.png')).buffer.asUint8List());
+  ? imageLogo = MemoryImage(io.File(user.institutionLogo).readAsBytesSync())
+  : imageLogo = MemoryImage((await rootBundle.load('assets/app_logo.png')).buffer.asUint8List());
 
-  //soil symbols:
+  // soil symbols:
   final gravel =
       MemoryImage((await rootBundle.load(Images.gravel)).buffer.asUint8List());
   final gravelly = MemoryImage(
@@ -56,18 +54,19 @@ Future<Uint8List> pdfBuildPage(User user, Job job) async {
   final scatteredBouldersoulders = MemoryImage(
       (await rootBundle.load(Images.scatteredBoulders)).buffer.asUint8List());
 
-  //markers
+  // markers
   final wt =
       MemoryImage((await rootBundle.load(Images.wt)).buffer.asUint8List());
-  final pm =
-      MemoryImage((await rootBundle.load(Images.pm)).buffer.asUint8List());
+  final smpl =
+      MemoryImage((await rootBundle.load(Images.smpl)).buffer.asUint8List());
 
-  //default image
+  // default image
   final defaultImage = MemoryImage(
       (await rootBundle.load(Images.defaultImage)).buffer.asUint8List());
 
-  //Map of symbols
+  // map of symbols
   Map<String, MemoryImage> images = {
+    'Default Image' : defaultImage,
     'Logo': imageLogo,
     'Gravel': gravel,
     'Gravelly': gravelly,
@@ -82,13 +81,15 @@ Future<Uint8List> pdfBuildPage(User user, Job job) async {
     'Boulders': boulders,
     'Scattered Boulders': scatteredBouldersoulders,
     'WT': wt,
-    'PM': pm,
+    'SMPL': smpl,
   };
 
-  //images
+  //* trial pit page
   if (trialPits != []) {
     for (var element in trialPits) {
       buildTrialPitPage(pdf, user, job, element, images, defaultImage);
+      
+      //* trial pit image page
       if (element.imagePath != '') {
         addtrialPitImage(pdf, element.imagePath!, element, job);
       }
@@ -99,47 +100,54 @@ Future<Uint8List> pdfBuildPage(User user, Job job) async {
 }
 
 //! add a new page to display trial pit page
-void addtrialPitImage(
-    Document pdf, String path, TrialPit trialPit, Job job) async {
+void addtrialPitImage(Document pdf, String path, TrialPit trialPit, Job job) async {
   return pdf.addPage(
     Page(
       build: (context) {
         return Expanded(
+          // header
           child: Column(children: [
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              SizedBox(width: 120),
-              Text('Trial Pit Image', style: const TextStyle(fontSize: 20)),
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text('Hole No: ${trialPit.pitNumber}',
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                Text('Job No:  ${job.jobNumber}',
-                    style: const TextStyle(fontSize: 14)),
-              ]),
-            ]),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+               children: [
+                SizedBox(width: 120),
+                Text('Trial Pit Image', style: const TextStyle(fontSize: 20)),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start, 
+                  children: [
+                    Text('Hole No: ${trialPit.pitNumber}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                    Text('Job No:  ${job.jobNumber}', style: const TextStyle(fontSize: 14)),
+                  ],
+                ),
+              ],
+            ),
             SizedBox(height: 5),
+            // trial pit image
             SizedBox(height: 650, child: Image(MemoryImage(io.File(path).readAsBytesSync()),fit: BoxFit.contain)),
-          ]),
+          ]
+          ),
         );
       },
     ),
   );
 }
 
-String smplOutput(Map<int, double> pmLayers) {
+//! trial pit samples output text
+String smplOutput(Map<int, double> smplLayers) {
   String result = '';
   int index = 1;
-
-  pmLayers.isNotEmpty
-      ? pmLayers.forEach((key, value) {
-          result += 'sample $index at ${roundDouble(value, 2)} m,';
-          index++;
-        })
-      : result = ': none';
-
+  smplLayers.isNotEmpty
+      ? smplLayers.forEach((key, value) {
+            result += '$index at ${roundDouble(value, 2)} m, ';
+            index++;
+          },
+        )
+      : result = 'None';
   return result;
 }
 
+
+//! build trial pit page layout
 void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
     Map<String, MemoryImage> images, MemoryImage defaultImage) async {
   //*variables
@@ -163,63 +171,57 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
             children: [
               Column(
                 children: [
-                  //!Header
+                  //! header
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        //*logo
+                        //* logo
                         Image(
                           images['Logo'] ?? defaultImage,
                           height: 60,
                           width: 120,
                         ),
 
-                        //*titles
+                        //* title
                         Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Trial Pit Log',
-                                  style: const TextStyle(fontSize: 20)),
-                              Text(user.institutionName),
-                              Text(job.jobTitle),
-                              // style: TextStyle(fontWeight: FontWeight.bold)),
-                            ]),
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Trial Pit Log', style: const TextStyle(fontSize: 20)),
+                            Text(user.institutionName),
+                            Text(job.jobTitle),
+                          ],
+                        ),
 
-                        //details
+                        //* details
                         Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 4, right: 4),
-                                child: Text('Hole No: ${trialPit.pitNumber}',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14)),
-                              ),
-                              Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 4, right: 4),
-                                  child: Text('Job No:  ${job.jobNumber}',
-                                      style: const TextStyle(fontSize: 14))),
-                            ]),
-                      ]),
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 4, right: 4),
+                              child: Text('Hole No: ${trialPit.pitNumber}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 4, right: 4),
+                              child: Text('Job No:  ${job.jobNumber}', style: const TextStyle(fontSize: 14)),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
 
-                  //!Spacer
+                  // spacer
                   SizedBox(height: 5),
 
-                  //!empty first row (0 m)
+                  // empty first row (0 m)
                   Table(
                     children: [
-                      TableRow(children: [
-                        Text('0.0 m', style: const TextStyle(fontSize: 10))
-                      ]),
+                      TableRow(children: [Text('0.0 m', style: const TextStyle(fontSize: 10))]),
                     ],
                   ),
 
-                  //!Main table
+                  //! main table
                   Table(
-                    // *border
+                    //* border
                     border: const TableBorder(
                       top: BorderSide(color: PdfColors.black),
                       bottom: BorderSide(color: PdfColors.black),
@@ -228,7 +230,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                       verticalInside: BorderSide(color: PdfColors.black),
                     ),
 
-                    //*Col widths
+                    //* col widths
                     tableWidth: TableWidth.max,
                     columnWidths: {
                       0: const FixedColumnWidth(32),
@@ -237,10 +239,11 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                       3: const FixedColumnWidth(360),
                     },
 
-                    //*Layer row
+                    //* Layer row
                     children: List<TableRow>.generate(
                       layers.length,
                       (int i) {
+
                         //*row heights:
                         double wtDepth = trialPit.wtDepth ?? 0;
                         double smplDepth = layers[i].smplDepth ?? 0;
@@ -261,6 +264,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                         } else {
                           layers[i].wtDepth = 0;
                         }
+
                         if (smplDepth != 0) {
                           smplDepth += (cumulativeDepth - layers[i].depth);
                           smplLayers.putIfAbsent(i + 1, () => smplDepth);
@@ -268,83 +272,63 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
 
                         return TableRow(
                           children: [
-                            //! col 1: depth
+                            
+                            //* col 1: depth
                             SizedBox(
                               height: colHeight,
                               child: Column(
-                                  // mainAxisSize: MainAxisSize.max,
-                                  // crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                        '${(roundDouble(cumulativeDepth, 2)).toString()} m',
-                                        style: const TextStyle(fontSize: 10)),
-                                  ]),
-                            ),
-
-                            //! col 2: symbols
-                            Stack(
-                                children: symbolOverlayCol(
-                                    images, defaultImage, layers[i], height)),
-
-                            //! col 3: marker
-                            SizedBox(
-                              height: colHeight,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                                mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  // //* Pebble Marker
-                                  (layers[i].smplDepth != 0)
-                                      ? Column(
-                                          children: [
-                                            Text(
-                                              '${roundDouble(smplDepth, 2).toString()} m',
-                                              style:
-                                                  const TextStyle(fontSize: 8),
-                                            ),
-                                            Image(images['PM'] ?? defaultImage,
-                                                height: 20, width: 20)
-                                          ],
-                                        )
-                                      : SizedBox.shrink(),
-
-                                  //*Water table
-                                  (layers[i].wtDepth != 0)
-                                      ? Column(
-                                          children: [
-                                            Text(
-                                              '${roundDouble(layers[i].wtDepth!, 2).toString()} m',
-                                              style:
-                                                  const TextStyle(fontSize: 8),
-                                            ),
-                                            Image(images['WT'] ?? defaultImage,
-                                                height: 20, width: 20)
-                                          ],
-                                        )
-                                      : SizedBox.shrink(),
+                                  Text('${(roundDouble(cumulativeDepth, 2)).toString()} m', style: const TextStyle(fontSize: 10)),
                                 ],
                               ),
                             ),
 
-                            //! col 4: Details
-                            // Text('3'),
+                            //* col 2: symbols
+                            Stack(children: symbolOverlayCol(images, defaultImage, layers[i], height)),
+
+                            //* col 3: marker
+                            SizedBox(
+                              height: colHeight,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+
+                                  // //* Pebble Marker
+                                  (layers[i].smplDepth != 0)
+                                  ? Column(
+                                      children: [
+                                        Text('${roundDouble(smplDepth, 2).toString()} m', style: const TextStyle(fontSize: 8)),
+                                        Image(images['PM'] ?? defaultImage, height: 20, width: 20)
+                                      ],
+                                    )
+                                  : SizedBox.shrink(),
+
+                                  //*Water table
+                                  (layers[i].wtDepth != 0)
+                                  ? Column(
+                                      children: [
+                                        Text('${roundDouble(layers[i].wtDepth!, 2).toString()} m',style:const TextStyle(fontSize: 8)),
+                                        Image(images['WT'] ?? defaultImage, height: 20, width: 20)
+                                      ],
+                                    )
+                                  : SizedBox.shrink(),
+                                ],
+                              ),
+                            ),
+
+                            //* col 4: Details
                             Padding(
                               padding: const EdgeInsets.only(left: 4, right: 4),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('Layer ${i + 1} details:',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold)),
+                                  Text('Layer ${i + 1} details:', style: TextStyle(fontWeight: FontWeight.bold)),
                                   Padding(
                                     padding: const EdgeInsets.only(bottom: 4),
-                                    child: Text(
-                                        '${layers[i].moisture}, ${layers[i].colourPattern}${layers[i].colour}$otherColour${layers[i].consistency}, ${layers[i].soilToString()}, ${layers[i].structure}, ${layers[i].originType}: ${layers[i].origin}'),
+                                    child: Text('${layers[i].moisture}, ${layers[i].colourPattern}${layers[i].colour}$otherColour${layers[i].consistency}, ${layers[i].soilToString()}, ${layers[i].structure}, ${layers[i].originType}: ${layers[i].origin}'),
                                   ),
-                                  Text('Notes:',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold)),
+                                  Text('Notes:', style: TextStyle(fontWeight: FontWeight.bold)),
                                   Text('${layers[i].notes}')
                                 ],
                               ),
@@ -355,31 +339,28 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                     ),
                   ),
 
-                  //!Spacer
+                  // spacer
                   SizedBox(height: 5),
-                  //!Notes
+                  
+                  //! notes
                   Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                     SizedBox(
-                      width: 180,
-                      height: 80,
+                      width: 190,
+                      height: 100,
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Trial Pit Notes:',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                          Text(
-                              '1) Water Table: ${trialPit.wtDepth != 0 ? 'at ${roundDouble(trialPit.wtDepth!, 2)} m' : 'None'}'),
-                          Text(
-                              '2) Pebble marker: ${trialPit.pmDepth != 0 ? 'at ${roundDouble(trialPit.pmDepth!, 2)} m' : 'None'}'),
-                          Text('3) samples${smplOutput(smplLayers)}'),
-                          // Text('3) maybe refusal?'),
+                          Text('Trial Pit Notes:', style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text('1) Water Table: ${trialPit.wtDepth != 0 ? 'at ${roundDouble(trialPit.wtDepth!, 2)} m' : 'None'}'),
+                          Text('2) Pebble marker: ${trialPit.pmDepth != 0 ? 'at ${roundDouble(trialPit.pmDepth!, 2)} m' : 'None'}'),
+                          Text('3) Samples: ${smplOutput(smplLayers)}'),
                         ],
                       ),
                     ),
                     SizedBox(
-                      width: 300,
+                      width: 250,
                       height: 80,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -390,20 +371,20 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                 ],
               ),
 
-              //!footer
+              //! footer
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  //titles
-                  //details
+                  //* col 1 
                   Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Logger: ${user.userName}'),
-                        Text(
-                            'Date Created : ${trialPit.createdDate.day}-${trialPit.createdDate.month}-${trialPit.createdDate.year}'),
-                      ]),
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Logger: ${user.userName}'),
+                      Text('Date Created : ${trialPit.createdDate.day}-${trialPit.createdDate.month}-${trialPit.createdDate.year}'),
+                    ],
+                  ),
+                  //* col 2 
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -412,13 +393,12 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                       Text('Machnine: ${trialPit.machine}'),
                     ],
                   ),
+                  //* col 3
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                          //? 2 rounding options
-                          'Location: ${roundDouble(trialPit.coordinates[0], 2)}, ${double.parse(trialPit.coordinates[1].toString()).toStringAsFixed(2)}'), //${loc.longitude} ; ${loc.latitude}'),
+                      Text('Location: ${roundDouble(trialPit.coordinates[0], 2)}, ${roundDouble(trialPit.coordinates[0], 2)}'), //${loc.longitude} ; ${loc.latitude}'),
                       Text('Elevation: ${trialPit.elevation!.round()} m'),
                     ],
                   ),
@@ -430,14 +410,18 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
       }),
     );
   } else {
+    //! empty trial pit page
     return pdf.addPage(Page(
       build: (context) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            //!Header 2
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            // header 2
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+               children: [
+              
               //logo
               Image(images['Logo'] ?? defaultImage, height: 60, width: 120),
               //titles
@@ -464,6 +448,8 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                 ]),
               ]),
             ]),
+            
+            // body: No Content
             SizedBox(
               height: 520,
               child: Center(
@@ -472,23 +458,23 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                           fontSize: 20, color: PdfColors.grey))),
             ),
 
-            //!Spacer 2
+            // Spacer 2
             SizedBox(height: 5),
 
-            //!footer 2
+            // footer 2
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 //titles
                 //details
                 Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Logger: ${user.userName}'),
-                      Text(
-                          'Date Created : ${trialPit.createdDate.day}-${trialPit.createdDate.month}-${trialPit.createdDate.year}'),
-                    ]),
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Logger: ${user.userName}'),
+                    Text('Date Created : ${trialPit.createdDate.day}-${trialPit.createdDate.month}-${trialPit.createdDate.year}'),
+                  ],
+                ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -501,9 +487,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                        //? 2 rounding options
-                        'Location: ${roundDouble(trialPit.coordinates[0], 2)}, ${double.parse(trialPit.coordinates[1].toString()).toStringAsFixed(2)}'), //${loc.longitude} ; ${loc.latitude}'),
+                    Text('Location: ${roundDouble(trialPit.coordinates[0], 2)}, ${roundDouble(trialPit.coordinates[0], 2)}'), 
                     Text('Elevation: ${trialPit.elevation!.round()} m'),
                   ],
                 ),
@@ -516,37 +500,36 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
   }
 }
 
-//! Round off Doubles
+//! round off doubles
 double roundDouble(double value, int places) {
   num mod = pow(10.0, places);
   return ((value * mod).round().toDouble() / mod);
 }
 
-//! Builds list of soil columns for stack to overlay
-List<Widget> symbolOverlayCol(Map<String, MemoryImage> symbols,
-    MemoryImage defaultImage, Layer layer, double height) {
+//! builds list of soil columns for stack to overlay
+List<Widget> symbolOverlayCol(Map<String, MemoryImage> symbols, MemoryImage defaultImage, Layer layer, double height) {
   List<String> soilTypes = layer.soilTypes;
   List<Expanded> columns = [];
 
   for (var element in soilTypes) {
-    columns.add(Expanded(
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children:
-                buildSoilSymbols(height, symbols[element] ?? defaultImage))));
+    columns.add(
+      Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: buildSoilSymbols(height, symbols[element] ?? defaultImage),
+        ),
+      ),
+    );
   }
   return columns;
 }
 
-//! Builds image list of soil symbols for Column
+//! builds image list of soil symbols for Column
 List<Widget> buildSoilSymbols(double height, ImageProvider image) {
-  // var temp = height % 32;
   int count = ((height) / 32).round();
   List<Widget> imageList = [];
   for (var i = 0; i < (count); i++) {
-    imageList
-        .add(SizedBox(height: 32, child: Image(image, fit: BoxFit.contain)));
-    //?try boxfit.contains
+    imageList.add(SizedBox(height: 32, child: Image(image, fit: BoxFit.contain)));
   }
   return imageList;
 }

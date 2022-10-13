@@ -1,16 +1,17 @@
+//* libraries
 import 'dart:io';
 
-//packages
+//* packages
 import 'package:flutter/material.dart';
 
-//local imports
+//* local imports
 import '../../../models/user.dart';
 import '../../hive_components/add_edit_delete_functions.dart';
 import '../../pages/user_info_edit_page.dart';
 import '../widgets/info_textbox_widget.dart';
 
-Widget buildUserDrawer(
-    BuildContext context, User user, Function getImageFromGallery) {
+//! User drawer builder
+Widget buildUserDrawer(BuildContext context, User user, Function getImageFromGallery) {
   ImageProvider displayImage;
 
   (user.institutionLogo != 'assets/app_logo.png')
@@ -33,8 +34,9 @@ Widget buildUserDrawer(
               //white background card
               child: Material(
                 borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(25),
-                    bottomRight: Radius.circular(25)),
+                  bottomLeft: Radius.circular(25),
+                  bottomRight: Radius.circular(25),
+                ),
                 //add image
                 child: Ink.image(
                   width: 100,
@@ -71,7 +73,6 @@ Widget buildUserDrawer(
                           );
                         },
                       ),
-                      //stack edit icon on image
                     ],
                   ),
                 ),
@@ -114,19 +115,17 @@ Widget buildUserDrawer(
       ),
       const Padding(
         padding: EdgeInsets.all(4.0),
-        child: Text('Created By\nDylan Young'),
+        child: Text('Created By\nDylan Young', style: TextStyle(fontSize: 12)),
       )
     ],
   );
 }
 
-//pick image bottom sheet with gallery button
+//! bottom sheet with gallery button
 Widget bottomSheet(BuildContext context, Function getImageFromGallery) {
   return Container(
     
     height: 70,
-    // width: 100,
-    // width: MediaQuery.of(context).size.width
     margin: const EdgeInsets.symmetric(
       horizontal: 20,
       vertical: 20,
@@ -139,12 +138,12 @@ Widget bottomSheet(BuildContext context, Function getImageFromGallery) {
             onPressed: () {
               getImageFromGallery();
               Navigator.of(context).pop(); //dismiss bottom sheet
-              Navigator.of(context)
-                  .pop(); //and nav drawer to give image a chance to load
+              Navigator.of(context).pop(); //and nav drawer to give image a chance to load
             },
             child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [Icon(Icons.image_outlined), Text('Gallery')]),
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [Icon(Icons.image_outlined), Text('Gallery')],
+            ),
           ),
         ),
       ],

@@ -1,13 +1,14 @@
+//* lirbraries
 import 'dart:io';
 
-//packages
+//* packages
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
-//local imports
+//* local imports
 import '../components/content_builder_widgets/user_drawer_builder.dart';
 import '../constants/images.dart';
 import '../hive_components/add_edit_delete_functions.dart';
@@ -25,23 +26,17 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  //list of all objects in reverse order so latest appears at the top
-  //list populated with any matching searches from the filter funtion or if no searches, populated with all objects
-  //bool indicator showing if searches are being made
-  //controls search bar input
-
-  late List<Job> reversedJobs;
-  late List<Job> foundList;
-  static bool searching = false;
-  final _searchController = TextEditingController();
-  String? imagePath;
-
-  //Initialise App User
+  //* attributes
   late final User user;
+  late List<Job> reversedJobs;
+  late List<Job> displayList;
+  static bool isSearching = false;
+  final _searchController = TextEditingController();
 
-  //initialise states
+  //* initialise method
   @override
   void initState() {
+    //* initialise User
     if (Boxes.getUsers().isEmpty) {
       user = User('', '', Images.logo);
       final box = Boxes.getUsers();
@@ -50,33 +45,38 @@ class _HomePageState extends State<HomePage> {
       user = Boxes.getUsers().values.first;
     }
 
+    //* initialise Job list with existing jobs
     final jobList = Boxes.getJobs().values.toList().cast<Job>();
     reversedJobs = (jobList).reversed.toList();
-    foundList = reversedJobs;
+    displayList = reversedJobs;
     super.initState();
   }
 
-  //Hive dispose
+  //* dispose method
   @override
   void dispose() {
-    Hive.close();
+    Hive.close(); // close Hive boxes
     super.dispose();
   }
 
+  //* build method
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      //onTap: block below stopped the keybaord from popping up
-      //when the custon drawer is opended
+      // unfocus keyboard
       onTap: () {
         final FocusScopeNode currentScope = FocusScope.of(context);
-        // FocusManager.instance.primaryFocus.unfocus();
-        if (!currentScope.hasPrimaryFocus && currentScope.hasFocus) {
+        if (!currentScope.hasPrimaryFocus) {
           FocusManager.instance.primaryFocus?.unfocus();
+          displayList = reversedJobs;
+          _searchController.clear();
         }
       },
+
       child: Scaffold(
-        //!appbar
+        resizeToAvoidBottomInset: false, //prevent FAB from moving with keybaord
+
+        //! appbar
         appBar: AppBar(
           title: Row(
             mainAxisSize: MainAxisSize.min,
@@ -89,15 +89,16 @@ class _HomePageState extends State<HomePage> {
           centerTitle: true,
         ),
 
-        //!User Drawer
+        //! User Drawer
         drawer: Drawer(
           shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(bottomRight: Radius.circular(45))
-          ),
+              borderRadius:
+                  BorderRadius.only(bottomRight: Radius.circular(45))),
           backgroundColor: Colors.green,
           child: buildUserDrawer(context, user, getImageFromGallery),
         ),
 
+        //! widgets
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -115,30 +116,31 @@ class _HomePageState extends State<HomePage> {
                   onEditingComplete: () {
                     FocusScope.of(context).unfocus();
                     _searchController.clear();
+                    displayList = reversedJobs;
+                    // searching = false;
                   },
                   onChanged: (value) {
-                    searching = true;
+                    isSearching = true;
                     _runFilter(value, reversedJobs);
                   },
+                  
                 ),
               ),
 
-              //!Job card view
-              //*listenable Box List :
-              //returns a list of detail cards built in test_pit_content builder
+              //* Job heading :
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.work_rounded),
-                      Text(' Created Jobs',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16))
-                    ]),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(Icons.work_rounded),
+                    Text(' Jobs', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))
+                  ],
+                ),
               ),
+
+              //*Job card list builder
               SizedBox(
-                // height: 669.5,
                 height: MediaQuery.of(context).size.height - 220,
                 child: ValueListenableBuilder<Box<Job>>(
                   valueListenable: Boxes.getJobs().listenable(),
@@ -147,14 +149,12 @@ class _HomePageState extends State<HomePage> {
                     reversedJobs = jobs.reversed.toList();
                     List<Job> answerList;
 
-                    if (!searching) {
-                      //not searching -> display full list
+                    if (!isSearching) {
+                      //not searchin: display full list
                       answerList = reversedJobs;
                     } else {
-                      //searching -> display list of found matches, end
-                      answerList = foundList;
-                      // searching = false;
-                      foundList = reversedJobs;
+                      //searching: display list of found matches
+                      answerList = displayList;
                     }
                     //*builder
                     return buildJobContent(context, user, answerList);
@@ -178,8 +178,6 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-        
-
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
 
         //*bottom bar: no function
@@ -193,7 +191,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  //Searches through list of objects and adds an matches to Found List
   //! filter Job cards according to title or job number
   void _runFilter(String enteredKeyword, List<Job> jobs) {
     List<Job> results = [];
@@ -216,11 +213,11 @@ class _HomePageState extends State<HomePage> {
       ).toList();
     }
     setState(() {
-      foundList = results;
+      displayList = results;
     });
   }
 
-  //! Get user company image and save to app directory
+  //! save user image to app directory
   void getImageFromGallery() async {
     XFile? pickedFile;
     final File newFile;
@@ -239,14 +236,5 @@ class _HomePageState extends State<HomePage> {
         user.save();
       });
     }
-  }
-
-  Future<int> deleteFile(File file) async {
-    try {
-      await file.delete();
-    } catch (e) {
-      return 0;
-    }
-    return 1;
   }
 }

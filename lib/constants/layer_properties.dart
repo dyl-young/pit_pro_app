@@ -5,6 +5,7 @@ import 'dart:ui';
 //packages
 import 'package:flutter/material.dart';
 
+//! moisture
 class SoilMoisture {
   static const String DRY = 'Dry';
   static const String S_MOIST = 'Slightly Moist';
@@ -17,6 +18,7 @@ class SoilMoisture {
   }
 }
 
+//! colour
 class SoilColour {
   //*colour Strings
   static const String D_BROWN = 'Dark Brown';
@@ -179,15 +181,16 @@ class SoilColour {
   };
 }
 
+//! Consistency
 class SoilConsistency {
-  //! Cohesive Consistency
+  //* Cohesive Consistency
   static const String V_SOFT = 'Very Soft';
   static const String SOFT = 'Soft';
   static const String FIRM = 'Firm';
   static const String STIFF = 'Stiff';
   static const String V_STIFF = 'Very Stiff';
 
-  // !Granular Consistency
+  //* Granular Consistency
   static const String V_LOOSE = 'Very Loose';
   static const String LOOSE = 'Loose';
   static const String M_DENSE = 'Medium Dense';
@@ -203,8 +206,9 @@ class SoilConsistency {
   }
 }
 
+//! Soil Types
 class SoilTypes {
-  //! Primary Soil
+  //* Primary Soil
   static const String ROOTS = 'Roots';
   static const String FILL = 'Fill';
   static const String BOULDERS = 'Boulders'; //[Secondary Soil] with boulders
@@ -214,15 +218,13 @@ class SoilTypes {
   static const String SILT = 'Silt';
   static const String CLAY = 'Clay';
 
-  //! Secondary Soil
+  //* Secondary Soil
   static const String L_BOULDERS =
       'Scattered Boulders'; //Scattered Boulders in [Primary Soil]
   static const String L_GRAVEL = 'Gravelly';
   static const String L_SAND = 'Sandy';
   static const String L_SILT = 'Silty';
   static const String L_CLAY = 'Clayey';
-
-  //TODO: provide rock types if there is time
 
   Map<String, bool> primTypes = {
     GRAVEL: false,
@@ -250,7 +252,9 @@ class SoilTypes {
   }
 }
 
+//! Structure
 class SoilStructure {
+  static const String GRANULAR = 'Granular';
   static const String INTACT = 'Intact';
   static const String FISSURED = 'Fissured';
   static const String SLICKENSIDED = 'Slicken-sided';
@@ -266,6 +270,7 @@ class SoilStructure {
 
   List<String> getSoilStructure() {
     return [
+      GRANULAR,
       INTACT,
       FISSURED,
       SLICKENSIDED,
@@ -282,6 +287,7 @@ class SoilStructure {
   }
 }
 
+//! Transported origin
 class TransportedSoilOrigin {
   static const String TALUS = 'Talus';
   static const String HILLWASH = 'Hillwash';

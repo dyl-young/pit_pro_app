@@ -1,4 +1,3 @@
-
 class Images {
   static const String logo = 'assets/app_logo.png';
   static const String suLogo = 'assets/su_logo.png';
@@ -18,7 +17,7 @@ class Images {
 
   static const String wt = 'assets/WT.png';
   static const String pwt = 'assets/PWT.png';
-  static const String pm = 'assets/PM.png';
+  static const String smpl = 'assets/SMPL.png';
 
   static const String defaultImage = 'assets/Default_Image.png';
 }

@@ -1,8 +1,8 @@
-//packages
+//* packages
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-//local imports
+// *local imports
 import '../../hive_components/add_edit_delete_functions.dart';
 import '../../models/layer.dart';
 import '../../pages/layer_form_page.dart';
@@ -11,11 +11,18 @@ import '../widgets/confirm_alert_dialog.dart';
 //!list view builder
 Widget layerListViewBuilder(BuildContext context, List<Layer> layers) {
   if (layers.isEmpty) {
-    return const Center(
+    return SingleChildScrollView(
       child: SizedBox(
-          height: 250,
-          child: Text('No Layers Found',
-              style: TextStyle(color: Colors.grey, fontSize: 20))),
+        height: 200,
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: const [
+            SizedBox(height: 50),
+            Text('No Layers Found', style: TextStyle(color: Colors.grey, fontSize: 20)),
+          ],
+        )
+      ),
     );
   } else {
     return Scrollbar(
@@ -30,15 +37,12 @@ Widget layerListViewBuilder(BuildContext context, List<Layer> layers) {
                   color: Color.fromARGB(255, 219, 219, 219),
                 ),
                 child: Theme(
-                  data: Theme.of(context)
-                      .copyWith(dividerColor: Colors.transparent),
+                  data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
                   child: ExpansionTile(
-      
                     //*leading icon
                     leading: const Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Icon(Icons.layers_rounded, size: 30)
-      
                     ),
       
                     //*date
@@ -53,19 +57,14 @@ Widget layerListViewBuilder(BuildContext context, List<Layer> layers) {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Layer: ${layers.lastIndexOf(e) + 1}',
-                            style: const TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
+                          Text('Layer: ${layers.lastIndexOf(e) + 1}', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                           Text('layer Depth: ${e.depth} m')
                         ],
                       ),
                     ),
-      
-                    children: [
-                      buildLayerButtons(context, layers, e),
-                    ],
+
+                    //* buttons
+                    children: [buildLayerButtons(context, layers, e)],
                   ),
                 ),
               ),
@@ -78,12 +77,24 @@ Widget layerListViewBuilder(BuildContext context, List<Layer> layers) {
   }
 }
 
-//! Expansion tile buttons
+//! expansion tile buttons
 Widget buildLayerButtons(BuildContext context, List<Layer> layers, Layer layer) {
   const color = Color.fromARGB(255, 9, 138, 13);
 
   return Row(
     children: [
+       //*delete button
+      Expanded(
+        child: TextButton.icon(
+          label: const Text('Delete', style: TextStyle(color: color)),
+          icon: const Icon(Icons.delete, color: color),
+          onPressed: () => showDialog(
+            context: context,
+            builder: (context) => confirmObjectDelete(context, layers, layer, deleteLayer),
+          ),
+        ),
+      ),
+
       //*edit button
       Expanded(
         child: TextButton.icon(
@@ -101,20 +112,6 @@ Widget buildLayerButtons(BuildContext context, List<Layer> layers, Layer layer) 
           ),
         ),
       ),
-
-       //*delete button
-      Expanded(
-        child: TextButton.icon(
-          label: const Text('Delete', style: TextStyle(color: color)),
-          icon: const Icon(Icons.delete, color: color),
-          onPressed: () => showDialog(
-            context: context,
-            builder: (context) =>
-                confirmObjectDelete(context, layers, layer, deleteLayer),
-          ),
-        ),
-      )
-      
     ],
   );
 }

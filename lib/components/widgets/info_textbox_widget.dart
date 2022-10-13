@@ -1,7 +1,7 @@
 //packages
 import'package:flutter/material.dart';
 
-//Build info text boxes
+//! info text box
 Widget infoTextBox(String title, String info, Icon icon) {
   return Center(
     child: Container(
@@ -33,7 +33,7 @@ Widget infoTextBox(String title, String info, Icon icon) {
   );
 }
 
-//Build info text boxes
+//! info text boxe 2
 Widget infoTextBox2(String title, String info) {
   return Center(
     child: Container(
@@ -50,7 +50,6 @@ Widget infoTextBox2(String title, String info) {
         children: [
           Text(title),
           SizedBox(
-            // height: ,
             width: 185,
             child: Text(
               info,

@@ -1,45 +1,46 @@
-//packages
+//* packages
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 
-//local imports
-import '../components/widgets/buttons.dart';
+//* local imports
+import 'trial_pit_details_page.dart';
+import '../components/widgets/cancelbutton.dart';
 import '../components/content_builder_widgets/trial_pit_content_builder.dart';
 import '../components/widgets/custom_text_field.dart';
 import '../hive_components/add_edit_delete_functions.dart';
 import '../hive_components/boxes.dart';
 import '../models/job.dart';
 import '../models/trial_pit.dart';
-import 'trial_pit_details_page.dart';
 
 class JobDeatilsPage extends StatefulWidget {
   const JobDeatilsPage({Key? key, this.job, required this.onClickedDone})
       : super(key: key);
 
-  //*class arguments
+  //* class arguments
   final Job? job;
-  final Function(String number, String title, List<TrialPit> trialpits)
-      onClickedDone;
+  final Function(String number, String title, List<TrialPit> trialpits) onClickedDone;
 
   @override
   State<JobDeatilsPage> createState() => _JobDeatilsPageState();
 }
 
 class _JobDeatilsPageState extends State<JobDeatilsPage> {
-  //*attributes
+
+  //* attributes
   final jobFormKey = GlobalKey<FormState>();
-  final _jobNumController = TextEditingController();
   final _jobTitleController = TextEditingController();
+  final _jobNumController = TextEditingController();
   late List<TrialPit> madeTrialPits = [];
 
-  //*initialise method
+  //* initialise method
   @override
   void initState() {
-    Boxes.geTrialPits();
+    //* initialise Job
     if (widget.job != null) {
       final job = widget.job!;
 
-      //! Get relevant objects from the Hive object box using the created date (kill me)
+      //* initialise trial pits
+      //! Get relevant objects from the Hive object box using the created date
       for (var i = 0; i < Boxes.geTrialPits().values.toList().length; i++) {
         for (var j = 0; j < job.trialPitList.length; j++) {
           Boxes.geTrialPits().values.toList()[i].createdDate ==
@@ -49,13 +50,14 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
         }
       }
 
-      _jobNumController.text = job.jobNumber;
+        //* initialise text contollers
       _jobTitleController.text = job.jobTitle;
+      _jobNumController.text = job.jobNumber;
     }
     super.initState();
   }
 
-  //*dispose Controllers
+  //*dispose method
   @override
   void dispose() {
     _jobNumController.dispose();
@@ -64,31 +66,31 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
     super.dispose();
   }
 
+  //* build method
   @override
   Widget build(BuildContext context) {
     //* title
     final isEditing = widget.job != null;
     final title = isEditing ? 'Edit Job' : 'Create Job';
-    
+
     return WillPopScope(
       //disable back device button on this page
       onWillPop: () async => false,
+
       child: Scaffold(
-        //avoid pixel overflow due to keyboard
         resizeToAvoidBottomInset: false,
+
         //! appbar
         appBar: AppBar(
           title: Row(
             mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               const Icon(Icons.work_rounded),
               Text(' $title'),
             ],
           ),
           centerTitle: true,
-          //*disable automatic back button
-          automaticallyImplyLeading: false,
+          automaticallyImplyLeading: false,   // disable automatic back button
 
           //*Cancel button
           actions: [
@@ -108,23 +110,23 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
               const SizedBox(height: 8), //?difference
 
               //Job Details:
-              //*Heading
+              //* heading
               sectionHeading('Job Details'),
 
-              //*job title
+              //* job title
               customTextField('*Job Title', _jobTitleController),
 
-              //*job number
+              //* job number
               customTextField('*Job Number', _jobNumController),
 
               const SizedBox(height: 8),
 
-              //*Trial Pits Heading
+              //* Trial Pits heading
               sectionHeading('Trial Pits'),
 
               const SizedBox(height: 8),
 
-              //*Trial Pit info tiles ListView
+              //* Trial Pit card list builder
               Expanded(
                 child: ValueListenableBuilder<Box<TrialPit>>(
                   valueListenable: Boxes.geTrialPits().listenable(),
@@ -133,12 +135,11 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
                   },
                 ),
               ),
-              // buildTrialPitContent(madeTrialPits),
             ],
           ),
         ),
 
-        //!floating Action Button
+        //! floating Action Button
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () => Navigator.push(
             context,
@@ -177,13 +178,13 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
 
-        //!bottom nav bar
+        //! bottom bar
         bottomNavigationBar: BottomAppBar(
           notchMargin: 5,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              //save button
+              //* save button
               buildSaveButton(context, isEditing: isEditing),
               const SizedBox(width: 20)
             ],
@@ -193,7 +194,7 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
     );
   }
 
-  //!create/save button
+  //! create/save button
   Widget buildSaveButton(BuildContext context, {required bool isEditing}) {
     final text = isEditing ? ' Save ' : ' Create';
 
@@ -206,7 +207,7 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
             const Icon(Icons.save_alt_rounded, size: 20),
             Text(text, style: const TextStyle(fontSize: 16)),
           ],
-        ), //con
+        ),
 
         onPressed: () async {
           final isValid = jobFormKey.currentState!.validate();
@@ -214,10 +215,8 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
           if (isValid) {
             final num = _jobNumController.text;
             final title = _jobTitleController.text;
-            // final madelayers = test
 
             widget.onClickedDone(num, title, madeTrialPits);
-
             Navigator.of(context).pop();
           }
         },

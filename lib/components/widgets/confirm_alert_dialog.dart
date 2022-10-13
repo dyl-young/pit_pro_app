@@ -4,15 +4,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
-//! Pop up alerts to confirm deletion or page exit
-//arguments: build context, list of objects containing object to be deleted,
-//object to be deleted, object specific delete function
-
-
-Widget confirmObjectDelete(BuildContext context, List<HiveObject>? objList,
-    HiveObject object, Function deletObject) {
+//! confirm delete object
+Widget confirmObjectDelete(BuildContext context, List<HiveObject>? objList, HiveObject object, Function deletObject) {
       
-  //!Delete Alert box
   return AlertDialog(
     title: Column(
       children: const [
@@ -44,9 +38,10 @@ Widget confirmObjectDelete(BuildContext context, List<HiveObject>? objList,
     ),
   );
 }
+
+//! confirm delete image
 Widget confirmImageDelete(BuildContext context, String path, Function deleteFile) {
       
-  //!Delete Alert box
   return AlertDialog(
     title: Column(
       children: const [
@@ -79,7 +74,7 @@ Widget confirmImageDelete(BuildContext context, String path, Function deleteFile
   );
 }
 
-//! Alert pop up box to confirm cancel
+//! confirm cancel 
 Widget confirmCancel(BuildContext context, List<HiveObject>? objList) {
 
   //! Alert box

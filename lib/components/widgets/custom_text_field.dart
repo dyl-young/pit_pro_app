@@ -120,8 +120,7 @@ Widget customTextField6(String text, TextEditingController controller) {
   );
 }
 
-
-//*Headings
+//! Headings
 Widget sectionHeading(String heading) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
@@ -136,7 +135,7 @@ Widget sectionHeading(String heading) {
   );
 }
 
-//*smaller Headings
+//! smaller Headings
 Widget subSectionHeading(String heading) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(8, 6, 8, 0),

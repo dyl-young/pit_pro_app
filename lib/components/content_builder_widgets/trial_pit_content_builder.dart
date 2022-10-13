@@ -1,16 +1,17 @@
+// *libraries
 import 'dart:math';
 
-//packages
+// *packages
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-//local imports
+// *local imports
 import '../../hive_components/add_edit_delete_functions.dart';
 import '../../models/trial_pit.dart';
 import '../../pages/trial_pit_details_page.dart';
 import '../widgets/confirm_alert_dialog.dart';
 
-//!list view builder
+//! Trial Pit list view builder
 Widget trialPitListViewBuilder(BuildContext context, List<TrialPit> trialPits) {
   if (trialPits.isEmpty) {
     return  Column(
@@ -35,15 +36,12 @@ Widget trialPitListViewBuilder(BuildContext context, List<TrialPit> trialPits) {
                   color: Color.fromARGB(255, 219, 219, 219),
                 ),
                 child: Theme(
-                  data: Theme.of(context)
-                      .copyWith(dividerColor: Colors.transparent),
+                  data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
                   child: ExpansionTile(
-                    // tilePadding: const EdgeInsets.all(1),
     
                     //*leading icon
                     leading: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      // child: Icon(Icons.calendar_view_day),
                       child: Transform.rotate(angle: pi, child: const Icon(Icons.line_style_outlined, size: 30)),
     
                     ),
@@ -60,18 +58,11 @@ Widget trialPitListViewBuilder(BuildContext context, List<TrialPit> trialPits) {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Hole No: ${e.pitNumber}',
-                            style: const TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
+                          Text('Hole No: ${e.pitNumber}', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                           Text('no of layers: ${e.layersList.length}')
                         ],
                       ),
                     ),
-                    //!Pit index in list of pits -> use this for the layers tile cards
-                    // title: Text('Trial Pit: ${trialPits.lastIndexOf(e) + 1}'),
-    
                     children: [
                       buildTrialPitButtons(context, trialPits, e),
                     ],
@@ -86,33 +77,12 @@ Widget trialPitListViewBuilder(BuildContext context, List<TrialPit> trialPits) {
   }
 }
 
-//! Expansion tile buttons
-Widget buildTrialPitButtons(
-    BuildContext context, List<TrialPit> trialPits, TrialPit trialPit) {
+//! expansion tile buttons
+Widget buildTrialPitButtons(BuildContext context, List<TrialPit> trialPits, TrialPit trialPit) {
   const color = Color.fromARGB(255, 9, 138, 13);
 
   return Row(
     children: [
-      //*edit button
-      Expanded(
-        child: TextButton.icon(
-          label: const Text('Edit', style: TextStyle(color: color)),
-          icon: const Icon(Icons.edit, color: color),
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => TrialPitDetailsPage(
-                trialPit: trialPit,
-                onClickedDone:
-                    (pitNumber, coords, elevation, wt, pm, layersList, contractor, machine, imagePath, notes) =>
-                        editTrialPit(trialPit, pitNumber, coords,
-                            elevation, wt, pm, layersList, contractor, machine, imagePath, notes),
-              ),
-            ),
-          ),
-        ),
-      ),
-
       //*delete button
       Expanded(
         child: TextButton.icon(
@@ -124,7 +94,44 @@ Widget buildTrialPitButtons(
                 confirmObjectDelete(context, trialPits, trialPit, deleteTrialPit),
           ),
         ),
-      )
+      ),
+       //*edit button
+      Expanded(
+        child: TextButton.icon(
+          label: const Text('Edit', style: TextStyle(color: color)),
+          icon: const Icon(Icons.edit, color: color),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TrialPitDetailsPage(
+                trialPit: trialPit,
+                onClickedDone:
+                    (pitNumber, 
+                    coords, 
+                    elevation,
+                    wt,
+                    pm, 
+                    layersList, 
+                    contractor, 
+                    machine, 
+                    imagePath, 
+                    notes) => editTrialPit(
+                    trialPit, 
+                    pitNumber, 
+                    coords,
+                    elevation, 
+                    wt, 
+                    pm, 
+                    layersList, 
+                    contractor, 
+                    machine, 
+                    imagePath, 
+                    notes),
+              ),
+            ),
+          ),
+        ),
+      ),
     ],
   );
 }

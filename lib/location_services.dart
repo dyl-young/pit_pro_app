@@ -15,26 +15,20 @@ class LocationServices {
   }
 
   Future<bool> _checkPermission() async {
-
     if (await _checkService() == true) {
       _grantedPermission = await _location.hasPermission();
-
       if (_grantedPermission == PermissionStatus.denied) {
         _grantedPermission = await _location.requestPermission();
       }
     }
-
     return _grantedPermission == PermissionStatus.granted;
   }
 
   Future<LocationData?> getLocation() async {
-
     late final Future<LocationData>? locationData;
-
     await _checkPermission()
         ? locationData = _location.getLocation()
         : locationData = null;
-
     return locationData;
   }
 }

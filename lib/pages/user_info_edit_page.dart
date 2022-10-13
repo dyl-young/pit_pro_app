@@ -18,17 +18,19 @@ class UserInfoEditPage extends StatefulWidget {
 }
 
 class _UserInfoEditPageState extends State<UserInfoEditPage> {
-  // final formKey = GlobalKey<FormState>();
+  //* attributes
   final nameController = TextEditingController();
   final companyController = TextEditingController();
 
+  //* initialise method
   @override
   void initState() {
     nameController.text = widget.user.userName;
     companyController.text = widget.user.institutionName;
     super.initState();
   }
-
+  
+  //* dispose method
   @override
   void dispose() {
     nameController.dispose();
@@ -36,19 +38,21 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
     super.dispose();
   }
 
+  //* build method
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      //! title
+
+      //* title
       title: const Center(child: Text('Edit User Details')),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(20)),
       ),
+      
+      //* text fields
       content: Form(
         child: SingleChildScrollView(
           child: Column(
-            // mainAxisSize: MainAxisSize.min,
-            //! Text fields
             children: [
               customTextField('Name', nameController),
               customTextField('Company Name', companyController)
@@ -56,8 +60,9 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
           ),
         ),
       ),
+      
       actions: [
-        //! cancel button
+        //* cancel button
         TextButton(
           child: const Text('Cancel', style: TextStyle(fontSize: 16)),
           onPressed: () {
@@ -66,7 +71,7 @@ class _UserInfoEditPageState extends State<UserInfoEditPage> {
           },
         ),
 
-        //! save button
+        //* save button
         TextButton(
           child: const Text('Save', style: TextStyle(fontSize: 16)),
           onPressed: () {

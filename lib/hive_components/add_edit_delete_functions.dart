@@ -1,6 +1,7 @@
-//local imports
+//* libraries
 import 'dart:io';
 
+//* local imports
 import 'boxes.dart';
 import '../models/layer.dart';
 import '../models/user.dart';
@@ -8,7 +9,7 @@ import '../models/job.dart';
 import '../models/trial_pit.dart';
 
 //! User functions
-//*edit user
+//* edit user
 void editUser(User user, String name, String company) {
   user.userName = name;
   user.institutionName = company;
@@ -17,7 +18,7 @@ void editUser(User user, String name, String company) {
 }
 
 //! Job functions
-//*add new Job
+//* add Job
 Future addJob(String jobNum, String jobTitle, List<TrialPit> trialPits) async {
   final Job job = Job()
     ..jobNumber = jobNum
@@ -28,9 +29,8 @@ Future addJob(String jobNum, String jobTitle, List<TrialPit> trialPits) async {
   box.add(job);
 }
 
-//*edit existing Job
-void editJob(
-    Job job, String jobNum, String jobTitle, List<TrialPit> trialPits) {
+//* edit Job
+void editJob(Job job, String jobNum, String jobTitle, List<TrialPit> trialPits) {
   job.jobNumber = jobNum;
   job.jobTitle = jobTitle;
   job.trialPitList = trialPits;
@@ -38,18 +38,16 @@ void editJob(
   job.save();
 }
 
-//*delete existing Job
+//* delete existing Job
 void deleteJob(Job job) {
   for (var e in job.trialPitList) {
-    //deleteTrialpit function also removes its layers
     deleteTrialPit(e);
   }
-
   job.delete();
 }
 
 //! Trial Pit functions
-//*add Trial Pit
+//* add Trial Pit
 Future addTrialPit(
     List<TrialPit> trialPits,
     String number,
@@ -61,7 +59,8 @@ Future addTrialPit(
     String contractor,
     String machine,
     String imagePath,
-    String notes) async {
+    String notes) async 
+    {
   final box = Boxes.geTrialPits();
   final TrialPit trialPit = TrialPit()
     ..pitNumber = number
@@ -80,7 +79,7 @@ Future addTrialPit(
   box.add(trialPit);
 }
 
-//*edit Trial Pit
+//* edit Trial Pit
 void editTrialPit(
     TrialPit trialPit,
     String number,
@@ -92,7 +91,8 @@ void editTrialPit(
     String contractor,
     String machine,
     String imagePath,
-    String notes) {
+    String notes) 
+    {
   trialPit.pitNumber = number;
   trialPit.coordinates = coords;
   trialPit.elevation = elevation;
@@ -107,7 +107,7 @@ void editTrialPit(
   trialPit.save();
 }
 
-//*delete Trial Pit
+//* delete Trial Pit
 void deleteTrialPit(TrialPit trialPit) {
   for (var e in trialPit.layersList) {
     deleteLayer(e);
@@ -121,7 +121,7 @@ void deleteTrialPit(TrialPit trialPit) {
 }
 
 //! Layer functions:
-//*add layer
+//* add layer
 Future addLayer(
     List<Layer> layers,
     double depth,
@@ -134,10 +134,9 @@ Future addLayer(
     List<String> soilTypes,
     String origin,
     String originType,
-    // double wt,
-    // double pwt,
     double pm,
-    String notes) async {
+    String notes) async 
+    {
   final box = Boxes.getLayers();
   final Layer layer = Layer()
     ..depth = depth
@@ -150,8 +149,6 @@ Future addLayer(
     ..soilTypes = soilTypes
     ..origin = origin
     ..originType = originType
-    // ..wtDepth = wt
-    // ..pwtDepth = pwt
     ..smplDepth = pm
     ..notes = notes
     ..createdDate = DateTime.now();
@@ -172,10 +169,9 @@ void editLayer(
     List<String> soilTypes,
     String origin,
     String originType,
-    // double wt,
-    // double pwt,
-    double pm,
-    String notes) {
+    double smpl,
+    String notes) 
+    {
   layer.depth = depth;
   layer.moisture = moisture;
   layer.colour = colour;
@@ -186,9 +182,7 @@ void editLayer(
   layer.soilTypes = soilTypes;
   layer.originType = originType;
   layer.origin = origin;
-  // layer.wtDepth = wt;
-  // layer.pwtDepth = pwt;
-  layer.smplDepth = pm;
+  layer.smplDepth = smpl;
   layer.notes = notes;
 
   layer.save();
@@ -199,7 +193,7 @@ void deleteLayer(Layer layer) {
   layer.delete();
 }
 
-//! Delete file from app dir
+//! delete image file from app dir
 Future<int> deleteFile(File file) async {
   try {
     await file.delete();
