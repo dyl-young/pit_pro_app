@@ -41,6 +41,20 @@ class MyApp extends StatelessWidget {
       debugShowMaterialGrid:  false,
       title: 'Flutter Demo',
       theme: ThemeData(
+        appBarTheme: const AppBarTheme().copyWith(
+          shape:  RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0)
+          ),
+        ),
+        bottomAppBarTheme: const BottomAppBarTheme().copyWith(
+          color: Colors.green,
+          shape: const AutomaticNotchedShape(
+            RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
+            StadiumBorder(
+              side: BorderSide(),
+            ),
+          ),
+        ),
         scrollbarTheme: const ScrollbarThemeData().copyWith(
             thickness: MaterialStateProperty.all(6),
             radius: const Radius.circular(5),

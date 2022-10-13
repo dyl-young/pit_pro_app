@@ -673,16 +673,17 @@ class _LayerFormPageState extends State<LayerFormPage> {
         ),
 
         //!bottom nav bar
-        bottomNavigationBar: BottomAppBar(
-          color: Colors.green,
-          shape: const CircularNotchedRectangle(), //shape of notch
-          notchMargin: isEditing ? 5 : 0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              //save button
-              buildSaveButton(context, isEditing: isEditing),
-            ],
+        bottomNavigationBar: ClipRRect(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+          child: Container(
+            color: Colors.green,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                //save button
+                buildSaveButton(context, isEditing: isEditing),
+              ],
+            ),
           ),
         ),
       ),

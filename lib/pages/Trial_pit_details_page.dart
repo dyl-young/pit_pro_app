@@ -189,7 +189,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
                     ),
                   ),
 
-                const SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
                   Padding(
                     padding:
@@ -243,35 +243,53 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         InkWell(
+                            //image path textbox
                             child: infoTextBox2('', displayPath),
                             onTap: () {
+                              //image display
                               _imagePathController.text != ''
                                   ? showDialog(
                                       context: context,
                                       builder: (context) => AlertDialog(
-                                          title: const Text('Trial Pit Image'),
-                                          shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20)),
+                                            title: const Text('Trial Pit Image'),
+                                            shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                                            ),
+                                            actions: [
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                    //delete image button
+                                                    IconButton(
+                                                      onPressed: () {
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (context) => confirmImageDelete(context, _imagePathController.text,deleteFile),
+                                                          );
+                                                          setState(() {_imagePathController.text = '';});
+                                                        },
+                                                        icon: const Icon(Icons.delete)),
+                                                        
+                                                    //back button
+                                                    IconButton(onPressed: Navigator.of(context).pop, icon: const Icon(Icons.arrow_back_rounded)),
+
+                                                  ],
+                                              ),
+                                            ],
+                                            //image and laoding indicator
+                                            content: SizedBox(
+                                              height: 400,
+                                              width: 300,
+                                              child: FutureBuilder(
+                                                future: Future.delayed(const Duration(seconds: 5)),
+                                                builder: (c, s) => s.connectionState == ConnectionState.done
+                                                    ? Image.file(File(_imagePathController.text))
+                                                    : const Center(child: SizedBox(height: 80, width: 80, child: CircularProgressIndicator(strokeWidth: 6,backgroundColor: Colors.grey))),
+                                              ),
+                                            ),
                                           ),
-                                          actions: [
-                                            IconButton(
-                                                onPressed: () {
-                                                  confirmImageDelete(
-                                                      context,
-                                                      _imagePathController.text,
-                                                      deleteFile);
-                                                  Navigator.pop(context);
-                                                  setState(() {
-                                                    _imagePathController.text =
-                                                        '';
-                                                  });
-                                                },
-                                                icon: const Icon(Icons.delete))
-                                          ],
-                                          content: Image.file(
-                                              File(_imagePathController.text))),
                                     )
+                                    //no image display
                                   : showDialog(
                                       context: context,
                                       builder: (context) => const AlertDialog(
@@ -281,6 +299,9 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
                                               style:
                                                   TextStyle(color: Colors.grey),
                                             )),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                                            ),
                                           ));
                             }),
                         imageButton(),
@@ -360,13 +381,6 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
 
         //!bottom nav bar
         bottomNavigationBar: BottomAppBar(
-          color: Colors.green,
-          shape: const AutomaticNotchedShape(
-            RoundedRectangleBorder(),
-            StadiumBorder(
-              side: BorderSide(),
-            ),
-          ), //shape of notch
           notchMargin: 5,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -479,6 +493,9 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
         child: TextButton(
           onPressed: () {
             showModalBottomSheet(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(15))
+              ),
               context: context,
               builder: ((builder) => bottomSheet(context, getImage)),
             );
@@ -487,39 +504,6 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
         ),
       ),
     );
-  }
-
-  //! Get file from gallery/camera and save to app
-  void getImage(ImageSource source) async {
-    XFile? pickedFile;
-    final int dateID = DateTime.now().millisecondsSinceEpoch;
-    // final String date = '${currentDate.year}${currentDate.month}${currentDate.day}${currentDate.hour}${currentDate.minute}${currentDate.microsecond}';
-
-    final File newFile;
-    final Directory dir = await getApplicationDocumentsDirectory();
-    pickedFile = await ImagePicker().pickImage(source: source);
-
-    if (pickedFile != null) {
-      _imagePathController.text != ''
-          ? deleteFile(File(_imagePathController.text))
-          : null;
-      newFile = await File(pickedFile.path).copy(
-          '${dir.path}/${source.toString()}$dateID${p.extension(pickedFile.path)}');
-
-      setState(() {
-        _imagePathController.text = newFile.path;
-      });
-    }
-  }
-
-  //! Delete file from app dir
-  Future<int> deleteFile(File file) async {
-    try {
-      await file.delete();
-    } catch (e) {
-      return 0;
-    }
-    return 1;
   }
 
   //! Bottom Image Sheet
@@ -562,5 +546,40 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
         ],
       ),
     );
+  }
+
+  //! Get file from gallery/camera and save to app
+  void getImage(ImageSource source) async {
+    XFile? pickedFile;
+    final int dateID = DateTime.now().millisecondsSinceEpoch;
+    final String imageSource =
+        source == ImageSource.camera ? 'camerea_image' : 'gallery_image';
+    // final String date = '${currentDate.year}${currentDate.month}${currentDate.day}${currentDate.hour}${currentDate.minute}${currentDate.microsecond}';
+
+    final File newFile;
+    final Directory dir = await getApplicationDocumentsDirectory();
+    pickedFile = await ImagePicker().pickImage(source: source);
+
+    if (pickedFile != null) {
+      _imagePathController.text != ''
+          ? deleteFile(File(_imagePathController.text))
+          : null;
+      newFile = await File(pickedFile.path).copy(
+          '${dir.path}/$imageSource$dateID${p.extension(pickedFile.path)}');
+
+      setState(() {
+        _imagePathController.text = newFile.path;
+      });
+    }
+  }
+
+  //! Delete file from app dir
+  Future<int> deleteFile(File file) async {
+    try {
+      await file.delete();
+    } catch (e) {
+      return 0;
+    }
+    return 1;
   }
 }

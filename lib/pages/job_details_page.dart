@@ -1,5 +1,3 @@
-import 'dart:math';
-
 //packages
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -181,13 +179,6 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
 
         //!bottom nav bar
         bottomNavigationBar: BottomAppBar(
-          color: Colors.green,
-          shape: const AutomaticNotchedShape(
-            RoundedRectangleBorder(),
-            StadiumBorder(
-              side: BorderSide(),
-            ),
-          ),
           notchMargin: 5,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

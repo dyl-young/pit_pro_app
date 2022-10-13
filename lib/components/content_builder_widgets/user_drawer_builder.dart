@@ -18,6 +18,7 @@ Widget buildUserDrawer(
       : displayImage = const AssetImage('assets/app_logo.png');
 
   final currentHeight = MediaQuery.of(context).size.height;
+  
 
   return Column(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -61,6 +62,9 @@ Widget buildUserDrawer(
                       InkWell(
                         onTap: () {
                           showModalBottomSheet(
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(top: Radius.circular(15))
+                            ),
                             context: context,
                             builder: ((builder) =>
                                 bottomSheet(context, getImageFromGallery)),
@@ -119,6 +123,7 @@ Widget buildUserDrawer(
 //pick image bottom sheet with gallery button
 Widget bottomSheet(BuildContext context, Function getImageFromGallery) {
   return Container(
+    
     height: 70,
     // width: 100,
     // width: MediaQuery.of(context).size.width

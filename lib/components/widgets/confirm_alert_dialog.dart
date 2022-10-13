@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:pit_pro_app/hive_components/add_edit_delete_functions.dart';
 
 //! Pop up alerts to confirm deletion or page exit
 //arguments: build context, list of objects containing object to be deleted,
@@ -30,9 +29,9 @@ Widget confirmObjectDelete(BuildContext context, List<HiveObject>? objList,
         //*yes button
         TextButton(
           onPressed: () {
-            Navigator.of(context).pop();
             objList!.remove(object); //remove object from object list
             deletObject(object); //delete object from Hive box
+            Navigator.of(context).pop();
           },
           child: const Text('yes', style: TextStyle(fontSize: 16)),
         ),
@@ -64,6 +63,7 @@ Widget confirmImageDelete(BuildContext context, String path, Function deleteFile
         //*yes button
         TextButton(
           onPressed: () {
+            Navigator.of(context).pop();
             Navigator.of(context).pop();
             deleteFile(File(path)); //Delete image file
           },

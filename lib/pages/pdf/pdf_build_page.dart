@@ -98,6 +98,7 @@ Future<Uint8List> pdfBuildPage(User user, Job job) async {
   return pdf.save();
 }
 
+//! add a new page to display trial pit page
 void addtrialPitImage(
     Document pdf, String path, TrialPit trialPit, Job job) async {
   return pdf.addPage(
@@ -117,7 +118,7 @@ void addtrialPitImage(
               ]),
             ]),
             SizedBox(height: 5),
-            Image(MemoryImage(io.File(path).readAsBytesSync()))
+            SizedBox(height: 650, child: Image(MemoryImage(io.File(path).readAsBytesSync()),fit: BoxFit.contain)),
           ]),
         );
       },

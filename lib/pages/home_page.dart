@@ -91,6 +91,9 @@ class _HomePageState extends State<HomePage> {
 
         //!User Drawer
         drawer: Drawer(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(bottomRight: Radius.circular(45))
+          ),
           backgroundColor: Colors.green,
           child: buildUserDrawer(context, user, getImageFromGallery),
         ),
@@ -181,18 +184,8 @@ class _HomePageState extends State<HomePage> {
 
         //*bottom bar: no function
         bottomNavigationBar: BottomAppBar(
-          //bottom navigation bar on scaffold
-          color: Colors.green.shade500,
-          shape: const AutomaticNotchedShape(
-            RoundedRectangleBorder(),
-            StadiumBorder(
-              side: BorderSide(),
-            ),
-          ),
           notchMargin: 5,
           child: Row(
-            // mainAxisSize: MainAxisSize.max,
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: const [SizedBox(height: 34)],
           ),
         ),
