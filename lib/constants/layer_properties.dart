@@ -292,7 +292,7 @@ class TransportedSoilOrigin {
   static const String TALUS = 'Talus';
   static const String HILLWASH = 'Hillwash';
   static const String ALLUVIUM = 'Alluvium';
-  static const String LACUSTRINE = 'Lacustrine Depoists';
+  static const String LACUSTRINE = 'Lacustrine Deposits';
   static const String ESTUARINE = 'Estuarine Deposits';
   static const String LITTORAL = 'Littoral Deposits';
   static const String AEOLIAN = 'Aeolian Deosits';
