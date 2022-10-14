@@ -449,7 +449,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
                   //* soil Types: check box
                   sectionHeading('Soil Types'),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       checkBoxGroup(primSoilTypes, primTypeMap),
@@ -458,31 +458,36 @@ class _LayerFormPageState extends State<LayerFormPage> {
                   ),
                   //*other soil type: check box: text field
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // checkbox 
-                      Padding(
-                        padding: const EdgeInsets.only(left: 26.25),
-                        child: SizedBox(
-                          width: 165,
-                          child: CheckboxListTile(
-                            title: const Text('Other'),
-                            value: visibleOtherST,
-                            onChanged: ((val) {
-                                setState(
-                                  () {
-                                    visibleOtherST = val!;
-                                  },
-                                );
-                              }
-                            ),
+                      SizedBox(
+                        width: 165,
+                        child: CheckboxListTile(
+                          title: const Text('Other'),
+                          value: visibleOtherST,
+                          onChanged: ((val) {
+                              setState(
+                                () {
+                                  visibleOtherST = val!;
+                                },
+                              );
+                            }
                           ),
                         ),
                       ),
+
+                       Visibility(
+                        visible: !visibleOtherST,
+                        child: const SizedBox(width: 165, height: 40),
+                      ),
+
                       // text field
                       Visibility(
                         visible: visibleOtherST,
                         child: SizedBox(
-                          width: 200,
+                          width: 165,
                           child: TextFormField(
                             maxLines: 1,
                             controller: _otherSoilTypeController,
@@ -495,6 +500,9 @@ class _LayerFormPageState extends State<LayerFormPage> {
                           ),
                         ),
                       ),
+
+                     
+
                     ],
                   ),
 
@@ -795,7 +803,6 @@ class _LayerFormPageState extends State<LayerFormPage> {
     return SizedBox(
       width: 165,
       child: CheckboxListTile(
-        // controlAffinity: ListTileControlAffinity.leading,
         title: Text(key, maxLines: 2),
         value: map[key],
         onChanged: ((val) {

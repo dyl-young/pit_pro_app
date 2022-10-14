@@ -33,7 +33,7 @@ class _PdfViewPageState extends State<PdfViewPage> {
           strokeWidth: 6,
         ),
         pdfFileName: 'TrialPitLog${widget.job.jobNumber}.pdf',
-        canDebug: false,
+        canDebug: true,
         canChangeOrientation: false,
         canChangePageFormat: false,
         build: (context) => pdfBuildPage(widget.user, widget.job),

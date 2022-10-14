@@ -113,7 +113,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
   double totalDepth = trialPit.totalDepth();
   double cumulativeDepth = 0;
   double tableHeight = 500;
-  double scale = totalDepth / (.18 );
+  double scale = totalDepth / (.18);
 
   Map<int, double> smplLayers = {};
 
@@ -176,14 +176,15 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                   // spacer
                   SizedBox(height: 5),
 
-                  // empty first row (0 m)
                   Table(
                     children: [
+                      //graph scale
                       TableRow(children: [
                         Text('Scale   1 : ${roundDouble(scale, 1)} ',
                             style: TextStyle(
                                 fontSize: 10, fontWeight: FontWeight.bold)),
                       ]),
+                      // 0 m depth
                       TableRow(children: [
                         Text('0.0 m', style: const TextStyle(fontSize: 10)),
                       ]),
@@ -219,25 +220,41 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                         double smplDepth = layers[i].smplDepth ?? 0;
                         double height = tableHeight * (layers[i].depth / totalDepth);
                         double colHeight = roundDouble(height / 32, 0) * 32;
-                        cumulativeDepth += layers[i].depth;
+                        double marker1 = 0;
+                        String text1;
+                        double marker2 = 0;
+                        String text2;
 
+                        cumulativeDepth += layers[i].depth;
+                        
                         String otherColour;
                         layers[i].otherColour != ''
                             ? otherColour = ', ${layers[i].otherColour}, '
                             : otherColour = ', ';
 
-                        if (cumulativeDepth >= wtDepth &&
-                            wtDepth != 0 &&
-                            wtFound == false) {
+                        if (cumulativeDepth >= wtDepth && wtDepth != 0 && wtFound == false) {
                           wtFound = true;
                           layers[i].wtDepth = wtDepth;
+
                         } else {
                           layers[i].wtDepth = 0;
                         }
 
                         if (smplDepth != 0) {
                           smplDepth += (cumulativeDepth - layers[i].depth);
-                          smplLayers.putIfAbsent(i + 1, () => smplDepth);
+                          smplLayers.putIfAbsent(i, () => smplDepth);
+                        }
+
+                        if(layers[i].smplDepth! <= layers[i].wtDepth!){
+                          marker1 = layers[i].smplDepth!;
+                          text1 = 'SMPL';
+                          marker2 = layers[i].wtDepth!;
+                          text2 = 'WT';
+                        }else{
+                          marker1 = layers[i].wtDepth!;
+                          text1 = 'WT';
+                          marker2 = layers[i].smplDepth!;
+                          text2 = 'SMPL';
                         }
 
                         return TableRow(
@@ -248,54 +265,41 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Text(
-                                      '${(roundDouble(cumulativeDepth, 2)).toString()} m',
-                                      style: const TextStyle(fontSize: 10)),
+                                  Text('${(roundDouble(cumulativeDepth, 2)).toString()} m', style: const TextStyle(fontSize: 10)),
                                 ],
                               ),
                             ),
 
                             //* col 2: symbols
-                            Stack(
-                                children: symbolOverlayCol(
-                                    images, defaultImage, layers[i], height)),
+                            Stack(children: symbolOverlayCol(images, defaultImage, layers[i], height)),
 
-                            //* col 3: marker
+                            //* col 3: markers for water table and samples
                             SizedBox(
                               height: colHeight,
                               child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
-                                  // //* Pebble Marker
-                                  (layers[i].smplDepth != 0)
-                                      ? Column(
-                                          children: [
-                                            Text(
-                                                '${roundDouble(smplDepth, 2).toString()} m',
-                                                style: const TextStyle(
-                                                    fontSize: 8)),
-                                            Image(
-                                                images['SMPL'] ?? defaultImage,
-                                                height: 20,
-                                                width: 20)
-                                          ],
-                                        )
-                                      : SizedBox.shrink(),
+                                  
+                                  //* 1st marker
+                                  (marker1 != 0)
+                                  ? Column(
+                                      children: [
+                                        Text('${roundDouble(marker1, 2).toString()} m', style: const TextStyle(fontSize: 8)),
+                                        Image(images[text1] ?? defaultImage, height: 20, width: 20)
+                                      ],
+                                    )
+                                  : SizedBox.shrink(),
 
-                                  //*Water table
-                                  (layers[i].wtDepth != 0)
-                                      ? Column(
-                                          children: [
-                                            Text(
-                                                '${roundDouble(layers[i].wtDepth!, 2).toString()} m',
-                                                style: const TextStyle(
-                                                    fontSize: 8)),
-                                            Image(images['WT'] ?? defaultImage,
-                                                height: 20, width: 20)
-                                          ],
-                                        )
-                                      : SizedBox.shrink(),
+                                  //* 2nd marker
+                                  (marker2 != 0)
+                                  ? Column(
+                                      children: [
+                                        Text('${roundDouble(marker2, 2).toString()} m', style: const TextStyle(fontSize: 8)),
+                                        Image(images[text2] ?? defaultImage, height: 20, width: 20)
+                                      ],
+                                    )
+                                  : SizedBox.shrink(),
                                 ],
                               ),
                             ),
@@ -357,7 +361,11 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                       height: 80,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [trialPit.notes != '' ? Text('4) ${trialPit.notes}', maxLines: 5) : Text('')],
+                        children: [
+                          trialPit.notes != ''
+                              ? Text('4) ${trialPit.notes}', maxLines: 5)
+                              : Text('')
+                        ],
                       ),
                     ),
                   ]),
@@ -373,9 +381,9 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Logger: ${user.userName}'),
+                      Text('Logged by: ${user.userName}'),
                       Text(
-                          'Date Created : ${trialPit.createdDate.day}-${trialPit.createdDate.month}-${trialPit.createdDate.year}'),
+                          'Date Created: ${trialPit.createdDate.day}-${trialPit.createdDate.month}-${trialPit.createdDate.year}'),
                     ],
                   ),
                   //* col 2
@@ -684,4 +692,15 @@ List<Widget> buildSoilSymbols(double height, ImageProvider image) {
         .add(SizedBox(height: 32, child: Image(image, fit: BoxFit.contain)));
   }
   return imageList;
+}
+
+Widget marker ( Map<String, MemoryImage> images, MemoryImage defaultImage, double depth,String text){
+  return (depth != 0)
+    ? Column(
+        children: [
+          Text('${roundDouble(depth, 2).toString()} m', style: const TextStyle(fontSize: 8)),
+          Image(images['text'] ?? defaultImage, height: 20, width: 20)
+        ],
+      )
+    : SizedBox.shrink();
 }
