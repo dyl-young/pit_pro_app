@@ -70,7 +70,7 @@ Future<Uint8List> pdfBuildPage(User user, Job job) async {
   // map of symbols
   Map<String, MemoryImage> images = {
     'Default Image': defaultImage,
-    'App Logo' : appLogo,
+    'App Logo': appLogo,
     'Logo': imageLogo,
     'Gravel': gravel,
     'Gravelly': gravelly,
@@ -98,6 +98,7 @@ Future<Uint8List> pdfBuildPage(User user, Job job) async {
         addtrialPitImage(pdf, element.imagePath!, element, job);
       }
     }
+    //* legend page
     addSymbolLegendPage(pdf, images, defaultImage);
   }
 
@@ -105,11 +106,14 @@ Future<Uint8List> pdfBuildPage(User user, Job job) async {
 }
 
 //! build trial pit page layout
-void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,Map<String, MemoryImage> images, MemoryImage defaultImage) async {
+void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
+    Map<String, MemoryImage> images, MemoryImage defaultImage) async {
   //*variables
   List<Layer> layers = trialPit.layersList;
   double totalDepth = trialPit.totalDepth();
   double cumulativeDepth = 0;
+  double tableHeight = 500;
+  double scale = totalDepth / (.18 );
 
   Map<int, double> smplLayers = {};
 
@@ -176,7 +180,12 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,Map<S
                   Table(
                     children: [
                       TableRow(children: [
-                        Text('0.0 m', style: const TextStyle(fontSize: 10))
+                        Text('Scale   1 : ${roundDouble(scale, 1)} ',
+                            style: TextStyle(
+                                fontSize: 10, fontWeight: FontWeight.bold)),
+                      ]),
+                      TableRow(children: [
+                        Text('0.0 m', style: const TextStyle(fontSize: 10)),
                       ]),
                     ],
                   ),
@@ -208,7 +217,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,Map<S
                         //*row heights:
                         double wtDepth = trialPit.wtDepth ?? 0;
                         double smplDepth = layers[i].smplDepth ?? 0;
-                        double height = 500 * (layers[i].depth / totalDepth);
+                        double height = tableHeight * (layers[i].depth / totalDepth);
                         double colHeight = roundDouble(height / 32, 0) * 32;
                         cumulativeDepth += layers[i].depth;
 
@@ -325,7 +334,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,Map<S
                   Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                     SizedBox(
                       width: 190,
-                      height: 100,
+                      height: 80,
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -334,19 +343,21 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,Map<S
                           Text('Trial Pit Notes:',
                               style: TextStyle(fontWeight: FontWeight.bold)),
                           Text(
-                              '1) Water Table: ${trialPit.wtDepth != 0 ? 'at ${roundDouble(trialPit.wtDepth!, 2)} m' : 'None'}'),
+                              '1) Water table: ${trialPit.wtDepth != 0 ? 'at ${roundDouble(trialPit.wtDepth!, 2)} m' : 'None'}'),
                           Text(
                               '2) Pebble marker: ${trialPit.pmDepth != 0 ? 'at ${roundDouble(trialPit.pmDepth!, 2)} m' : 'None'}'),
-                          Text('3) Samples: ${smplOutput(smplLayers)}'),
+                          Text('3) Samples: ${smplOutput(smplLayers)}',
+                              maxLines: 3),
                         ],
                       ),
                     ),
+                    SizedBox(width: 10),
                     SizedBox(
                       width: 250,
                       height: 80,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [Text('${trialPit.notes}', maxLines: 5)],
+                        children: [trialPit.notes != '' ? Text('4) ${trialPit.notes}', maxLines: 5) : Text('')],
                       ),
                     ),
                   ]),
@@ -484,7 +495,8 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,Map<S
 }
 
 //! add a new page to display trial pit page
-void addtrialPitImage(Document pdf, String path, TrialPit trialPit, Job job) async {
+void addtrialPitImage(
+    Document pdf, String path, TrialPit trialPit, Job job) async {
   return pdf.addPage(
     Page(
       build: (context) {
@@ -522,13 +534,15 @@ void addtrialPitImage(Document pdf, String path, TrialPit trialPit, Job job) asy
 }
 
 //! Add legend page for soil symbols
-void addSymbolLegendPage(Document pdf, Map<String, MemoryImage> symbols, MemoryImage defaultImage) async {
+void addSymbolLegendPage(Document pdf, Map<String, MemoryImage> symbols,
+    MemoryImage defaultImage) async {
   return pdf.addPage(Page(
     build: (context) {
       return Expanded(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            //* heading
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -538,55 +552,60 @@ void addSymbolLegendPage(Document pdf, Map<String, MemoryImage> symbols, MemoryI
 
             SizedBox(height: 30),
 
+            //* legend table
             Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      buildLegendRow(symbols['Boulders'] ?? defaultImage, 'Boulders'),
-                      buildLegendRow(symbols['Gravel'] ?? defaultImage, 'Gravel'),
-                      buildLegendRow(symbols['Sand'] ?? defaultImage, 'Sand'),
-                      buildLegendRow(symbols['Silt'] ?? defaultImage, 'Silt'),
-                      buildLegendRow(symbols['Clay'] ?? defaultImage, 'Clay'),
-                      buildLegendRow(symbols['Roots'] ?? defaultImage, 'Roots'),
-                      buildLegendRow(symbols['Fill'] ?? defaultImage, 'Fill'),
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      buildLegendRow(symbols['Scattered Boulders'] ?? defaultImage,'Boulders'),
-                      buildLegendRow(symbols['Gravelly'] ?? defaultImage, 'Gravel'),
-                      buildLegendRow(symbols['Sandy'] ?? defaultImage, 'Sand'),
-                      buildLegendRow(symbols['Silty'] ?? defaultImage, 'Silt'),
-                      buildLegendRow(symbols['Clayey'] ?? defaultImage, 'Clay'),
-                      buildLegendRow(symbols['WT'] ?? defaultImage, 'Water Table'),
-                      buildLegendRow(symbols['SMPL'] ?? defaultImage, 'Sample'),
-                      buildLegendRow(symbols['Default '] ?? defaultImage, 'Default Image'),
-                    ],
-                  )
-                ],
-              ),
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    buildLegendRow(
+                        symbols['Boulders'] ?? defaultImage, 'Boulders'),
+                    buildLegendRow(symbols['Gravel'] ?? defaultImage, 'Gravel'),
+                    buildLegendRow(symbols['Sand'] ?? defaultImage, 'Sand'),
+                    buildLegendRow(symbols['Silt'] ?? defaultImage, 'Silt'),
+                    buildLegendRow(symbols['Clay'] ?? defaultImage, 'Clay'),
+                    buildLegendRow(symbols['Roots'] ?? defaultImage, 'Roots'),
+                    buildLegendRow(symbols['Fill'] ?? defaultImage, 'Fill'),
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    buildLegendRow(
+                        symbols['Scattered Boulders'] ?? defaultImage,
+                        'Scattered Boulders'),
+                    buildLegendRow(
+                        symbols['Gravelly'] ?? defaultImage, 'Gravelly'),
+                    buildLegendRow(symbols['Sandy'] ?? defaultImage, 'Sandy'),
+                    buildLegendRow(symbols['Silty'] ?? defaultImage, 'Silty'),
+                    buildLegendRow(symbols['Clayey'] ?? defaultImage, 'Clayey'),
+                    buildLegendRow(
+                        symbols['WT'] ?? defaultImage, 'Water Table'),
+                    buildLegendRow(symbols['SMPL'] ?? defaultImage, 'Sample'),
+                    buildLegendRow(symbols['Default Image'] ?? defaultImage,
+                        'Default Image'),
+                  ],
+                )
+              ],
+            ),
 
-              Expanded(
-                child: Column(
+            //* footer
+            Expanded(
+              child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Created with '), 
-                        Image(symbols['App Logo']?? defaultImage, fit: BoxFit.contain, height: 25, width: 25)
-                      ]
-                    )
-                  ]
-                ),
-              )
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      Text('Created with '),
+                      Image(symbols['App Logo'] ?? defaultImage,
+                          fit: BoxFit.contain, height: 25, width: 25)
+                    ])
+                  ]),
+            )
           ],
         ),
       );
@@ -638,7 +657,8 @@ double roundDouble(double value, int places) {
 }
 
 //! builds list of soil columns for stack to overlay
-List<Widget> symbolOverlayCol(Map<String, MemoryImage> symbols,MemoryImage defaultImage, Layer layer, double height) {
+List<Widget> symbolOverlayCol(Map<String, MemoryImage> symbols,
+    MemoryImage defaultImage, Layer layer, double height) {
   List<String> soilTypes = layer.soilTypes;
   List<Expanded> columns = [];
 
