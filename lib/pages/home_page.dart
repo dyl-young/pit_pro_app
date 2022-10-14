@@ -49,6 +49,7 @@ class _HomePageState extends State<HomePage> {
     final jobList = Boxes.getJobs().values.toList().cast<Job>();
     reversedJobs = (jobList).reversed.toList();
     displayList = reversedJobs;
+
     super.initState();
   }
 
@@ -62,12 +63,14 @@ class _HomePageState extends State<HomePage> {
   //* build method
   @override
   Widget build(BuildContext context) {
+
     return GestureDetector(
       // unfocus keyboard
       onTap: () {
         final FocusScopeNode currentScope = FocusScope.of(context);
         if (!currentScope.hasPrimaryFocus) {
           FocusManager.instance.primaryFocus?.unfocus();
+          isSearching = false;
           displayList = reversedJobs;
           _searchController.clear();
         }
@@ -117,13 +120,12 @@ class _HomePageState extends State<HomePage> {
                     FocusScope.of(context).unfocus();
                     _searchController.clear();
                     displayList = reversedJobs;
-                    // searching = false;
+                    isSearching = false;
                   },
                   onChanged: (value) {
                     isSearching = true;
                     _runFilter(value, reversedJobs);
                   },
-                  
                 ),
               ),
 
@@ -134,7 +136,9 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
                     Icon(Icons.work_rounded),
-                    Text(' Jobs', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))
+                    Text(' Jobs',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16))
                   ],
                 ),
               ),
@@ -157,7 +161,8 @@ class _HomePageState extends State<HomePage> {
                       answerList = displayList;
                     }
                     //*builder
-                    return buildJobContent(context, user, answerList);
+                    return buildJobContent(
+                        context, user, answerList, isSearching);
                   },
                 ),
               ),

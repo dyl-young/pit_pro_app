@@ -14,7 +14,7 @@ Widget customTextField(String text, TextEditingController controller) {
             borderRadius: BorderRadius.all(Radius.circular(25))),
       ),
       validator: (title) =>
-          title != null && title.isEmpty ? 'Enter a $text' : null,
+          title != null && title.isEmpty ? '$text is required' : null,
     ),
   );
 }
@@ -34,8 +34,6 @@ Widget customTextField2(String text, TextEditingController controller) {
           border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(25))),
         ),
-        // validator: (title) =>
-        //     title != null && title.isEmpty ? 'Enter $text' : null,
       ),
     ),
   );
@@ -54,8 +52,6 @@ Widget customTextField3(String text, TextEditingController controller) {
             borderRadius: BorderRadius.all(Radius.circular(25))),
       ),
       keyboardType: TextInputType.number,
-      // validator: (title) =>
-      //     title != null && title.isEmpty ? 'Enter a $text' : null,
     ),
   );
 }
@@ -74,7 +70,7 @@ Widget customTextField4(String text, TextEditingController controller) {
       ),
       keyboardType: TextInputType.number,
       validator: (title) =>
-          title != null && title.isEmpty ? 'Enter a $text' : null,
+          title != null && title.isEmpty ? '$text is required' : null,
     ),
   );
 }
@@ -93,15 +89,12 @@ Widget customTextField5(String text, TextEditingController controller) {
           border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(25))),
         ),
-        // keyboardType: TextInputType.number,
-        // validator: (title) =>
-        //     title != null && title.isEmpty ? 'Enter a $text' : null,
       ),
     ),
   );
 }
 
-//*!rounded Textfield
+//*! rounded Textfield
 Widget customTextField6(String text, TextEditingController controller) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),

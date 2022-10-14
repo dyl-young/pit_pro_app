@@ -11,7 +11,7 @@ import '../widgets/confirm_alert_dialog.dart';
 import '../../hive_components/add_edit_delete_functions.dart';
 
 //! Job list view builder
-Widget buildJobContent(BuildContext context, User user, List<Job> jobs) {
+Widget buildJobContent(BuildContext context, User user, List<Job> jobs, bool isSearching) {
   final currentWidth = MediaQuery.of(context).size.width;
 
   if (jobs.isEmpty) {
@@ -43,7 +43,7 @@ Widget buildJobContent(BuildContext context, User user, List<Job> jobs) {
               itemCount: jobs.length,
               itemBuilder: (BuildContext context, int index) {
                 final job = jobs[index];
-                return buildJobCard(context, user, job);
+                return buildJobCard(context, user, job, isSearching);
               },
             ),
           ),
@@ -54,14 +54,14 @@ Widget buildJobContent(BuildContext context, User user, List<Job> jobs) {
 }
 
 //! Job detail card
-Widget buildJobCard(BuildContext context, User user, Job job) {
+Widget buildJobCard(BuildContext context, User user, Job job, bool searching) {
   //details
   final date = DateFormat.yMd().format(DateTime.now());
   final title = job.jobTitle;
   final number = job.jobNumber;
+  bool isSearching = searching;
 
   return Card(
-
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(20)),
     ),
@@ -106,14 +106,17 @@ Widget buildJobCard(BuildContext context, User user, Job job) {
               ],
             ),
             children: [
-              buildButtons(context, job),
+              buildButtons(context, job, isSearching),
             ],
           ),
         ),
         Expanded(
           child: Container(
             margin: const EdgeInsets.all(20.0),
-            decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.grey.shade200,),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.grey.shade200,
+            ),
             child: InkWell(
               child: IconButton(
                 constraints: const BoxConstraints(
@@ -125,15 +128,17 @@ Widget buildJobCard(BuildContext context, User user, Job job) {
                     behavior: SnackBarBehavior.floating,
                     backgroundColor: Colors.grey.shade400,
                     // width: 100,
-                    content: const Text('Cannot Create PDF: No Trial Pits Found'),
+                    content:
+                        const Text('Cannot Create PDF: No Trial Pits Found'),
                     duration: const Duration(seconds: 5),
                   );
-            
+
                   job.trialPitList.isNotEmpty
                       ? Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => PdfViewPage(user: user, job: job),
+                            builder: (context) =>
+                                PdfViewPage(user: user, job: job),
                           ),
                         )
                       : ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -151,7 +156,7 @@ Widget buildJobCard(BuildContext context, User user, Job job) {
 }
 
 //! expansion tile buttons
-Widget buildButtons(BuildContext context, Job job) {
+Widget buildButtons(BuildContext context, Job job, bool isSearching) {
   const color = Color.fromARGB(255, 9, 138, 13);
 
   return Row(
@@ -159,13 +164,16 @@ Widget buildButtons(BuildContext context, Job job) {
       //*delete button
       Expanded(
         child: TextButton.icon(
-          label: const Text('Delete', style: TextStyle(color: color)),
-          icon: const Icon(Icons.delete, color: color),
-          onPressed: () => showDialog(
-            context: context,
-            builder: (context) => confirmObjectDelete(context, [], job, deleteJob),
-          ),
-        ),
+            label: Text('Delete', style: TextStyle(color: !isSearching ? color : Colors.grey)),
+            icon: Icon(Icons.delete, color: !isSearching ? color : Colors.grey),
+            // disable delete option when searching to avoid bug
+            onPressed: () => !isSearching     
+                ? showDialog(
+                    context: context,
+                    builder: (context) =>
+                        confirmObjectDelete(context, [], job, deleteJob),
+                  )
+                : []),
       ),
 
       //*edit button

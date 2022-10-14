@@ -520,7 +520,7 @@ class _LayerFormPageState extends State<LayerFormPage> {
                               .map((item) => DropdownMenuItem<String>(
                                     value: item,
                                     child: Text(
-                                        item), //style: const TextStyle(color: Colors.green)),
+                                        item),
                                   ))
                               .toList(),
                           onChanged: (item) {
@@ -607,8 +607,6 @@ class _LayerFormPageState extends State<LayerFormPage> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(25))),
                           ),
-                          // validator: (title) =>
-                          //     title != null && title.isEmpty ? 'Enter $text' : null,
                         ),
                       ),
                     ),
