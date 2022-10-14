@@ -32,7 +32,7 @@ class _PdfViewPageState extends State<PdfViewPage> {
           backgroundColor: Colors.white,
           strokeWidth: 6,
         ),
-        pdfFileName: 'TrialPitLog${widget.job.jobNumber}.pdf',
+        pdfFileName: 'Trialpit_Log_${widget.job.jobNumber}.pdf',
         canDebug: true,
         canChangeOrientation: false,
         canChangePageFormat: false,
