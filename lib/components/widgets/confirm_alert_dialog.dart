@@ -77,9 +77,8 @@ Widget confirmImageDelete(BuildContext context, String path, Function deleteFile
 //! confirm cancel 
 Widget confirmCancel(BuildContext context, List<HiveObject>? objList) {
 
-  //! Alert box
   return AlertDialog(
-    title: const Text("Are you sure?", style: TextStyle(fontSize: 16)),
+    title: const Center(child: Text("Are you sure?", style: TextStyle(fontSize: 16))),
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(20)),
     ),
