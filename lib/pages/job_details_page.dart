@@ -143,7 +143,7 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
         //! floating Action Button
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () => Navigator.of(context).push(
-            createRoute(TrialPitDetailsPage(
+            createRoute(600, TrialPitDetailsPage(
                 onClickedDone: (
                   pitNumber,
                   coords,
@@ -169,7 +169,7 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
                   imagePath,
                   notes,
                 ),
-              ),
+              )
             ),
           ),
           label: const Text('Trial Pit'),

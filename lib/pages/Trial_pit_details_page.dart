@@ -337,7 +337,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
         //! floating action button
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () => Navigator.of(context).push(
-            createRoute(LayerFormPage(
+            createRoute(800, LayerFormPage(
                 onClickedDone: (
                   depth,
                   moisture,
