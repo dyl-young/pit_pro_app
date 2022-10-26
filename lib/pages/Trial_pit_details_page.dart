@@ -218,17 +218,11 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
                             child: Row(
                               children: [
                                 //* x coordinate
-                                Expanded(
-                                  child: customTextField3('Longitude', _xCoordController),
-                                ),
+                                Expanded(child: customTextField3('Latitude', _yCoordController)),
                                 //* y coordinate
-                                Expanded(
-                                  child: customTextField3('Latitude', _yCoordController),
-                                ),
+                                Expanded(child: customTextField3('Longitude', _xCoordController)),
                                 //* elevation
-                                Expanded(
-                                  child: customTextField3('Elevation (m)', _elevationController),
-                                ),
+                                Expanded(child: customTextField3('Elevation (m)', _elevationController)),
                               ],
                             ),
                           ),
@@ -522,7 +516,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
             deleteFile,
           ),
         );
-        setState(() => _imagePathController.text = '');
+        setState(() => File('_imagePathController.text').existsSync() ?_imagePathController.text = '' : []);
       },
       icon: const Icon(Icons.delete),
     );
