@@ -219,9 +219,9 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
                             child: Row(
                               children: [
                                 //* x coordinate
-                                Expanded(child: customTextField3('Latitude', _yCoordController)),
+                                Expanded(child: customTextField3('Latitude', _xCoordController)),
                                 //* y coordinate
-                                Expanded(child: customTextField3('Longitude', _xCoordController)),
+                                Expanded(child: customTextField3('Longitude', _yCoordController)),
                                 //* elevation
                                 Expanded(child: customTextField3('Elevation (m)', _elevationController)),
                               ],
@@ -337,7 +337,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
         //! floating action button
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () => Navigator.of(context).push(
-            createRoute(800, LayerFormPage(
+            createRoute(LayerFormPage(
                 onClickedDone: (
                   depth,
                   moisture,
@@ -446,7 +446,7 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
   }
 
   //! retreive location data
-  void getLocation(TextEditingController long, TextEditingController lat, TextEditingController elevation) async {
+  void getLocation(TextEditingController lat, TextEditingController long, TextEditingController elevation) async {
     final service = LocationServices();
     final locationData = await service.getLocation();
 
@@ -505,7 +505,6 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
 
   //! delete image button
   Widget deleteImageButton(){
-    bool checkImageExists;
     return IconButton(
       onPressed: () async {
         showDialog(
@@ -516,8 +515,6 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
             deleteFile,
           ),
         );
-        File(_imagePathController.text).existsSync() ? checkImageExists = true : checkImageExists = false;
-        setState(() =>  checkImageExists ? _imagePathController.text = '': []);
       },
       icon: const Icon(Icons.delete),
     );
@@ -602,4 +599,41 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
       });
     }
   }
+
+//! confirm delete image
+Widget confirmImageDelete(
+    BuildContext context, String path, Function deleteFile) {
+  return AlertDialog(
+    title: Column(
+      children: const [
+        Icon(Icons.delete_rounded, size: 40),
+        Text('Are you sure?', style: TextStyle(fontSize: 16)),
+      ],
+    ),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(20)),
+    ),
+    content: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        //*yes button
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+            deleteFile(File(path));
+            setState(() => _imagePathController.text = ''); //Delete image file
+          },
+          child: const Text('yes', style: TextStyle(fontSize: 16)),
+        ),
+        //*no button
+        TextButton(
+          onPressed: Navigator.of(context).pop,
+          child: const Text('no', style: TextStyle(fontSize: 16)),
+        ),
+      ],
+    ),
+  );
+}
+
 }

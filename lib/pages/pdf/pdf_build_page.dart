@@ -401,7 +401,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                          'Location: ${roundDouble(trialPit.coordinates[0], 2)}, ${roundDouble(trialPit.coordinates[0], 2)}'), //${loc.longitude} ; ${loc.latitude}'),
+                          'Location: ${roundDouble(trialPit.coordinates[0], 4)}, ${roundDouble(trialPit.coordinates[1], 4)}'),
                       Text('Elevation: ${trialPit.elevation!.round()} m'),
                     ],
                   ),
@@ -491,7 +491,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                        'Location: ${roundDouble(trialPit.coordinates[0], 2)}, ${roundDouble(trialPit.coordinates[0], 2)}'),
+                        'Location: ${roundDouble(trialPit.coordinates[0], 4)}, ${roundDouble(trialPit.coordinates[1], 4)}'),
                     Text('Elevation: ${trialPit.elevation!.round()} m'),
                   ],
                 ),

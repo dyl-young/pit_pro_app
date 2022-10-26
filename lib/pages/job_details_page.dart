@@ -143,7 +143,7 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
         //! floating Action Button
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () => Navigator.of(context).push(
-            createRoute(600, TrialPitDetailsPage(
+            createRoute(TrialPitDetailsPage(
                 onClickedDone: (
                   pitNumber,
                   coords,

@@ -175,7 +175,7 @@ class _HomePageState extends State<HomePage> {
             label: const Text('   Job   '),
             icon: const Icon(Icons.add, size: 30),
             onPressed: () => Navigator.of(context).push(
-                createRoute(600, const JobDeatilsPage(onClickedDone: addJob))
+                createRoute(const JobDeatilsPage(onClickedDone: addJob))
                 ),
             ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
