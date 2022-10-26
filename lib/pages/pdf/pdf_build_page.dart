@@ -149,7 +149,7 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                           Text('Trial Pit Log',
                               style: const TextStyle(fontSize: 20)),
                           Text(user.institutionName),
-                          Text(job.jobTitle),
+                          Text(job.jobTitle, style: TextStyle(fontWeight: FontWeight.bold)),
                         ],
                       ),
 
@@ -425,7 +425,9 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
               //logo
               Image(images['Logo'] ?? defaultImage, height: 60, width: 120),
               //titles
-              Column(children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                 Padding(
                     padding: const EdgeInsets.all(4),
                     child: Text('Trial Pit Log',

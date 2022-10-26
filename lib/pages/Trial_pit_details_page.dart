@@ -506,8 +506,9 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
 
   //! delete image button
   Widget deleteImageButton(){
+    bool checkImageExists;
     return IconButton(
-      onPressed: () {
+      onPressed: () async {
         showDialog(
           context: context,
           builder: (context) => confirmImageDelete(
@@ -516,7 +517,8 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
             deleteFile,
           ),
         );
-        setState(() => File('_imagePathController.text').existsSync() ?_imagePathController.text = '' : []);
+        File(_imagePathController.text).existsSync() ? checkImageExists = true : checkImageExists = false;
+        setState(() =>  checkImageExists ? _imagePathController.text = '': []);
       },
       icon: const Icon(Icons.delete),
     );
