@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 
 //* local imports
+import '../components/widgets/page_transition.dart';
 import 'trial_pit_details_page.dart';
 import '../components/widgets/cancelbutton.dart';
 import '../components/content_builder_widgets/trial_pit_content_builder.dart';
@@ -141,10 +142,8 @@ class _JobDeatilsPageState extends State<JobDeatilsPage> {
 
         //! floating Action Button
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => TrialPitDetailsPage(
+          onPressed: () => Navigator.of(context).push(
+            createRoute(TrialPitDetailsPage(
                 onClickedDone: (
                   pitNumber,
                   coords,

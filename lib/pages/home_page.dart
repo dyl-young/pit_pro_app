@@ -10,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 
 //* local imports
 import '../components/content_builder_widgets/user_drawer_builder.dart';
+import '../components/widgets/page_transition.dart';
 import '../constants/images.dart';
 import '../hive_components/add_edit_delete_functions.dart';
 import '../hive_components/boxes.dart';
@@ -63,7 +64,6 @@ class _HomePageState extends State<HomePage> {
   //* build method
   @override
   Widget build(BuildContext context) {
-
     return GestureDetector(
       // unfocus keyboard
       onTap: () {
@@ -172,17 +172,12 @@ class _HomePageState extends State<HomePage> {
 
         //!floating action button: navigates to Trial Pit page
         floatingActionButton: FloatingActionButton.extended(
-          label: const Text('   Job   '),
-          icon: const Icon(Icons.add, size: 30),
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const JobDeatilsPage(
-                onClickedDone: addJob,
-              ),
+            label: const Text('   Job   '),
+            icon: const Icon(Icons.add, size: 30),
+            onPressed: () => Navigator.of(context).push(
+                createRoute(const JobDeatilsPage(onClickedDone: addJob))
+                ),
             ),
-          ),
-        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
 
         //*bottom bar: no function

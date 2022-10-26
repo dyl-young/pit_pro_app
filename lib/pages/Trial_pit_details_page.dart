@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:pit_pro_app/components/widgets/page_transition.dart';
 
 //* local imports
 import 'layer_form_page.dart';
@@ -335,10 +336,8 @@ class _TrialPitDetailsPageState extends State<TrialPitDetailsPage> {
 
         //! floating action button
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => LayerFormPage(
+          onPressed: () => Navigator.of(context).push(
+            createRoute(LayerFormPage(
                 onClickedDone: (
                   depth,
                   moisture,
