@@ -50,11 +50,7 @@ Widget confirmCancel(BuildContext context, List<HiveObject>? objList) {
     content: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        //*no button
-        TextButton(
-          onPressed: Navigator.of(context).pop,
-          child: const Text('no', style: TextStyle(fontSize: 20)),
-        ),
+        
         //*yes button
         TextButton(
           onPressed: () {
@@ -65,6 +61,11 @@ Widget confirmCancel(BuildContext context, List<HiveObject>? objList) {
             Navigator.of(context).pop(); //pop to previous page
           },
           child: const Text('yes', style: TextStyle(fontSize: 20)),
+        ),
+        //*no button
+        TextButton(
+          onPressed: Navigator.of(context).pop,
+          child: const Text('no', style: TextStyle(fontSize: 20)),
         ),
       ],
     ),
