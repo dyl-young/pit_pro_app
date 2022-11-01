@@ -7,6 +7,7 @@ import '../../hive_components/add_edit_delete_functions.dart';
 import '../../models/layer.dart';
 import '../../pages/layer_form_page.dart';
 import '../widgets/confirm_alert_dialog.dart';
+import '../widgets/page_transition.dart';
 
 //!list view builder
 Widget layerListViewBuilder(BuildContext context, List<Layer> layers) {
@@ -100,10 +101,8 @@ Widget buildLayerButtons(BuildContext context, List<Layer> layers, Layer layer) 
         child: TextButton.icon(
           label: const Text('Edit', style: TextStyle(color: color)),
           icon: const Icon(Icons.edit, color: color),
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => LayerFormPage(
+          onPressed: () =>  Navigator.of(context).push(
+            createRoute( LayerFormPage(
                 layer: layer,
                 onClickedDone: (depth, moisture, colour, otherColour, colourPattern, consistency, structure, soilTypes, origin, originType, pm, notes) 
                 => editLayer(layer, depth, moisture, colour, otherColour, colourPattern, consistency, structure, soilTypes, origin, originType, pm, notes),

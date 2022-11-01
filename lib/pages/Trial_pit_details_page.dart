@@ -13,7 +13,6 @@ import 'package:pit_pro_app/components/widgets/page_transition.dart';
 
 //* local imports
 import 'layer_form_page.dart';
-import '../components/widgets/confirm_alert_dialog.dart';
 import '../components/widgets/info_textbox_widget.dart';
 import '../components/content_builder_widgets/layers_content_builder.dart';
 import '../components/widgets/cancelbutton.dart';

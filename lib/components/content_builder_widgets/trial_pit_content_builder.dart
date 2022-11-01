@@ -10,6 +10,7 @@ import '../../hive_components/add_edit_delete_functions.dart';
 import '../../models/trial_pit.dart';
 import '../../pages/trial_pit_details_page.dart';
 import '../widgets/confirm_alert_dialog.dart';
+import '../widgets/page_transition.dart';
 
 //! Trial Pit list view builder
 Widget trialPitListViewBuilder(BuildContext context, List<TrialPit> trialPits) {
@@ -100,10 +101,9 @@ Widget buildTrialPitButtons(BuildContext context, List<TrialPit> trialPits, Tria
         child: TextButton.icon(
           label: const Text('Edit', style: TextStyle(color: color)),
           icon: const Icon(Icons.edit, color: color),
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => TrialPitDetailsPage(
+          onPressed: () => Navigator.of(context).push(
+            createRoute(
+               TrialPitDetailsPage(
                 trialPit: trialPit,
                 onClickedDone:
                     (pitNumber, 

@@ -9,9 +9,11 @@ import '../../pages/job_details_page.dart';
 import '../../pages/pdf/pfd_view_page.dart';
 import '../widgets/confirm_alert_dialog.dart';
 import '../../hive_components/add_edit_delete_functions.dart';
+import '../widgets/page_transition.dart';
 
 //! Job list view builder
-Widget buildJobContent(BuildContext context, User user, List<Job> jobs, bool isSearching) {
+Widget buildJobContent(
+    BuildContext context, User user, List<Job> jobs, bool isSearching) {
   final currentWidth = MediaQuery.of(context).size.width;
 
   if (jobs.isEmpty) {
@@ -134,13 +136,16 @@ Widget buildJobCard(BuildContext context, User user, Job job, bool searching) {
                   );
 
                   job.trialPitList.isNotEmpty
-                      ? Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                PdfViewPage(user: user, job: job),
-                          ),
-                        )
+                      ? Navigator.of(context).push(
+                        createRoute(PdfViewPage(user: user, job: job))
+                      )
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) =>
+                      //           PdfViewPage(user: user, job: job),
+                      //     ),
+                      //   )
                       : ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 },
                 icon: const Icon(Icons.picture_as_pdf_rounded),
@@ -161,13 +166,14 @@ Widget buildButtons(BuildContext context, Job job, bool isSearching) {
 
   return Row(
     children: [
-      //*delete button
+      //* delete button
       Expanded(
         child: TextButton.icon(
-            label: Text('Delete', style: TextStyle(color: !isSearching ? color : Colors.grey)),
+            label: Text('Delete',
+                style: TextStyle(color: !isSearching ? color : Colors.grey)),
             icon: Icon(Icons.delete, color: !isSearching ? color : Colors.grey),
             // disable delete option when searching to avoid bug
-            onPressed: () => !isSearching     
+            onPressed: () => !isSearching
                 ? showDialog(
                     context: context,
                     builder: (context) =>
@@ -176,22 +182,32 @@ Widget buildButtons(BuildContext context, Job job, bool isSearching) {
                 : []),
       ),
 
-      //*edit button
+      //* edit button
       Expanded(
         child: TextButton.icon(
-          label: const Text('Edit', style: TextStyle(color: color)),
-          icon: const Icon(Icons.edit, color: color),
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: ((context) => JobDeatilsPage(
+            label: const Text('Edit', style: TextStyle(color: color)),
+            icon: const Icon(Icons.edit, color: color),
+            onPressed: () => Navigator.of(context).push(
+                  createRoute(
+                    JobDeatilsPage(
                     job: job,
                     onClickedDone: ((jobNum, jobTitle, trialPits) =>
                         editJob(job, jobNum, jobTitle, trialPits)),
-                  )),
+                    ),
+                  ),
+                )
+
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: ((context) => JobDeatilsPage(
+            //           job: job,
+            //           onClickedDone: ((jobNum, jobTitle, trialPits) =>
+            //               editJob(job, jobNum, jobTitle, trialPits)),
+            //         )),
+            //   ),
+            // ),
             ),
-          ),
-        ),
       )
     ],
   );
