@@ -245,15 +245,15 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                           smplLayers.putIfAbsent(i, () => smplDepth);
                         }
 
-                        if(layers[i].smplDepth! <= layers[i].wtDepth!){
-                          marker1 = layers[i].smplDepth!;
+                        if(smplDepth <= layers[i].wtDepth!){
+                          marker1 = smplDepth;
                           text1 = 'SMPL';
                           marker2 = layers[i].wtDepth!;
                           text2 = 'WT';
                         }else{
                           marker1 = layers[i].wtDepth!;
                           text1 = 'WT';
-                          marker2 = layers[i].smplDepth!;
+                          marker2 = smplDepth;
                           text2 = 'SMPL';
                         }
 
@@ -278,7 +278,9 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                               height: colHeight,
                               child: Column(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                                 layers[i].wtDepth != 0 
+                                 ? MainAxisAlignment.spaceAround
+                                 : MainAxisAlignment.center,
                                 children: [
                                   
                                   //* 1st marker
@@ -696,13 +698,13 @@ List<Widget> buildSoilSymbols(double height, ImageProvider image) {
   return imageList;
 }
 
-Widget marker ( Map<String, MemoryImage> images, MemoryImage defaultImage, double depth,String text){
-  return (depth != 0)
-    ? Column(
-        children: [
-          Text('${roundDouble(depth, 2).toString()} m', style: const TextStyle(fontSize: 8)),
-          Image(images['text'] ?? defaultImage, height: 20, width: 20)
-        ],
-      )
-    : SizedBox.shrink();
-}
+// Widget marker ( Map<String, MemoryImage> images, MemoryImage defaultImage, double depth,String text){
+//   return (depth != 0)
+//     ? Column(
+//         children: [
+//           Text('${roundDouble(depth, 2).toString()} m', style: const TextStyle(fontSize: 8)),
+//           Image(images['text'] ?? defaultImage, height: 20, width: 20)
+//         ],
+//       )
+//     : SizedBox.shrink();
+// }
