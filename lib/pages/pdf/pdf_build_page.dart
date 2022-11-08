@@ -278,9 +278,9 @@ void buildTrialPitPage(Document pdf, User user, Job job, TrialPit trialPit,
                               height: colHeight,
                               child: Column(
                                 mainAxisAlignment:
-                                 layers[i].wtDepth != 0 
-                                 ? MainAxisAlignment.spaceAround
-                                 : MainAxisAlignment.center,
+                                 (layers[i].wtDepth == 0 || layers[i].smplDepth == 0)
+                                 ? MainAxisAlignment.center
+                                 : MainAxisAlignment.spaceAround,
                                 children: [
                                   
                                   //* 1st marker
