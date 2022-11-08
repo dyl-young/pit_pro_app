@@ -23,34 +23,37 @@ Widget buildJobContent(
           style: TextStyle(fontSize: 20, color: Colors.grey)),
     );
   } else {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 5),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 5),
 
-        //!Grid view display of all Job detail cards
-        Expanded(
-          child: Scrollbar(
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: currentWidth < 500
-                    ? 2
-                    : currentWidth < 650
-                        ? 3
-                        : 4,
-                crossAxisSpacing: 4,
-                mainAxisSpacing: 4,
-                childAspectRatio: 1 / 1.3,
+          //!Grid view display of all Job detail cards
+          Expanded(
+            child: Scrollbar(
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: currentWidth < 500
+                      ? 2
+                      : currentWidth < 650
+                          ? 3
+                          : 4,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
+                  childAspectRatio: 1 / 1.3,
+                ),
+                itemCount: jobs.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final job = jobs[index];
+                  return buildJobCard(context, user, job, isSearching);
+                },
               ),
-              itemCount: jobs.length,
-              itemBuilder: (BuildContext context, int index) {
-                final job = jobs[index];
-                return buildJobCard(context, user, job, isSearching);
-              },
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -64,6 +67,7 @@ Widget buildJobCard(BuildContext context, User user, Job job, bool searching) {
   bool isSearching = searching;
 
   return Card(
+    // color: Color.fromARGB(255, 219, 219, 219),
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(20)),
     ),
@@ -129,9 +133,7 @@ Widget buildJobCard(BuildContext context, User user, Job job, bool searching) {
                   final snackBar = SnackBar(
                     behavior: SnackBarBehavior.floating,
                     backgroundColor: Colors.grey.shade400,
-                    // width: 100,
-                    content:
-                        const Text('Cannot Create PDF: No Trial Pits Found'),
+                    content: const Text('Cannot Create PDF: No Trial Pits Found'),
                     duration: const Duration(seconds: 5),
                   );
 
@@ -139,17 +141,10 @@ Widget buildJobCard(BuildContext context, User user, Job job, bool searching) {
                       ? Navigator.of(context).push(
                         createRoute(PdfViewPage(user: user, job: job))
                       )
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (context) =>
-                      //           PdfViewPage(user: user, job: job),
-                      //     ),
-                      //   )
                       : ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 },
                 icon: const Icon(Icons.picture_as_pdf_rounded),
-                iconSize: 80,
+                iconSize: 75,
                 color: Colors.green,
               ),
             ),
@@ -196,17 +191,6 @@ Widget buildButtons(BuildContext context, Job job, bool isSearching) {
                     ),
                   ),
                 )
-
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: ((context) => JobDeatilsPage(
-            //           job: job,
-            //           onClickedDone: ((jobNum, jobTitle, trialPits) =>
-            //               editJob(job, jobNum, jobTitle, trialPits)),
-            //         )),
-            //   ),
-            // ),
             ),
       )
     ],
