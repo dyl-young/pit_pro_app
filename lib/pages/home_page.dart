@@ -145,7 +145,9 @@ class _HomePageState extends State<HomePage> {
 
               //*Job card list builder
               SizedBox(
-                height: MediaQuery.of(context).size.height - 220,
+                height: MediaQuery.of(context).size.height < 500
+                ? MediaQuery.of(context).size.height - 220
+                : MediaQuery.of(context).size.height - 213,
                 child: ValueListenableBuilder<Box<Job>>(
                   valueListenable: Boxes.getJobs().listenable(),
                   builder: (context, box, _) {
