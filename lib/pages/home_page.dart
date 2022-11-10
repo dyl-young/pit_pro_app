@@ -130,24 +130,21 @@ class _HomePageState extends State<HomePage> {
               ),
 
               //* Job heading :
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Icon(Icons.work_rounded),
-                    Text(' Jobs',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16))
-                  ],
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Icon(Icons.work_rounded),
+                  Text(' Jobs',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16))
+                ],
               ),
 
               //*Job card list builder
               SizedBox(
-                height: MediaQuery.of(context).size.height < 500
-                ? MediaQuery.of(context).size.height - 220
-                : MediaQuery.of(context).size.height - 213,
+                height: MediaQuery.of(context).size.width < 500
+                ? MediaQuery.of(context).size.height - 213
+                : MediaQuery.of(context).size.height - 205,
                 child: ValueListenableBuilder<Box<Job>>(
                   valueListenable: Boxes.getJobs().listenable(),
                   builder: (context, box, _) {
