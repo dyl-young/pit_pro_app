@@ -118,7 +118,7 @@ Widget buildJobCard(BuildContext context, User user, Job job, bool searching) {
         ),
         Expanded(
           child: Container(
-            margin: const EdgeInsets.all(20.0),
+            margin: const EdgeInsets.all(10.0),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.grey.shade200,
