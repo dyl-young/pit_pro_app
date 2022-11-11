@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
         //* appbar theme
         appBarTheme: const AppBarTheme().copyWith(
           shape:  const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(15))
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(15))
           ),
         ),
 
